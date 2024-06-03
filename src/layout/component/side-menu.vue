@@ -34,12 +34,13 @@
         </div>
       </li>
       <li
-        class="border-b p-2 border-light-muted dark:border-dark-muted hover:bg-light-subtitle dark:hover:bg-dark-subtitle"
+        class="border-b p-2 border-light-muted dark:border-dark-muted"
         v-for="chat in sideChats"
         :key="chat.id"
         :class="{
           ' bg-laccent-faint dark:bg-daccent-faint hover:bg-laccent-faint dark:hover:bg-daccent-faint':
-            selectedKey === '/chat/' + chat.id
+            selectedKey === '/chat/' + chat.id,
+          'hover:bg-light-subtitle dark:hover:bg-dark-subtitle': selectedKey !== '/chat/' + chat.id
         }"
       >
         <router-link
@@ -60,10 +61,11 @@
         </router-link>
       </li>
       <li
-        class="border-b p-2 border-light-muted dark:border-dark-muted hover:bg-light-subtitle dark:hover:bg-dark-subtitle text-gray-900 dark:text-slate-300"
+        class="border-b p-2 border-light-muted dark:border-dark-muted text-gray-900 dark:text-slate-300"
         :class="{
           ' bg-laccent-faint dark:bg-daccent-faint hover:bg-laccent-faint dark:hover:bg-daccent-faint':
-            selectedKey === '/chats'
+            selectedKey === '/chats',
+          'hover:bg-light-subtitle dark:hover:bg-dark-subtitle': selectedKey !== '/chats'
         }"
       >
         <router-link to="/chats" class="flex items-center justify-start font-bold text-base p-3">
@@ -76,10 +78,11 @@
       class="flex flex-col border-b bg-light-base dark:bg-dark-base border-light-muted dark:border-dark-muted"
     >
       <li
-        class="border-b p-2 border-light-muted dark:border-dark-muted hover:bg-light-subtitle dark:hover:bg-dark-subtitle text-gray-900 dark:text-slate-300"
+        class="border-b p-2 border-light-muted dark:border-dark-muted text-gray-900 dark:text-slate-300"
         :class="{
           ' bg-laccent-faint dark:bg-daccent-faint hover:bg-laccent-faint dark:hover:bg-daccent-faint':
-            selectedKey === '/midjourney'
+            selectedKey === '/midjourney',
+          'hover:bg-light-subtitle dark:hover:bg-dark-subtitle': selectedKey !== '/midjourney'
         }"
       >
         <router-link
@@ -91,10 +94,11 @@
         </router-link>
       </li>
       <li
-        class="border-b p-2 border-light-muted dark:border-dark-muted hover:bg-light-subtitle dark:hover:bg-dark-subtitle text-gray-900 dark:text-slate-300"
+        class="border-b p-2 border-light-muted dark:border-dark-muted text-gray-900 dark:text-slate-300"
         :class="{
           ' bg-laccent-faint dark:bg-daccent-faint hover:bg-laccent-faint dark:hover:bg-daccent-faint':
-            selectedKey === '/stable-diffusion'
+            selectedKey === '/stable-diffusion',
+          'hover:bg-light-subtitle dark:hover:bg-dark-subtitle': selectedKey !== '/stable-diffusion'
         }"
       >
         <router-link
@@ -106,10 +110,11 @@
         </router-link>
       </li>
       <li
-        class="border-b p-2 border-light-muted dark:border-dark-muted hover:bg-light-subtitle dark:hover:bg-dark-subtitle text-gray-900 dark:text-slate-300"
+        class="border-b p-2 border-light-muted dark:border-dark-muted text-gray-900 dark:text-slate-300"
         :class="{
           ' bg-laccent-faint dark:bg-daccent-faint hover:bg-laccent-faint dark:hover:bg-daccent-faint':
-            selectedKey === '/gallery'
+            selectedKey === '/gallery',
+          'hover:bg-light-subtitle dark:hover:bg-dark-subtitle': selectedKey !== '/gallery'
         }"
       >
         <router-link to="/gallery" class="flex items-center justify-start font-bold text-base p-3">
@@ -122,10 +127,11 @@
       class="flex flex-col border-b bg-light-base dark:bg-dark-base border-light-muted dark:border-dark-muted"
     >
       <li
-        class="border-b p-2 border-light-muted dark:border-dark-muted hover:bg-light-subtitle dark:hover:bg-dark-subtitle text-gray-900 dark:text-slate-300"
+        class="border-b p-2 border-light-muted dark:border-dark-muted text-gray-900 dark:text-slate-300"
         :class="{
           ' bg-laccent-faint dark:bg-daccent-faint hover:bg-laccent-faint dark:hover:bg-daccent-faint':
-            selectedKey === '/subscription'
+            selectedKey === '/subscription',
+          'hover:bg-light-subtitle dark:hover:bg-dark-subtitle': selectedKey !== '/subscription'
         }"
       >
         <router-link
@@ -137,10 +143,11 @@
         </router-link>
       </li>
       <li
-        class="border-b p-2 border-light-muted dark:border-dark-muted hover:bg-light-subtitle dark:hover:bg-dark-subtitle text-gray-900 dark:text-slate-300"
+        class="border-b p-2 border-light-muted dark:border-dark-muted text-gray-900 dark:text-slate-300"
         :class="{
           ' bg-laccent-faint dark:bg-daccent-faint hover:bg-laccent-faint dark:hover:bg-daccent-faint':
-            selectedKey === '/user'
+            selectedKey === '/user',
+          'hover:bg-light-subtitle dark:hover:bg-dark-subtitle': selectedKey !== '/user'
         }"
       >
         <router-link to="/user" class="flex items-center justify-start font-bold text-base p-3">
@@ -149,10 +156,11 @@
         </router-link>
       </li>
       <li
-        class="border-b p-2 border-light-muted dark:border-dark-muted hover:bg-light-subtitle dark:hover:bg-dark-subtitle text-gray-900 dark:text-slate-300"
+        class="border-b p-2 border-light-muted dark:border-dark-muted text-gray-900 dark:text-slate-300"
         :class="{
           ' bg-laccent-faint dark:bg-daccent-faint hover:bg-laccent-faint dark:hover:bg-daccent-faint':
-            selectedKey === '/settings'
+            selectedKey === '/settings',
+          'hover:bg-light-subtitle dark:hover:bg-dark-subtitle': selectedKey !== '/settings'
         }"
       >
         <router-link to="/settings" class="flex items-center justify-start font-bold text-base p-3">
