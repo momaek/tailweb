@@ -187,6 +187,7 @@ import mjicon from '@/components/icons/mj-icon.vue'
 import { computed, defineComponent } from 'vue'
 import gpt4Icon from '@/components/icons/gpt4-icon.vue'
 import { formatTimestampToMD } from '@/utils'
+import { useChatStore } from '@/stores/chat'
 export default defineComponent({
   name: 'SideMenu',
   components: {
@@ -204,9 +205,10 @@ export default defineComponent({
   },
   setup() {
     const configStore = useConfigStore()
-    const sideChats = computed(() => configStore.sideChats)
+    const chatStore = useChatStore()
+    const sideChats = computed(() => chatStore.chatList)
     const selectedKey = computed(() => configStore.sideMenuSelected)
-    configStore.getSideChat()
+    chatStore.getAllChatList(true)
 
     return { sideChats, selectedKey, formatTimestampToMD }
   }

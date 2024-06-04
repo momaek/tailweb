@@ -1,15 +1,12 @@
 import { getConfig } from '@/api/config'
 import type { Config } from '@/models/config'
 import { defineStore } from 'pinia'
-import type { Chat } from '@/models/chat'
-import { getChatList } from '@/api/chat'
 
 export const useConfigStore = defineStore('config', {
   state: () => ({
     theme: 'light',
     system_config: {} as Config,
     pageTitle: undefined as string | undefined,
-    sideChats: [] as Chat[],
     sideMenuSelected: ''
   }),
   actions: {
@@ -41,19 +38,7 @@ export const useConfigStore = defineStore('config', {
     setPageTitle(title: string | undefined) {
       this.pageTitle = title
     },
-    addToSideChats(chat: Chat) {
-      this.sideChats.unshift(chat)
-    },
-    getSideChat(force?: boolean) {
-      if (!force) {
-        if (this.sideChats.length > 0) {
-          return this.sideChats
-        }
-      }
-      getChatList().then((res) => {
-        this.sideChats = res
-      })
-    },
+
     setSelectedMenu(path: string) {
       this.sideMenuSelected = path
     }
