@@ -2,7 +2,7 @@
   <div class="w-full flex flex-col items-center justify-center py-10">
     <div class="max-w-4xl px-1 lg:px-8 w-full flex flex-col gap-5 mt-20">
       <div class="logo flex items-center justify-center text-gray-900 dark:text-slate-300">
-        <LogoIcon class="w-24 h-24" />
+        <LogoIcon class="w-20 h-20" />
         <span class="ml-2 text-6xl font-bold">Zen</span>
       </div>
       <div

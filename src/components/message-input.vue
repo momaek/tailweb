@@ -6,22 +6,43 @@
       placeholder="开始新的聊天"
     />
     <div class="absolute cursor-pointer inset-y-0 right-0 flex items-center z-50 pr-1">
-      <span
-        class="w-10 h-10 rounded-full flex items-center justify-center bg-laccent-base dark:bg-daccent-base"
-      >
-        <ArrowRightIcon class="h-5 w-5 text-white" aria-hidden="true" />
-      </span>
+      <FwTooltip>
+        <template #trigger>
+          <span class="mr-2 w-10 h-10 flex items-center justify-center cursor-pointer">
+            <PlusCircleIcon class="w-7 h-7 text-gray-900 dark:text-slate-300" />
+          </span>
+        </template>
+        <template #content>
+          <span class="text-sm">选择附件</span>
+        </template>
+      </FwTooltip>
+
+      <FwTooltip>
+        <template #trigger>
+          <span
+            class="w-10 h-10 rounded-full flex items-center justify-center bg-laccent-base dark:bg-daccent-base"
+          >
+            <ArrowRightIcon class="h-5 w-5 text-white" aria-hidden="true" />
+          </span>
+        </template>
+        <template #content>
+          <span class="text-sm">发送信息</span>
+        </template>
+      </FwTooltip>
     </div>
   </div>
 </template>
 <script lang="ts">
-import { ArrowRightIcon } from '@heroicons/vue/24/outline'
+import { ArrowRightIcon, PlusCircleIcon } from '@heroicons/vue/24/outline'
 import { defineComponent } from 'vue'
+import FwTooltip from './tooltip/fw-tooltip.vue'
 
 export default defineComponent({
   name: 'MessageInput',
   components: {
-    ArrowRightIcon
+    ArrowRightIcon,
+    PlusCircleIcon,
+    FwTooltip
   }
 })
 </script>
