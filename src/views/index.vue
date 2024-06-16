@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full flex flex-col items-center justify-center py-10">
+  <div class="w-full flex flex-col gap-8 items-center justify-center py-10">
     <div class="max-w-4xl px-1 lg:px-8 w-full flex flex-col gap-5 mt-20">
       <div class="logo flex items-center justify-center text-gray-900 dark:text-slate-300">
         <LogoIcon class="w-20 h-20" />
@@ -34,7 +34,30 @@
         <MessageInput />
       </div>
     </div>
-    <div class="all"></div>
+    <div class="all">
+      <div class="recent-update flex max-w-4xl px-1 lg:px-8 w-full flex-col">
+        <div
+          class="head flex justify-between items-center w-full text-gray-900 dark:text-slate-300"
+        >
+          <span class="font-bold">最近更新</span>
+          <span class="text-sm font-bold"
+            ><a href="javascript;" class="text-laccent-base dark:text-daccent-base"
+              >查看全部</a
+            ></span
+          >
+        </div>
+        <div class="cards mt-2 flex overflow-auto w-full">
+          <span
+            v-for="role in allRoles"
+            :key="role.id"
+            class="text-gray-900 dark:text-slate-300 border whitespace-nowrap border-light-muted dark:border-dark-muted py-0.5 px-3 mr-3 rounded-2xl flex items-center cursor-pointer hover:bg-light-subtitle dark:hover:bg-dark-subtitle"
+          >
+            <span><Gpt4Icon class="w-7" /></span>
+            <span class="ml-2 font-semibold text-sm">{{ role.name }}</span>
+          </span>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <script lang="ts">

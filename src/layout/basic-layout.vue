@@ -69,7 +69,7 @@
                   class="flex border-b h-14 text-gray-900 dark:text-slate-300 border-light-muted dark:border-dark-muted bg-light-faint dark:bg-dark-faint"
                 >
                   <router-link to="/" class="flex-row flex px-4 items-center">
-                    <LogoIcon class="!w-12 h-12 text-gray-900 dark:text-slate-300" />
+                    <LogoIcon class="!w-12 h-20 text-gray-900 dark:text-slate-300" />
                     <span class="ml-1 text-2xl font-bold">Zen</span>
                   </router-link>
                 </div>
@@ -93,7 +93,7 @@
           class="flex border-b h-14 text-gray-900 dark:text-slate-300 border-light-muted dark:border-dark-muted bg-light-faint dark:bg-dark-faint"
         >
           <router-link to="/" class="px-4 items-center flex-row flex">
-            <LogoIcon class="!w-12 h-12 text-gray-900 dark:text-slate-300" />
+            <LogoIcon class="!w-12 h-20 text-gray-900 dark:text-slate-300" />
             <span class="ml-1 text-2xl font-bold">Zen</span>
           </router-link>
         </div>

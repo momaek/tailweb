@@ -2,8 +2,6 @@
   <svg
     version="1.0"
     xmlns="http://www.w3.org/2000/svg"
-    width="603.000000pt"
-    height="545.000000pt"
     viewBox="0 0 603.000000 545.000000"
     preserveAspectRatio="xMidYMid meet"
   >
