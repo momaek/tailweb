@@ -96,7 +96,6 @@ export default defineComponent({
       login(userLoginParam.value)
         .then((res) => {
           userStore.setToken(res)
-          console.log('====================>', res)
           router.push('/')
         })
         .finally(() => {

@@ -31,7 +31,7 @@
             name="captcha"
             type="text"
             required
-            placeholder="请输入验证码"
+            placeholder="请输入验证码，目前可以随便写"
             class="block rounded-md border-0 w-7/12 p-3 text-gray-900 dark:bg-transparent dark:text-slate-300 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
           />
           <a
