@@ -1,6 +1,10 @@
 # tailweb
 
-This template should help get you started developing with Vue 3 in Vite.
+重写后的 [Geekai](https://github.com/momaek/geekai) UI. Relative, Poe like.
+
+![](./docimage/fullscreen.png)
+
+![](./docimage/mobile.png)
 
 ## Recommended IDE Setup
 
