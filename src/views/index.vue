@@ -47,7 +47,9 @@
             ></span
           >
         </div>
-        <div class="cards mb-2 flex overflow-auto w-full">
+        <div
+          class="cards mb-2 flex overflow-auto w-full shadow-[inset_-38px_0_36px_-40px_#d3d3d3] dark:shadow-[inset_-38px_0_36px_-40px_#3b3b3b]"
+        >
           <div v-for="(roles, idx) in latestGroupRoles" :key="idx" class="w-60 mr-3">
             <a
               v-for="role in roles"
@@ -74,7 +76,9 @@
             ></span
           >
         </div>
-        <div class="cards mb-2 flex overflow-auto w-full">
+        <div
+          class="cards mb-2 flex overflow-auto w-full shadow-[inset_-38px_0_36px_-40px_#d3d3d3] dark:shadow-[inset_-38px_0_36px_-40px_#3b3b3b]"
+        >
           <div v-for="(roles, idx) in groupRoles" :key="idx" class="w-60 mr-3">
             <a
               v-for="role in roles"
