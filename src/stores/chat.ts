@@ -19,6 +19,9 @@ export const useChatStore = defineStore('chat', {
         this.chatList = res
       })
     },
+    fuzzySearchRole(query: string): Role[] {
+      return this.allRoleList.filter((role) => role.name.includes(query))
+    },
     addToChatList(chat: Chat) {
       this.chatList.unshift(chat)
     },

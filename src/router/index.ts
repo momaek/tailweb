@@ -18,7 +18,10 @@ const router = createRouter({
         {
           path: '/explore',
           name: 'explore',
-          component: () => import('@/views/index.vue')
+          component: () => import('@/views/chat/explore.vue'),
+          meta: {
+            title: '探索'
+          }
         },
         {
           path: '/chat/:id',

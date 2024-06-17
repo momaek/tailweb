@@ -42,8 +42,8 @@
         >
           <span class="font-bold">最近更新</span>
           <span class="text-sm font-bold"
-            ><a href="javascript;" class="text-laccent-base dark:text-daccent-base"
-              >查看全部</a
+            ><router-link to="/explore" class="text-laccent-base dark:text-daccent-base"
+              >查看全部</router-link
             ></span
           >
         </div>
@@ -71,8 +71,8 @@
         >
           <span class="font-bold">这些机器人</span>
           <span class="text-sm font-bold"
-            ><a href="javascript;" class="text-laccent-base dark:text-daccent-base"
-              >查看全部</a
+            ><router-link to="/explore" class="text-laccent-base dark:text-daccent-base"
+              >查看全部</router-link
             ></span
           >
         </div>
