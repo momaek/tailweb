@@ -105,22 +105,34 @@
 
     <div class="lg:pl-[18.75rem]">
       <div
-        class="sticky top-0 z-40 flex h-14 shrink-0 items-center justify-between gap-x-4 border-b border-light-muted dark:border-dark-muted dark:bg-dark-faint bg-light-faint px-4 sm:gap-x-6 sm:px-6 lg:px-8"
-        :class="{ '!bg-transparent': !title, '!border-b-0': !title }"
+        class="sticky top-0 z-40 flex h-14 shrink-0 items-center justify-start border-b border-light-muted dark:border-dark-muted dark:bg-dark-faint bg-light-faint px-4 lg:px-8"
+        :class="{ '!bg-transparent': !title && !isChatPage, '!border-b-0': !title && !isChatPage }"
       >
-        <button
-          type="button"
-          class="-m-2.5 p-2.5 text-gray-900 dark:text-slate-300 lg:hidden"
-          @click="sidebarOpen = true"
-        >
-          <span class="sr-only">Open sidebar</span>
-          <Bars3Icon class="h-6 w-6" aria-hidden="true" />
-        </button>
-        <div class="w-full h-full flex items-center justify-center">
+        <div class="flex w-3/12 items-center">
+          <button
+            type="button"
+            class="-m-2.5 p-2.5 text-gray-900 dark:text-slate-300 lg:hidden"
+            @click="sidebarOpen = true"
+          >
+            <span class="sr-only">Open sidebar</span>
+            <Bars3Icon class="h-6 w-6" aria-hidden="true" />
+          </button>
+          <div v-if="roleInfo" class="flex justify-start w-full ml-2 items-center">
+            <span><img class="w-8 rounded-lg bg-gray-50" :src="roleInfo.icon" alt="" /></span>
+            <div class="ml-2 flex flex-col text-gray-900 dark:text-slate-300">
+              <span class="font-bold text-base">{{ roleInfo.name }}</span>
+              <span class="text-sm flex"
+                ><ShieldCheckIcon class="w-4 mr-2" />{{ roleInfo.key }}</span
+              >
+            </div>
+          </div>
+        </div>
+        <div class="h-full flex items-center justify-center w-6/12">
           <span v-if="title" class="text-lg font-bold text-gray-900 dark:text-slate-300">{{
             title
           }}</span>
         </div>
+        <div class="w-3/12"></div>
       </div>
 
       <main>
@@ -133,12 +145,15 @@
 </template>
 
 <script lang="ts">
-import { computed, defineComponent, ref } from 'vue'
+import { computed, defineComponent, ref, watch } from 'vue'
 import { Dialog as HeadDialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
 import { Bars3Icon, XMarkIcon } from '@heroicons/vue/24/outline'
 import LogoIcon from '@/components/icons/logo-icon.vue'
 import SideMenu from './component/side-menu.vue'
 import { useRoute } from 'vue-router'
+import { useChatStore } from '@/stores/chat'
+import type { Role } from '@/models/chat'
+import { ShieldCheckIcon } from '@heroicons/vue/24/solid'
 export default defineComponent({
   components: {
     LogoIcon,
@@ -148,18 +163,37 @@ export default defineComponent({
     TransitionChild,
     TransitionRoot,
     Bars3Icon,
-    XMarkIcon
+    XMarkIcon,
+    ShieldCheckIcon
   },
 
   setup() {
-    console.log('213131')
     const sidebarOpen = ref(false)
 
     const route = useRoute()
 
     const title = computed(() => route.meta.title)
+    const chatStore = useChatStore()
+    const isChatPage = ref(false)
+    const roleInfo = ref<Role>()
 
-    return { sidebarOpen, title }
+    watch(
+      () => route.meta,
+      (newVal) => {
+        if (newVal.chat_page) {
+          isChatPage.value = true
+          chatStore.getAllRoleList().then(() => {
+            roleInfo.value = chatStore.getRoleByKey(route.params.chatmodel as string)
+          })
+        } else {
+          isChatPage.value = false
+          roleInfo.value = undefined
+        }
+      },
+      { immediate: true }
+    )
+
+    return { sidebarOpen, isChatPage, title, roleInfo }
   }
 })
 </script>

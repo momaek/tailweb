@@ -31,6 +31,8 @@
 <script lang="ts">
 import { useConfigStore } from '@/stores/config'
 import { ref, defineComponent, watch } from 'vue'
+import { useTitle } from '@vueuse/core'
+useTitle('设置')
 export default defineComponent({
   name: 'SettingIndex',
   setup() {

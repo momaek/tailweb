@@ -34,6 +34,8 @@ import { useConfigStore } from '@/stores/config'
 import { notify } from 'notiwind'
 import LoginTab from './components/login-tab.vue'
 import RegisterTab from './components/register-tab.vue'
+import { useTitle } from '@vueuse/core'
+useTitle('登录')
 
 export default defineComponent({
   name: 'LoginView',

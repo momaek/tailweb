@@ -34,7 +34,7 @@
       <ul role="list" class="divide-y divide-light-muted dark:divide-dark-muted">
         <li v-for="role in allRoles" :key="role.id" class="">
           <router-link
-            :to="'/chat/' + role.id"
+            :to="'/' + role.key"
             class="relative flex justify-between gap-x-6 py-5 cursor-pointer hover:bg-light-subtitle dark:hover:bg-dark-subtitle"
           >
             <div class="flex min-w-0 gap-x-4">
@@ -69,7 +69,7 @@
       <ul role="list" class="divide-y divide-light-muted dark:divide-dark-muted">
         <li v-for="role in searchRoles" :key="role.id" class="">
           <router-link
-            :to="'/chat/' + role.id"
+            :to="'/' + role.key"
             class="relative flex justify-between gap-x-6 py-5 cursor-pointer hover:bg-light-subtitle dark:hover:bg-dark-subtitle"
           >
             <div class="flex min-w-0 gap-x-4">
@@ -107,6 +107,8 @@ import { computed, defineComponent, ref } from 'vue'
 import { useChatStore } from '@/stores/chat'
 import { MagnifyingGlassIcon, XMarkIcon } from '@heroicons/vue/24/outline'
 import type { Role } from '@/models/chat'
+import { useTitle } from '@vueuse/core'
+useTitle('探索')
 export default defineComponent({
   name: 'ExploreRole',
   components: {

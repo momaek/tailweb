@@ -16,6 +16,14 @@ const router = createRouter({
           component: () => import('@/views/index.vue')
         },
         {
+          path: '/:chatmodel',
+          name: 'ChatModel',
+          component: () => import('@/views/chat/chat-model.vue'),
+          meta: {
+            chat_page: true
+          }
+        },
+        {
           path: '/explore',
           name: 'explore',
           component: () => import('@/views/chat/explore.vue'),
@@ -26,7 +34,10 @@ const router = createRouter({
         {
           path: '/chat/:id',
           name: 'chat',
-          component: () => import('@/views/index.vue')
+          component: () => import('@/views/index.vue'),
+          meta: {
+            chat_page: true
+          }
         },
 
         {

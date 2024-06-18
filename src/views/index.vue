@@ -51,7 +51,8 @@
           class="cards mb-2 flex overflow-auto w-full shadow-[inset_-38px_0_36px_-40px_#d3d3d3] dark:shadow-[inset_-38px_0_36px_-40px_#3b3b3b]"
         >
           <div v-for="(roles, idx) in latestGroupRoles" :key="idx" class="w-60 mr-3">
-            <a
+            <router-link
+              :to="'/' + role.key"
               v-for="role in roles"
               :key="role.id"
               class="text-gray-900 mt-2 dark:text-slate-300 border w-60 h-20 border-light-muted dark:border-dark-muted py-0.5 px-3 rounded-2xl flex items-center cursor-pointer hover:bg-light-subtitle dark:hover:bg-dark-subtitle"
@@ -61,7 +62,7 @@
                 <span class="font-semibold text-sm">{{ role.name }}</span>
                 <span class="text-xs break-all overflow-hidden">{{ role.description }}</span>
               </div>
-            </a>
+            </router-link>
           </div>
         </div>
       </div>
@@ -80,7 +81,8 @@
           class="cards mb-2 flex overflow-auto w-full shadow-[inset_-38px_0_36px_-40px_#d3d3d3] dark:shadow-[inset_-38px_0_36px_-40px_#3b3b3b]"
         >
           <div v-for="(roles, idx) in groupRoles" :key="idx" class="w-60 mr-3">
-            <a
+            <router-link
+              :to="'/' + role.key"
               v-for="role in roles"
               :key="role.id"
               class="text-gray-900 mt-2 dark:text-slate-300 border w-60 h-20 border-light-muted dark:border-dark-muted py-0.5 px-3 rounded-2xl flex items-center cursor-pointer hover:bg-light-subtitle dark:hover:bg-dark-subtitle"
@@ -90,7 +92,7 @@
                 <span class="font-semibold text-sm">{{ role.name }}</span>
                 <span class="text-xs break-all overflow-hidden">{{ role.description }}</span>
               </div>
-            </a>
+            </router-link>
           </div>
         </div>
       </div>
