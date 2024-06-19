@@ -115,9 +115,9 @@
             @click="sidebarOpen = true"
           >
             <span class="sr-only">Open sidebar</span>
-            <Bars3Icon class="h-8 w-8" aria-hidden="true" />
+            <Bars3Icon class="h-7 w-7" aria-hidden="true" />
           </button>
-          <div v-if="roleInfo" class="flex justify-start w-full ml-2 items-center">
+          <div v-if="roleInfo" class="flex justify-start w-full ml-5 lg:ml-2 items-center">
             <span><img class="w-8 rounded-lg bg-gray-50" :src="roleInfo.icon" alt="" /></span>
             <div class="ml-2 flex flex-col text-gray-900 dark:text-slate-300">
               <span v-if="chatInfo" class="font-bold text-base text-ellipsis whitespace-nowrap">
@@ -143,18 +143,18 @@
             :class="{ 'pointer-events-none opacity-50': !chatInfo }"
             v-if="isChatPage"
           >
-            <span><PencilSquareIcon class="w-5" /></span>
+            <span><PencilSquareIcon class="w-5 font-bold" /></span>
             <span class="hidden ml-1 font-bold text-sm md:flex">新建聊天</span>
           </span>
           <span class="flex ml-7 cursor-pointer" v-if="isChatPage">
-            <span><ArrowTopRightOnSquareIcon class="w-5" /></span>
+            <span><ArrowUpOnSquareIcon class="w-5 font-bold" /></span>
             <span class="hidden ml-1 font-bold text-sm md:flex">分享</span>
           </span>
         </div>
       </div>
 
       <main>
-        <div class="px-4 sm:px-1 lg:px-8">
+        <div class="px-2 sm:px-1 lg:px-8">
           <router-view />
         </div>
       </main>
@@ -165,13 +165,18 @@
 <script lang="ts">
 import { computed, defineComponent, ref, watch } from 'vue'
 import { Dialog as HeadDialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
-import { Bars3Icon, PencilSquareIcon, XMarkIcon } from '@heroicons/vue/24/outline'
+import {
+  Bars3Icon,
+  PencilSquareIcon,
+  ArrowUpOnSquareIcon,
+  XMarkIcon
+} from '@heroicons/vue/24/outline'
 import LogoIcon from '@/components/icons/logo-icon.vue'
 import SideMenu from './component/side-menu.vue'
 import { useRoute } from 'vue-router'
 import { useChatStore } from '@/stores/chat'
 import type { Chat, Role } from '@/models/chat'
-import { ArrowTopRightOnSquareIcon, ShieldCheckIcon } from '@heroicons/vue/24/solid'
+import { ShieldCheckIcon } from '@heroicons/vue/24/solid'
 export default defineComponent({
   components: {
     LogoIcon,
@@ -184,7 +189,7 @@ export default defineComponent({
     XMarkIcon,
     ShieldCheckIcon,
     PencilSquareIcon,
-    ArrowTopRightOnSquareIcon
+    ArrowUpOnSquareIcon
   },
 
   setup() {
