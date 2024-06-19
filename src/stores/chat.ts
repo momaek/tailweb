@@ -11,21 +11,27 @@ export const useChatStore = defineStore('chat', {
     modelList: [] as Model[]
   }),
   actions: {
-    getAllChatList(force?: boolean) {
+    async getAllChatList(force?: boolean): Promise<Chat[]> {
       if (!force) {
         if (this.chatList.length > 0) {
           return this.chatList
         }
       }
-      getChatList().then((res) => {
-        this.chatList = res
-      })
+      const res = await getChatList()
+      this.chatList = res
+      return this.chatList
+    },
+    getChatByID(id: number): Chat | undefined {
+      return this.chatList.find((chat) => chat.id === id)
     },
     fuzzySearchRole(query: string): Role[] {
       return this.allRoleList.filter((role) => role.name.includes(query))
     },
     getRoleByKey(key: string): Role | undefined {
       return this.allRoleList.find((role) => role.key === key)
+    },
+    getRoleByID(id: number): Role | undefined {
+      return this.allRoleList.find((role) => role.id === id)
     },
     addToChatList(chat: Chat) {
       this.chatList.unshift(chat)

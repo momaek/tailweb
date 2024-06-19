@@ -1,6 +1,8 @@
 <template>
   <div class="w-full flex flex-col gap-2 items-center justify-center py-10">
-    <div class="max-w-4xl px-4 lg:px-8 w-full"></div>
+    <div class="max-w-4xl px-4 lg:px-8 w-full">
+      <div class="group bg-light-faint dark:bg-dark-faint w-full rounded-lg px-4 py-2">Hello</div>
+    </div>
   </div>
 </template>
 <script lang="ts" setup>
@@ -15,6 +17,5 @@ const chatStore = useChatStore()
 const modelInfo = ref<Role>()
 chatStore.getAllRoleList().then(() => {
   modelInfo.value = chatStore.getRoleByKey(modelKey as string)
-  console.log('2321312321=======1231', modelInfo.value)
 })
 </script>

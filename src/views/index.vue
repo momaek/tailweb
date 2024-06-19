@@ -22,14 +22,13 @@
           <span><Gpt4Icon class="w-7" /></span>
           <span class="ml-2 font-semibold text-sm">{{ role.name }}</span>
         </span>
-        <span
+        <router-link
+          to="/explore"
           class="text-gray-900 dark:text-slate-300 border whitespace-nowrap border-light-muted dark:border-dark-muted py-0.5 px-3 mr-3 rounded-2xl flex items-center cursor-pointer hover:bg-light-subtitle dark:hover:bg-dark-subtitle"
         >
           <span><Squares2X2Icon class="w-7" /></span>
-          <span class="ml-2 font-semibold text-sm">
-            <router-link to="/explore">更多</router-link>
-          </span>
-        </span>
+          <span class="ml-2 font-semibold text-sm"> 更多 </span>
+        </router-link>
       </div>
       <div class="input">
         <MessageInput />

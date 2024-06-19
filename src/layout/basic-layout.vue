@@ -105,34 +105,52 @@
 
     <div class="lg:pl-[18.75rem]">
       <div
-        class="sticky top-0 z-40 flex h-14 shrink-0 items-center justify-start border-b border-light-muted dark:border-dark-muted dark:bg-dark-faint bg-light-faint px-4 lg:px-8"
+        class="sticky top-0 z-40 flex h-14 shrink-0 items-center border-b border-light-muted dark:border-dark-muted dark:bg-dark-faint bg-light-faint px-4 lg:px-8"
         :class="{ '!bg-transparent': !title && !isChatPage, '!border-b-0': !title && !isChatPage }"
       >
-        <div class="flex w-3/12 items-center">
+        <div class="flex flex-shrink-0 items-center">
           <button
             type="button"
             class="-m-2.5 p-2.5 text-gray-900 dark:text-slate-300 lg:hidden"
             @click="sidebarOpen = true"
           >
             <span class="sr-only">Open sidebar</span>
-            <Bars3Icon class="h-6 w-6" aria-hidden="true" />
+            <Bars3Icon class="h-8 w-8" aria-hidden="true" />
           </button>
           <div v-if="roleInfo" class="flex justify-start w-full ml-2 items-center">
             <span><img class="w-8 rounded-lg bg-gray-50" :src="roleInfo.icon" alt="" /></span>
             <div class="ml-2 flex flex-col text-gray-900 dark:text-slate-300">
-              <span class="font-bold text-base">{{ roleInfo.name }}</span>
-              <span class="text-sm flex"
+              <span v-if="chatInfo" class="font-bold text-base text-ellipsis whitespace-nowrap">
+                {{ chatInfo.title }}
+              </span>
+              <span v-else class="font-bold text-base text-ellipsis whitespace-nowrap">
+                新建聊天
+              </span>
+              <span class="text-sm font-bold flex text-slate-400"
                 ><ShieldCheckIcon class="w-4 mr-2" />{{ roleInfo.key }}</span
               >
             </div>
           </div>
         </div>
-        <div class="h-full flex items-center justify-center w-6/12">
+        <div class="h-full flex-grow w-full flex items-center justify-center">
           <span v-if="title" class="text-lg font-bold text-gray-900 dark:text-slate-300">{{
             title
           }}</span>
         </div>
-        <div class="w-3/12"></div>
+        <div class="flex flex-shrink-0 items-center justify-end text-gray-900 dark:text-slate-300">
+          <span
+            class="flex cursor-pointer"
+            :class="{ 'pointer-events-none opacity-50': !chatInfo }"
+            v-if="isChatPage"
+          >
+            <span><PencilSquareIcon class="w-5" /></span>
+            <span class="hidden ml-1 font-bold text-sm md:flex">新建聊天</span>
+          </span>
+          <span class="flex ml-7 cursor-pointer" v-if="isChatPage">
+            <span><ArrowTopRightOnSquareIcon class="w-5" /></span>
+            <span class="hidden ml-1 font-bold text-sm md:flex">分享</span>
+          </span>
+        </div>
       </div>
 
       <main>
@@ -147,13 +165,13 @@
 <script lang="ts">
 import { computed, defineComponent, ref, watch } from 'vue'
 import { Dialog as HeadDialog, DialogPanel, TransitionChild, TransitionRoot } from '@headlessui/vue'
-import { Bars3Icon, XMarkIcon } from '@heroicons/vue/24/outline'
+import { Bars3Icon, PencilSquareIcon, XMarkIcon } from '@heroicons/vue/24/outline'
 import LogoIcon from '@/components/icons/logo-icon.vue'
 import SideMenu from './component/side-menu.vue'
 import { useRoute } from 'vue-router'
 import { useChatStore } from '@/stores/chat'
-import type { Role } from '@/models/chat'
-import { ShieldCheckIcon } from '@heroicons/vue/24/solid'
+import type { Chat, Role } from '@/models/chat'
+import { ArrowTopRightOnSquareIcon, ShieldCheckIcon } from '@heroicons/vue/24/solid'
 export default defineComponent({
   components: {
     LogoIcon,
@@ -164,7 +182,9 @@ export default defineComponent({
     TransitionRoot,
     Bars3Icon,
     XMarkIcon,
-    ShieldCheckIcon
+    ShieldCheckIcon,
+    PencilSquareIcon,
+    ArrowTopRightOnSquareIcon
   },
 
   setup() {
@@ -176,24 +196,35 @@ export default defineComponent({
     const chatStore = useChatStore()
     const isChatPage = ref(false)
     const roleInfo = ref<Role>()
+    const chatInfo = ref<Chat>()
 
     watch(
       () => route.meta,
       (newVal) => {
         if (newVal.chat_page) {
           isChatPage.value = true
-          chatStore.getAllRoleList().then(() => {
-            roleInfo.value = chatStore.getRoleByKey(route.params.chatmodel as string)
-          })
+          if (route.params.chatmodel)
+            chatStore.getAllRoleList().then(() => {
+              roleInfo.value = chatStore.getRoleByKey(route.params.chatmodel as string)
+            })
+
+          if (route.params.id)
+            chatStore.getAllChatList().then(() => {
+              chatInfo.value = chatStore.getChatByID(parseInt(route.params.id as string) as number)
+              if (chatInfo.value) {
+                roleInfo.value = chatStore.getRoleByID(chatInfo.value.role_id)
+              }
+            })
         } else {
           isChatPage.value = false
           roleInfo.value = undefined
+          chatInfo.value = undefined
         }
       },
       { immediate: true }
     )
 
-    return { sidebarOpen, isChatPage, title, roleInfo }
+    return { sidebarOpen, isChatPage, title, roleInfo, chatInfo }
   }
 })
 </script>
