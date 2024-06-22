@@ -14,12 +14,15 @@
     </div>
     <div
       class="flex ml-2 w-full items-end border border-light-emphasis dark:border-dark-emphasis pl-5 text-gray-900 dark:text-slate-300 bg-transparent"
-      :class="{ 'rounded-full': rows === 1, 'rounded-lg': rows > 1 }"
+      :class="{ 'rounded-full': textAreaHeight === 44, 'rounded-3xl': textAreaHeight > 44 }"
     >
       <textarea
+        id="message-input"
         class="block p-2.5 w-full border-none outline-none bg-transparent resize-none"
         placeholder="开始新的聊天"
-        :rows="rows"
+        :rows="1"
+        v-model="input"
+        @input="onInput"
       />
       <div class="cursor-pointer inset-y-0 right-0 flex items-center mb-0.5 z-50 pr-1">
         <FwTooltip>
@@ -60,7 +63,16 @@ const props = defineProps({
   showClear: Boolean
 })
 
-// 定义 emits
-const rows = ref(1)
-// 创建一个计算属性来处理 v-model
+const input = ref('')
+const textAreaHeight = ref(44)
+const onInput = () => {
+  const textarea = document.getElementById('message-input') as HTMLTextAreaElement
+  textarea.style.height = 'auto'
+  if (textarea.scrollHeight < 440) {
+    textarea.style.height = textarea.scrollHeight + 'px'
+  } else {
+    textarea.style.height = '440px'
+  }
+  textAreaHeight.value = textarea.scrollHeight
+}
 </script>
