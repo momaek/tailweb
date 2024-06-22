@@ -123,6 +123,7 @@ import { InformationCircleIcon, UserPlusIcon, ArrowUpOnSquareIcon } from '@heroi
 import FwTooltip from '@/components/tooltip/fw-tooltip.vue'
 import { Listbox, ListboxOptions, ListboxOption, ListboxButton } from '@headlessui/vue'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/vue/20/solid'
+import { useEventBus } from '@vueuse/core'
 
 const route = useRoute()
 const modelKey = route.params.chatmodel
@@ -131,6 +132,16 @@ const roleInfo = ref<Role>()
 const models = ref<Model[]>([])
 const selectedModel = ref<Model>()
 const canSelect = ref(true)
+const msgSend = useEventBus('message-send')
+const clearContextBus = useEventBus('clear-chat')
+
+msgSend.on((message) => {
+  console.log('====>>>>', message)
+})
+
+clearContextBus.on(() => {
+  console.log('123131 clear btn click')
+})
 
 const initPageWithRolesAndChats = async () => {
   await chatStore.getAllRoleList()

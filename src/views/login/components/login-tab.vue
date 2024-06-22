@@ -10,7 +10,6 @@
         <div class="mt-2">
           <input
             id="email"
-            type="email"
             name="email"
             v-model="userLoginParam.username"
             autocomplete="email"

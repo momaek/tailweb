@@ -11,6 +11,7 @@ import { useUserStore } from '@/stores/user'
 
 export interface ResponseModel<T = any> {
   code?: number
+  message: string
   data: T
 }
 
@@ -27,7 +28,7 @@ class HttpRequest {
   constructor() {
     this.service = axios.create({
       baseURL: '/api',
-      timeout: 5 * 1000
+      timeout: 20 * 1000
     })
 
     this.service.interceptors.request.use(
@@ -57,7 +58,7 @@ class HttpRequest {
             notify({
               group: 'error',
               title: '请求出错',
-              text: data.data
+              text: data.message
             })
           }
         } else {
@@ -74,7 +75,7 @@ class HttpRequest {
           notify({
             group: 'error',
             title: '请求出错',
-            text: error.response.data.data
+            text: error.response.data?.message
           })
         } else {
           if (error.response?.status === 401) {

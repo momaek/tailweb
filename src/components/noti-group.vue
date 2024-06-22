@@ -34,7 +34,7 @@
                   <span class="font-semibold text-green-500 dark:text-green-300">{{
                     notification.title
                   }}</span>
-                  <p class="text-sm text-gray-600 dark:text-slate-300">{{ notification.text }}</p>
+                  <p class="text-sm text-gray-900">{{ notification.text }}</p>
                 </div>
               </div>
             </div>
@@ -76,7 +76,7 @@
                   <span class="font-semibold text-red-500 dark:text-red-300">{{
                     notification.title
                   }}</span>
-                  <p class="text-sm text-gray-600 dark:text-slate-300">{{ notification.text }}</p>
+                  <p class="text-sm text-gray-600">{{ notification.text }}</p>
                 </div>
               </div>
             </div>
