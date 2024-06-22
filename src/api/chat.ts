@@ -22,7 +22,8 @@ export async function getRoleList(): Promise<Role[]> {
 export async function getModelList(): Promise<Model[]> {
   return request
     .get<Model[]>({
-      url: '/model/list'
+      url: '/model/list',
+      params: { all: true }
     })
     .then((res) => res.data)
 }

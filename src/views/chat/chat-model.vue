@@ -1,6 +1,6 @@
 <template>
-  <div class="w-full flex flex-col gap-2 items-center justify-center py-8">
-    <div class="max-w-4xl px-2 lg:px-8 w-full">
+  <div class="w-full flex justify-center py-8">
+    <div class="max-w-4xl px-2 lg:px-8 w-full flex flex-col">
       <div
         class="group bg-light-faint flex flex-col gap-4 dark:bg-dark-faint w-full rounded-lg px-4 py-4"
         v-if="roleInfo"
@@ -48,23 +48,100 @@
             </template>
           </FwTooltip>
         </div>
+        <div class="description flex flex-col gap-2 text-gray-900 dark:text-slate-300">
+          <p class="text-sm">{{ roleInfo.description }}</p>
+          <div class="flex items-center justify-start w-full">
+            <p class="flex shrink-0">Powered By</p>
+            <Listbox as="div" class="ml-2 w-full" v-model="selectedModel">
+              <div class="relative">
+                <ListboxButton
+                  class="relative w-full sm:w-1/2 h-9 cursor-default rounded-md py-1.5 pl-3 pr-10 text-left text-gray-900 dark:text-slate-300 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                >
+                  <span v-if="selectedModel" class="block truncate">{{ selectedModel.name }}</span>
+                  <span v-else>请选择模型</span>
+                  <span
+                    class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2"
+                  >
+                    <ChevronUpDownIcon class="h-5 w-5 text-gray-400" aria-hidden="true" />
+                  </span>
+                </ListboxButton>
+
+                <transition
+                  leave-active-class="transition ease-in duration-100"
+                  leave-from-class="opacity-100"
+                  leave-to-class="opacity-0"
+                >
+                  <ListboxOptions
+                    v-if="canSelect"
+                    class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md py-1 dark:bg-dark-subtitle text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
+                  >
+                    <ListboxOption
+                      as="template"
+                      v-for="model in models"
+                      :key="model.id"
+                      :value="model"
+                      v-slot="{ active, selected }"
+                    >
+                      <li
+                        :class="[
+                          active ? 'bg-indigo-600 text-white' : 'text-gray-900 dark:text-slate-300',
+                          'relative cursor-default select-none py-2 pl-8 pr-4'
+                        ]"
+                      >
+                        <span
+                          :class="[selected ? 'font-semibold' : 'font-normal', 'block truncate']"
+                          >{{ model.name }}</span
+                        >
+
+                        <span
+                          v-if="selected"
+                          :class="[
+                            active ? 'text-white' : 'text-indigo-600',
+                            'absolute inset-y-0 left-0 flex items-center pl-1.5'
+                          ]"
+                        >
+                          <CheckIcon class="h-5 w-5" aria-hidden="true" />
+                        </span>
+                      </li>
+                    </ListboxOption>
+                  </ListboxOptions>
+                </transition>
+              </div>
+            </Listbox>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
 <script lang="ts" setup>
-import type { Role } from '@/models/chat'
+import type { Model, Role } from '@/models/chat'
 import { useChatStore } from '@/stores/chat'
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { InformationCircleIcon, UserPlusIcon, ArrowUpOnSquareIcon } from '@heroicons/vue/24/outline'
 import FwTooltip from '@/components/tooltip/fw-tooltip.vue'
+import { Listbox, ListboxOptions, ListboxOption, ListboxButton } from '@headlessui/vue'
+import { CheckIcon, ChevronUpDownIcon } from '@heroicons/vue/20/solid'
 
 const route = useRoute()
 const modelKey = route.params.chatmodel
 const chatStore = useChatStore()
 const roleInfo = ref<Role>()
-chatStore.getAllRoleList().then(() => {
+const models = ref<Model[]>([])
+const selectedModel = ref<Model>()
+const canSelect = ref(true)
+
+const initPageWithRolesAndChats = async () => {
+  await chatStore.getAllRoleList()
   roleInfo.value = chatStore.getRoleByKey(modelKey as string)
-})
+  const res = await chatStore.getAllModelList()
+  models.value = res
+  if (roleInfo.value?.model_id) {
+    selectedModel.value = models.value.find((model) => model.id === roleInfo.value?.model_id)
+    canSelect.value = false
+  }
+}
+
+initPageWithRolesAndChats()
 </script>

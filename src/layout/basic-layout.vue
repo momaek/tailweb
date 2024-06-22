@@ -159,6 +159,13 @@
         </div>
       </main>
     </div>
+    <div class="fixed w-full bottom-3 lg:pl-[18.75rem] flex justify-center" v-if="isChatPage">
+      <div class="px-2 sm:px-1 lg:px-8 justify-center max-w-4xl w-full">
+        <div class="px-2 sm:px-2 lg:px-8 xl:px-0 max-w-4xl w-full">
+          <MessageInput />
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -177,6 +184,7 @@ import { useRoute } from 'vue-router'
 import { useChatStore } from '@/stores/chat'
 import type { Chat, Role } from '@/models/chat'
 import { ShieldCheckIcon } from '@heroicons/vue/24/solid'
+import MessageInput from '@/components/message-input.vue'
 export default defineComponent({
   components: {
     LogoIcon,
@@ -189,7 +197,8 @@ export default defineComponent({
     XMarkIcon,
     ShieldCheckIcon,
     PencilSquareIcon,
-    ArrowUpOnSquareIcon
+    ArrowUpOnSquareIcon,
+    MessageInput
   },
 
   setup() {

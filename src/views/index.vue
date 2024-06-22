@@ -30,7 +30,7 @@
           <span class="ml-2 font-semibold text-sm"> 更多 </span>
         </router-link>
       </div>
-      <div class="input">
+      <div class="input mt-1 w-full">
         <MessageInput />
       </div>
     </div>
