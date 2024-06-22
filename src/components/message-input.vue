@@ -4,15 +4,15 @@
       <span> <SparklesIcon class="w-7 h-7 text-gray-900 dark:text-slate-300" /> </span>
     </div>
     <div
-      class="flex ml-2 w-full items-end border border-light-emphasis dark:border-dark-emphasis pl-5 text-gray-900 dark:text-slate-300 bg-transparent"
+      class="flex ml-2 w-full rounded-lg items-end border border-light-emphasis dark:border-dark-emphasis pl-5 text-gray-900 dark:text-slate-300 bg-transparent"
     >
       <textarea
-        class="flex-1 leading-[3rem] placeholder:text-gray-400 placeholder:items-center placeholder:font-semibold placeholder:text-sm border-none focus-visible:outline-none focus-visible:border-none"
+        class="block p-2.5 w-full border-none outline-none"
         placeholder="开始新的聊天"
         v-model="value"
-        rows="1"
+        :rows="19"
       />
-      <div class="cursor-pointer inset-y-0 right-0 flex items-center mb-1 z-50 pr-1">
+      <div class="cursor-pointer inset-y-0 right-0 flex items-center mb-0.5 z-50 pr-1">
         <FwTooltip>
           <template #trigger>
             <span class="mr-2 w-10 h-10 flex items-center justify-center cursor-pointer">
