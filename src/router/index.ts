@@ -76,7 +76,7 @@ const router = createRouter({
         {
           path: '/subscription',
           name: 'subscription',
-          component: () => import('@/views/index.vue'),
+          component: () => import('@/views/price/index.vue'),
           meta: {
             title: '订阅'
           }

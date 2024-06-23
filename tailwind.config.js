@@ -36,6 +36,20 @@ export default {
           emphasis: '#a5acac'
         }
       }
+    },
+    fontFamily: {
+      sans: [
+        '-apple-system',
+        'system-ui',
+        'BlinkMacSystemFont',
+        'Segoe UI',
+        'Roboto',
+        'Oxygen-Sans',
+        'Ubuntu',
+        'Cantarell',
+        'Helvetica Neue',
+        'sans-serif'
+      ]
     }
   },
   plugins: []
