@@ -109,8 +109,8 @@ const input = ref('')
 const focus = ref(false)
 const textAreaHeight = ref(50)
 const uploadedImages = ref<string[]>([])
-const msgSend = useEventBus('message-send')
-const clearContextBus = useEventBus('clear-chat')
+const msgSend = useEventBus<string>('message-send')
+const clearContextBus = useEventBus('clear-context')
 
 const onInput = () => {
   const textarea = document.getElementById('message-input') as HTMLTextAreaElement

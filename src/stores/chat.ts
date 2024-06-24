@@ -8,9 +8,17 @@ export const useChatStore = defineStore('chat', {
     chatList: [] as Chat[],
     originalRoleList: [] as Role[],
     allRoleList: [] as Role[],
-    modelList: [] as Model[]
+    modelList: [] as Model[],
+    cachedMessage: '',
+    cachedModel: undefined as Model | undefined
   }),
   actions: {
+    setCachedMessage(message: string) {
+      this.cachedMessage = message
+    },
+    setCachedModel(model: Model) {
+      this.cachedModel = model
+    },
     async getAllChatList(force?: boolean): Promise<Chat[]> {
       if (!force) {
         if (this.chatList.length > 0) {

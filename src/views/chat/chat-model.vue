@@ -278,10 +278,10 @@
   </div>
 </template>
 <script lang="ts" setup>
-import type { Model, Role } from '@/models/chat'
+import type { Chat, Model, Role } from '@/models/chat'
 import { useChatStore } from '@/stores/chat'
 import { ref } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { InformationCircleIcon, UserPlusIcon, ArrowUpOnSquareIcon } from '@heroicons/vue/24/outline'
 import FwTooltip from '@/components/tooltip/fw-tooltip.vue'
 import { Listbox, ListboxOptions, ListboxOption, ListboxButton } from '@headlessui/vue'
@@ -289,17 +289,24 @@ import { CheckIcon, ChevronUpDownIcon } from '@heroicons/vue/20/solid'
 import { useEventBus } from '@vueuse/core'
 
 const route = useRoute()
+const router = useRouter()
 const modelKey = route.params.chatmodel
 const chatStore = useChatStore()
 const roleInfo = ref<Role>()
 const models = ref<Model[]>([])
 const selectedModel = ref<Model>()
 const canSelect = ref(true)
-const msgSend = useEventBus('message-send')
-const clearContextBus = useEventBus('clear-chat')
+const msgSend = useEventBus<string>('message-send')
+const clearContextBus = useEventBus('clear-context')
 
-msgSend.on((message) => {
-  console.log('====>>>>', message)
+msgSend.on((message: string) => {
+  if (selectedModel.value) {
+    chatStore.setCachedMessage(message)
+    chatStore.setCachedModel(selectedModel.value)
+    // New chat
+    chatStore.chatList.unshift({} as Chat)
+    router.push({ name: 'chat', params: { id: selectedModel.value.id } })
+  }
 })
 
 clearContextBus.on(() => {
