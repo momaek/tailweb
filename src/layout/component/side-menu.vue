@@ -39,16 +39,17 @@
         :key="chat.id"
         :class="{
           ' bg-laccent-faint dark:bg-daccent-faint hover:bg-laccent-faint dark:hover:bg-daccent-faint':
-            selectedKey === '/chat/' + chat.id,
-          'hover:bg-light-subtitle dark:hover:bg-dark-subtitle': selectedKey !== '/chat/' + chat.id
+            selectedKey === '/chat/' + chat.chat_id,
+          'hover:bg-light-subtitle dark:hover:bg-dark-subtitle':
+            selectedKey !== '/chat/' + chat.chat_id
         }"
       >
         <router-link
-          :to="'/chat/' + chat.id"
+          :to="'/chat/' + chat.chat_id"
           class="flex items-center justify-start font-bold text-base p-2 w-full"
         >
-          <div><gpt4Icon class="w-9" /></div>
-          <div class="flex flex-col ml-2 w-full">
+          <div><gpt4Icon class="w-10" /></div>
+          <div class="flex flex-col ml-2 w-full max-h-16 overflow-hidden">
             <div class="head flex justify-between items-center text-sm font-normal">
               <span class="text-ellipsis break-words overflow-hidden">{{ chat.model }}</span>
               <span class="flex justify-start items-center"
@@ -56,7 +57,9 @@
                 <span><ChevronRightIcon class="w-3.5" /></span
               ></span>
             </div>
-            <div class="body text-gray-900 dark:text-slate-300 mt-2">{{ chat.title }}</div>
+            <div class="body text-gray-900 dark:text-slate-300 mt-2 truncate">
+              {{ chat.title }}
+            </div>
           </div>
         </router-link>
       </li>

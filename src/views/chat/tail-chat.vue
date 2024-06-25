@@ -278,9 +278,9 @@
   </div>
 </template>
 <script lang="ts" setup>
-import type { Chat, Model, Role } from '@/models/chat'
+import type { Model, Role } from '@/models/chat'
 import { useChatStore } from '@/stores/chat'
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { InformationCircleIcon, UserPlusIcon, ArrowUpOnSquareIcon } from '@heroicons/vue/24/outline'
 import FwTooltip from '@/components/tooltip/fw-tooltip.vue'
@@ -288,39 +288,28 @@ import { Listbox, ListboxOptions, ListboxOption, ListboxButton } from '@headless
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/vue/20/solid'
 import { useEventBus } from '@vueuse/core'
 import { useUserStore } from '@/stores/user'
-import { UUID } from '@/utils'
+import { randString } from '@/utils'
+import { notify } from 'notiwind'
 
 const route = useRoute()
-const router = useRouter()
-const modelKey = route.params.chatmodel
+const chatID = route.params.id
 const chatStore = useChatStore()
 const userStore = useUserStore()
-const roleInfo = ref<Role>()
+const chatInfo = computed(() => chatStore.getChatByChatID(chatID as string))
+const roleInfo = ref<Role>(chatStore.cachedRole as Role)
 const models = ref<Model[]>([])
-const selectedModel = ref<Model>()
+const selectedModel = ref<Model>(chatStore.cachedModel as Model)
 const canSelect = ref(true)
 const msgSend = useEventBus<string>('message-send')
 const clearContextBus = useEventBus('clear-context')
+const socket = ref()
+const router = useRouter()
+
+chatStore.clearCachedItem()
 
 msgSend.on((message: string) => {
-  if (selectedModel.value) {
-    chatStore.setCachedMessage(message)
-    chatStore.setCachedModel(selectedModel.value)
-    chatStore.setCachedRole(roleInfo.value as Role)
-    // New chat
-    const chat: Chat = {
-      chat_id: UUID(),
-      role_id: selectedModel.value?.id as number,
-      model_id: selectedModel.value?.id as number,
-      created_at: new Date().getTime() / 1000,
-      updated_at: new Date().getTime() / 1000,
-      user_id: userStore.userInfo.id,
-      icon: roleInfo.value?.icon as string,
-      title: message,
-      model: selectedModel.value.name
-    } as Chat
-    chatStore.newChat(chat)
-    router.push({ name: 'chat', params: { id: chat.chat_id } })
+  if (socket.value) {
+    socket.value.send(JSON.stringify({ type: 'chat', content: message }))
   }
 })
 
@@ -329,15 +318,66 @@ clearContextBus.on(() => {
 })
 
 const initPageWithRolesAndChats = async () => {
+  if (userStore.getToken() === undefined) router.push('/login')
   await chatStore.getAllRoleList()
-  roleInfo.value = chatStore.getRoleByKey(modelKey as string)
-  const res = await chatStore.getAllModelList()
-  models.value = res
-  if (roleInfo.value?.model_id) {
-    selectedModel.value = models.value.find((model) => model.id === roleInfo.value?.model_id)
-    canSelect.value = false
-  }
+  await chatStore.getAllModelList()
+  console.log('=======>', chatInfo.value)
+  roleInfo.value = chatStore.getRoleByID(chatInfo.value?.role_id as number) as Role
+  selectedModel.value = chatStore.getModelByID(chatInfo.value?.model_id as number) as Model
 }
 
-initPageWithRolesAndChats()
+const heartbeatTimeoutID = ref()
+const connect = async () => {
+  let hostProtocol = 'ws://'
+  if (window.location.protocol === 'https:') {
+    hostProtocol = 'wss://'
+  }
+
+  const sendHeartbeat = () => {
+    if (heartbeatTimeoutID.value) clearTimeout(heartbeatTimeoutID.value)
+    new Promise((resolve) => {
+      if (socket.value !== null) {
+        socket.value.send(JSON.stringify({ type: 'heartbeat', content: 'ping' }))
+      }
+      resolve('success')
+    }).then(() => {
+      heartbeatTimeoutID.value = setTimeout(() => sendHeartbeat(), 5000)
+    })
+  }
+
+  const host = hostProtocol + window.location.host
+  const ws = new WebSocket(
+    host +
+      '/api/chat/new?chat_id=' +
+      chatID +
+      '&session_id=' +
+      randString(42) +
+      '&role_id=' +
+      chatInfo.value?.role_id +
+      '&model_id=' +
+      chatInfo.value?.model_id +
+      '&token=' +
+      userStore.getToken()
+  )
+  ws.addEventListener('open', () => {
+    notify({
+      group: 'success',
+      title: '连接成功'
+    })
+    sendHeartbeat()
+  })
+  ws.addEventListener('message', (e) => {
+    console.log('=====================>', e.data)
+  })
+
+  ws.addEventListener('close', (e) => {
+    console.log('====>>', e)
+  })
+  socket.value = ws
+}
+initPageWithRolesAndChats().then(() => {
+  userStore.getCurrentUserInfo().then(() => {
+    connect()
+  })
+})
 </script>

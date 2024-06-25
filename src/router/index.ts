@@ -34,7 +34,7 @@ const router = createRouter({
         {
           path: '/chat/:id',
           name: 'chat',
-          component: () => import('@/views/index.vue'),
+          component: () => import('@/views/chat/tail-chat.vue'),
           meta: {
             chat_page: true
           }

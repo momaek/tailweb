@@ -10,7 +10,8 @@ export const useChatStore = defineStore('chat', {
     allRoleList: [] as Role[],
     modelList: [] as Model[],
     cachedMessage: '',
-    cachedModel: undefined as Model | undefined
+    cachedModel: undefined as Model | undefined,
+    cachedRole: undefined as Role | undefined
   }),
   actions: {
     setCachedMessage(message: string) {
@@ -18,6 +19,17 @@ export const useChatStore = defineStore('chat', {
     },
     setCachedModel(model: Model) {
       this.cachedModel = model
+    },
+    setCachedRole(role: Role) {
+      this.cachedRole = role
+    },
+    newChat(chat: Chat) {
+      this.chatList.unshift(chat)
+    },
+    clearCachedItem() {
+      this.cachedMessage = ''
+      this.cachedModel = undefined
+      this.cachedRole = undefined
     },
     async getAllChatList(force?: boolean): Promise<Chat[]> {
       if (!force) {
@@ -32,6 +44,9 @@ export const useChatStore = defineStore('chat', {
     getChatByID(id: number): Chat | undefined {
       return this.chatList.find((chat) => chat.id === id)
     },
+    getChatByChatID(chatID: string): Chat | undefined {
+      return this.chatList.find((chat) => chat.chat_id === chatID)
+    },
     fuzzySearchRole(query: string): Role[] {
       return this.allRoleList.filter((role) => role.name.includes(query))
     },
@@ -40,6 +55,9 @@ export const useChatStore = defineStore('chat', {
     },
     getRoleByID(id: number): Role | undefined {
       return this.allRoleList.find((role) => role.id === id)
+    },
+    getModelByID(id: number): Model | undefined {
+      return this.modelList.find((model) => model.id === id)
     },
     addToChatList(chat: Chat) {
       this.chatList.unshift(chat)

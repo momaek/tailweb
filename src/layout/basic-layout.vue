@@ -224,7 +224,7 @@ export default defineComponent({
 
           if (route.params.id)
             chatStore.getAllChatList().then(() => {
-              chatInfo.value = chatStore.getChatByID(parseInt(route.params.id as string) as number)
+              chatInfo.value = chatStore.getChatByChatID(route.params.id as string)
               if (chatInfo.value) {
                 roleInfo.value = chatStore.getRoleByID(chatInfo.value.role_id)
               }
