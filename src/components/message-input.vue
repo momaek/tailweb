@@ -74,7 +74,7 @@
               class="w-10 h-10 rounded-full flex items-center justify-center"
               :class="{
                 'pointer-events-none bg-laccent-subtle dark:bg-daccent-subtle':
-                  !input && !uploadedImages.length,
+                  (!input && !uploadedImages.length) || !canPress,
                 'hover:bg-laccent-muted dark:hover:bg-daccent-muted bg-laccent-base dark:bg-daccent-base cursor-pointer':
                   input || uploadedImages.length
               }"
@@ -111,6 +111,12 @@ const textAreaHeight = ref(50)
 const uploadedImages = ref<string[]>([])
 const msgSend = useEventBus<string>('message-send')
 const clearContextBus = useEventBus('clear-context')
+const sendMessageBtn = useEventBus<boolean>('enable-input')
+const canPress = ref(true)
+
+sendMessageBtn.on((v: boolean) => {
+  canPress.value = v
+})
 
 const onInput = () => {
   const textarea = document.getElementById('message-input') as HTMLTextAreaElement

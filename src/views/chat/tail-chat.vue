@@ -280,7 +280,7 @@
 <script lang="ts" setup>
 import type { Model, Role } from '@/models/chat'
 import { useChatStore } from '@/stores/chat'
-import { computed, ref } from 'vue'
+import { computed, onUnmounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { InformationCircleIcon, UserPlusIcon, ArrowUpOnSquareIcon } from '@heroicons/vue/24/outline'
 import FwTooltip from '@/components/tooltip/fw-tooltip.vue'
@@ -302,15 +302,31 @@ const selectedModel = ref<Model>(chatStore.cachedModel as Model)
 const canSelect = ref(true)
 const msgSend = useEventBus<string>('message-send')
 const clearContextBus = useEventBus('clear-context')
+const sendMessageBtn = useEventBus<boolean>('enable-input')
 const socket = ref()
 const router = useRouter()
 
 chatStore.clearCachedItem()
 
-msgSend.on((message: string) => {
+const enableInput = () => {
+  sendMessageBtn.emit(true)
+}
+
+const disableInput = () => {
+  sendMessageBtn.emit(false)
+}
+
+disableInput()
+
+const sendMessage = (msg: string) => {
   if (socket.value) {
-    socket.value.send(JSON.stringify({ type: 'chat', content: message }))
+    socket.value.send(JSON.stringify({ type: 'chat', content: msg }))
+    disableInput()
   }
+}
+
+msgSend.on((message: string) => {
+  sendMessage(message)
 })
 
 clearContextBus.on(() => {
@@ -321,7 +337,6 @@ const initPageWithRolesAndChats = async () => {
   if (userStore.getToken() === undefined) router.push('/login')
   await chatStore.getAllRoleList()
   await chatStore.getAllModelList()
-  console.log('=======>', chatInfo.value)
   roleInfo.value = chatStore.getRoleByID(chatInfo.value?.role_id as number) as Role
   selectedModel.value = chatStore.getModelByID(chatInfo.value?.model_id as number) as Model
 }
@@ -365,6 +380,7 @@ const connect = async () => {
       title: '连接成功'
     })
     sendHeartbeat()
+    enableInput()
   })
   ws.addEventListener('message', (e) => {
     console.log('=====================>', e.data)
@@ -375,6 +391,13 @@ const connect = async () => {
   })
   socket.value = ws
 }
+
+onUnmounted(() => {
+  if (socket.value) {
+    socket.value.close()
+  }
+})
+
 initPageWithRolesAndChats().then(() => {
   userStore.getCurrentUserInfo().then(() => {
     connect()
