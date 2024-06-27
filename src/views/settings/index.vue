@@ -1,11 +1,9 @@
 <template>
   <div class="w-full flex flex-col gap-2 items-center justify-center py-10">
     <div class="max-w-4xl px-4 lg:px-8 w-full">
-      <div class="group bg-light-faint dark:bg-dark-faint w-full rounded-lg px-4 py-2">
+      <div class="group bg-secondary w-full rounded-lg px-4 py-2">
         <fieldset>
-          <legend class="text-sm font-semibold leading-6 text-gray-900 dark:text-slate-300">
-            外观
-          </legend>
+          <legend class="text-sm font-semibold leading-6">外观</legend>
           <div class="mt-2 space-y-2">
             <div v-for="tm in themes" :key="tm.id" class="flex items-center cursor-pointer">
               <input
@@ -14,13 +12,11 @@
                 type="radio"
                 v-model="theme"
                 :value="tm.id"
-                class="h-4 w-4 border-gray-300 text-indigo-600 cursor-pointer focus:ring-indigo-600"
+                class="h-4 w-4 text-indigo-500 cursor-pointer focus:ring-indigo-500"
               />
-              <label
-                :for="tm.id"
-                class="ml-3 block text-sm font-medium leading-6 cursor-pointer text-gray-900 dark:text-slate-300"
-                >{{ tm.title }}</label
-              >
+              <label :for="tm.id" class="ml-3 block text-sm font-medium leading-6 cursor-pointer">{{
+                tm.title
+              }}</label>
             </div>
           </div>
         </fieldset>

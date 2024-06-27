@@ -33,7 +33,7 @@
           leave-from="opacity-100"
           leave-to="opacity-0"
         >
-          <div class="fixed inset-0 bg-dark-emphasis/50" />
+          <div class="fixed inset-0 bg-primary/50" />
         </TransitionChild>
 
         <div class="fixed inset-0 flex">
@@ -59,17 +59,15 @@
                 <div class="absolute left-full top-0 flex w-16 justify-center pt-5">
                   <button type="button" class="-m-2.5 p-2.5" @click="sidebarOpen = false">
                     <span class="sr-only">Close sidebar</span>
-                    <XMarkIcon class="h-6 w-6 text-white" aria-hidden="true" />
+                    <XMarkIcon class="h-6 w-6 text-secondary-foreground" aria-hidden="true" />
                   </button>
                 </div>
               </TransitionChild>
               <!-- Sidebar component, swap this element with another sidebar if you like -->
-              <div class="flex grow flex-col overflow-y-auto bg-light-base dark:bg-dark-base pb-4">
-                <div
-                  class="flex border-b h-14 text-gray-900 dark:text-slate-300 border-light-muted dark:border-dark-muted bg-light-faint dark:bg-dark-faint"
-                >
+              <div class="flex grow flex-col pb-4 bg-background">
+                <div class="flex border-b h-14 text-secondary-foreground bg-secondary">
                   <router-link to="/" class="flex-row flex px-4 items-center">
-                    <LogoIcon class="!w-12 h-20 text-gray-900 dark:text-slate-300" />
+                    <LogoIcon class="!w-12 h-20 text-secondary-foreground" />
                     <span class="ml-1 text-2xl font-bold">Zen</span>
                   </router-link>
                 </div>
@@ -86,14 +84,10 @@
     <!-- Static sidebar for desktop -->
     <div class="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-[18.75rem] lg:flex-col">
       <!-- Sidebar component, swap this element with another sidebar if you like -->
-      <div
-        class="flex grow flex-col overflow-y-auto border-r border-light-muted dark:border-dark-muted bg-light-base dark:bg-dark-base pb-4"
-      >
-        <div
-          class="flex border-b h-14 text-gray-900 dark:text-slate-300 border-light-muted dark:border-dark-muted bg-light-faint dark:bg-dark-faint"
-        >
+      <div class="flex grow flex-col border-r pb-4">
+        <div class="flex border-b h-14 text-secondary-foreground bg-secondary">
           <router-link to="/" class="px-4 items-center flex-row flex">
-            <LogoIcon class="!w-12 h-20 text-gray-900 dark:text-slate-300" />
+            <LogoIcon class="!w-12 h-20 text-secondary-foreground" />
             <span class="ml-1 text-2xl font-bold">Zen</span>
           </router-link>
         </div>
@@ -105,21 +99,17 @@
 
     <div class="lg:pl-[18.75rem]">
       <div
-        class="sticky top-0 z-40 flex h-14 shrink-0 items-center border-b border-light-muted dark:border-dark-muted dark:bg-dark-faint bg-light-faint px-4 lg:px-8"
+        class="sticky top-0 z-40 flex h-14 shrink-0 items-center text-secondary-foreground border-b bg-secondary px-4 lg:px-8"
         :class="{ '!bg-transparent': !title && !isChatPage, '!border-b-0': !title && !isChatPage }"
       >
         <div class="flex flex-shrink-0 items-center">
-          <button
-            type="button"
-            class="-m-2.5 p-2.5 text-gray-900 dark:text-slate-300 lg:hidden"
-            @click="sidebarOpen = true"
-          >
+          <button type="button" class="-m-2.5 p-2.5 lg:hidden" @click="sidebarOpen = true">
             <span class="sr-only">Open sidebar</span>
             <Bars3Icon class="h-7 w-7" aria-hidden="true" />
           </button>
           <div v-if="roleInfo" class="flex justify-start w-full ml-5 lg:ml-2 items-center">
             <span><img class="w-8 rounded-lg bg-gray-50" :src="roleInfo.icon" alt="" /></span>
-            <div class="ml-2 flex flex-col text-gray-900 dark:text-slate-300">
+            <div class="ml-2 flex flex-col">
               <span v-if="chatInfo" class="font-bold text-base text-ellipsis whitespace-nowrap">
                 {{ chatInfo.title }}
               </span>
@@ -133,11 +123,9 @@
           </div>
         </div>
         <div class="h-full flex-grow w-full flex items-center justify-center">
-          <span v-if="title" class="text-lg font-bold text-gray-900 dark:text-slate-300">{{
-            title
-          }}</span>
+          <span v-if="title" class="text-lg font-bold">{{ title }}</span>
         </div>
-        <div class="flex flex-shrink-0 items-center justify-end text-gray-900 dark:text-slate-300">
+        <div class="flex flex-shrink-0 items-center justify-end">
           <span
             class="flex cursor-pointer"
             :class="{ 'pointer-events-none opacity-50': !chatInfo }"

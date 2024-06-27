@@ -2,31 +2,25 @@
   <div class="w-full flex justify-center py-8">
     <div class="max-w-4xl px-2 lg:px-8 w-full flex flex-col">
       <div
-        class="group bg-light-faint flex flex-col gap-4 dark:bg-dark-faint w-full rounded-lg px-4 py-4"
+        class="group bg-secondary flex flex-col gap-4 w-full rounded-lg px-4 py-4"
         v-if="roleInfo"
       >
         <div class="head flex shrink-0 items-center">
           <span><img :src="roleInfo.icon" class="w-12 rounded-lg" alt="" /></span>
           <div class="ml-2 flex flex-col">
-            <span class="font-bold text-lg text-gray-900 dark:text-slate-300">{{
-              roleInfo.name
-            }}</span>
+            <span class="font-bold text-lg">{{ roleInfo.name }}</span>
             <span class="text-sm">运营方：zenbot</span>
           </div>
         </div>
-        <div class="more-op flex text-gray-900 dark:text-slate-300">
-          <span
-            class="cursor-pointer flex px-2 py-1 rounded-full bg-light-subtitle dark:bg-dark-subtitle hover:bg-light-muted dark:hover:bg-dark-muted"
-          >
+        <div class="more-op flex">
+          <span class="cursor-pointer flex px-2 py-1 rounded-full bg-border hover:bg-border/60">
             <InformationCircleIcon class="w-5 mr-1" />
             <span>角色信息</span>
           </span>
 
           <FwTooltip class="ml-3">
             <template #trigger>
-              <span
-                class="cursor-pointer flex px-2 py-1 rounded-full bg-light-subtitle dark:bg-dark-subtitle hover:bg-light-muted dark:hover:bg-dark-muted"
-              >
+              <span class="cursor-pointer flex px-2 py-1 rounded-full bg-border hover:bg-border/60">
                 <UserPlusIcon class="h-5 w-5" aria-hidden="true" />
               </span>
             </template>
@@ -37,9 +31,7 @@
 
           <FwTooltip class="ml-3">
             <template #trigger>
-              <span
-                class="cursor-pointer flex px-2 py-1 rounded-full bg-light-subtitle dark:bg-dark-subtitle hover:bg-light-muted dark:hover:bg-dark-muted"
-              >
+              <span class="cursor-pointer flex px-2 py-1 rounded-full bg-border hover:bg-border/60">
                 <ArrowUpOnSquareIcon class="h-5 w-5" aria-hidden="true" />
               </span>
             </template>
@@ -55,7 +47,7 @@
             <Listbox as="div" class="ml-2 w-full" v-model="selectedModel">
               <div class="relative">
                 <ListboxButton
-                  class="relative w-full sm:w-1/2 h-9 cursor-default rounded-md py-1.5 pl-3 pr-10 text-left text-gray-900 dark:text-slate-300 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  class="relative w-full sm:w-1/2 h-9 cursor-default rounded-md py-1.5 pl-3 pr-10 text-left shadow-sm ring-1 ring-inset focus:outline-none focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 >
                   <span v-if="selectedModel" class="block truncate">{{ selectedModel.name }}</span>
                   <span v-else>请选择模型</span>
@@ -73,7 +65,7 @@
                 >
                   <ListboxOptions
                     v-if="canSelect"
-                    class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md py-1 dark:bg-dark-subtitle text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
+                    class="absolute z-10 mt-1 max-h-60 w-full sm:w-1/2 overflow-auto rounded-md py-1 bg-secondary text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
                   >
                     <ListboxOption
                       as="template"
