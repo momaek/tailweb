@@ -117,7 +117,7 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div class="text-black">
+  <div>
     <div ref="textRef" class="leading-relaxed break-words">
       <div v-if="!inversion">
         <div

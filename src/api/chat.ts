@@ -1,5 +1,5 @@
 import request from '@/utils/axios'
-import type { Chat, Model, Role } from '@/models/chat'
+import type { Chat, ChatHistory, Model, Role } from '@/models/chat'
 
 export async function getChatList(page?: number, limit?: number): Promise<Chat[]> {
   return request
@@ -24,6 +24,15 @@ export async function getModelList(): Promise<Model[]> {
     .get<Model[]>({
       url: '/model/list',
       params: { all: true }
+    })
+    .then((res) => res.data)
+}
+
+export async function getChatHistories(chatId: string): Promise<ChatHistory[]> {
+  return request
+    .get<ChatHistory[]>({
+      url: '/chat/history',
+      params: { chat_id: chatId }
     })
     .then((res) => res.data)
 }

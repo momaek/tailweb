@@ -49,3 +49,18 @@ export interface Role {
   model_name: string
   description?: string
 }
+
+export interface ChatHistory {
+  chat_id: string
+  content: string
+  created_at: number
+  icon: string
+  model: string
+  role_id: number
+  tokens: number
+  type: string
+  updated_at: number
+  use_context: true
+  user_id: number
+  isLoading?: boolean
+}

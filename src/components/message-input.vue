@@ -4,7 +4,7 @@
       <FwTooltip>
         <template #trigger>
           <span class="flex items-center justify-center cursor-pointer" @click="clearContext">
-            <SparklesIcon class="w-7 h-7 text-gray-900 dark:text-slate-300" />
+            <SparklesIcon class="w-7 h-7" />
           </span>
         </template>
         <template #content>
@@ -13,11 +13,11 @@
       </FwTooltip>
     </div>
     <div
-      class="flex ml-2 w-full items-end border-2 border-light-emphasis dark:border-dark-emphasis pl-5 text-gray-900 dark:text-slate-300 bg-transparent"
+      class="flex ml-2 w-full items-end border-2 pl-5 bg-transparent"
       :class="{
+        '!rounded-3xl': textAreaHeight > 50 || uploadedImages.length > 0 || uploading,
         'rounded-full': textAreaHeight === 50,
-        'rounded-3xl': textAreaHeight > 50 || uploadedImages.length > 0 || uploading,
-        '!border-laccent-emphasis dark:!border-daccent-emphasis border-2': focus
+        'border-primary ': focus
       }"
     >
       <div class="w-full flex flex-col">
@@ -42,13 +42,13 @@
             class="relative w-16 h-16 border rounded-lg"
           >
             <XCircleIcon
-              class="absolute -top-4 -right-4 w-6 cursor-pointer hover:text-gray-700 dark:hover:text-slate-200"
+              class="absolute -top-4 -right-4 w-6 cursor-pointer"
               @click="removeUploadedImage(idx)"
             />
             <img :src="img" class="w-full h-full object-cover rounded-lg" />
           </span>
           <span class="relative w-16 h-16 rounded-lg" v-if="uploading">
-            <LoadingIcon class="w-16 h-16" />
+            <LoadingIcon class="w-14 h-14" />
           </span>
         </div>
       </div>
@@ -60,7 +60,7 @@
               @click="uploadFile"
             >
               <input type="file" name="" id="fileupload" hidden @change="handleFileUpload" />
-              <PlusCircleIcon class="w-7 h-7 text-gray-900 dark:text-slate-300" />
+              <PlusCircleIcon class="w-7 h-7" />
             </span>
           </template>
           <template #content>
@@ -73,10 +73,9 @@
             <span
               class="w-10 h-10 rounded-full flex items-center justify-center"
               :class="{
-                'pointer-events-none bg-laccent-subtle dark:bg-daccent-subtle':
+                'pointer-events-none bg-primary/50':
                   (!input && !uploadedImages.length) || !canPress,
-                'hover:bg-laccent-muted dark:hover:bg-daccent-muted bg-laccent-base dark:bg-daccent-base cursor-pointer':
-                  input || uploadedImages.length
+                'bg-primary hover:bg-primary/70': input || uploadedImages.length
               }"
               @click="sendMessage"
             >
@@ -112,6 +111,7 @@ const uploadedImages = ref<string[]>([])
 const msgSend = useEventBus<string>('message-send')
 const clearContextBus = useEventBus('clear-context')
 const sendMessageBtn = useEventBus<boolean>('enable-input')
+const heightChange = useEventBus<number>('height-change')
 const canPress = ref(true)
 
 sendMessageBtn.on((v: boolean) => {
@@ -124,11 +124,14 @@ const onInput = () => {
   if (textarea.scrollHeight < 450) {
     if (textarea.scrollHeight < 50) {
       textarea.style.height = '50px'
+      totalHeightChange()
     } else {
       textarea.style.height = textarea.scrollHeight + 'px'
+      totalHeightChange()
     }
   } else {
     textarea.style.height = '450px'
+    totalHeightChange()
   }
   if (textarea.scrollHeight < 50) {
     textAreaHeight.value = 50
@@ -137,9 +140,19 @@ const onInput = () => {
   }
 }
 
+const totalHeightChange = () => {
+  const textarea = document.getElementById('message-input') as HTMLTextAreaElement
+  let h = parseInt(textarea.style.height, 10) || 0 // 将字符串转换为整数，默认值为0
+  if (uploadedImages.value.length > 0) {
+    h += 80
+  }
+  heightChange.emit(h) // 触发高度变化事件
+}
+
 const resetTextarea = () => {
   const textarea = document.getElementById('message-input') as HTMLTextAreaElement
   textarea.style.height = '50px'
+  totalHeightChange()
   textAreaHeight.value = 50
 }
 
@@ -183,6 +196,7 @@ useEventListener('keydown', handleKeyDown)
 
 const removeUploadedImage = (idx: number) => {
   uploadedImages.value.splice(idx, 1)
+  totalHeightChange()
 }
 
 const uploadFile = () => {
@@ -199,7 +213,7 @@ const handleFileUpload = async (e: Event) => {
     try {
       const res = await apiUploadFile(formData)
       uploadedImages.value.push(res.url)
-      uploading.value = false
+      totalHeightChange()
     } catch (error) {
       console.log('upload failed', error)
     } finally {
