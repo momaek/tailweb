@@ -149,11 +149,14 @@ const msgSend = useEventBus<string>('message-send')
 const clearContextBus = useEventBus('clear-context')
 const sendMessageBtn = useEventBus<boolean>('enable-input')
 const heightChange = useEventBus<number>('height-change')
+const showStopGenerate = useEventBus<boolean>('show-stop-generate')
+const stopGenerate = useEventBus<boolean>('stop-generate')
 const marginBottom = ref(50)
 const socket = ref()
 const router = useRouter()
 const chatData = ref<ChatHistory[]>([])
 const el = ref<HTMLElement | null>(null)
+const sessionID = randString(42)
 
 heightChange.on((height: number) => {
   marginBottom.value = height
@@ -172,11 +175,16 @@ const disableInput = () => {
   sendMessageBtn.emit(false)
 }
 
+const showStopGenerateBtn = () => {
+  showStopGenerate.emit(true)
+}
+
 disableInput()
 
 const sendMessage = (msg: string) => {
   if (socket.value) {
     socket.value.send(JSON.stringify({ type: 'chat', content: msg }))
+    showStopGenerateBtn()
     disableInput()
   }
 }
@@ -233,7 +241,7 @@ const connect = async () => {
       '/api/chat/new?chat_id=' +
       chatID +
       '&session_id=' +
-      randString(42) +
+      sessionID +
       '&role_id=' +
       chatInfo.value?.role_id +
       '&model_id=' +
@@ -272,5 +280,12 @@ initPageWithRolesAndChats().then(() => {
   userStore.getCurrentUserInfo().then(() => {
     connect()
   })
+})
+
+stopGenerate.on((v: boolean) => {
+  if (v) {
+    console.log('2131231')
+    enableInput()
+  }
 })
 </script>
