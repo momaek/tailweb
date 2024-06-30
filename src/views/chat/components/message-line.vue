@@ -10,7 +10,7 @@
 
     <div class="flex flex-col" :class="{ 'mt-1.5': !inversion }">
       <div
-        class="flex rounded-md bg-laccent-base p-2 w-full max-w-4xl sm:max-w-md md:max-w-2xl"
+        class="flex rounded-md bg-laccent-base p-2 max-w-4xl"
         :class="{
           'bg-secondary': !inversion,
           'bg-primary text-white': inversion

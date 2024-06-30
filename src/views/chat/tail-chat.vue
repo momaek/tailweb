@@ -302,6 +302,7 @@ const connect = async () => {
     enableInput()
 
     const message = chatStore.getCachedMessage()
+    console.log('message', message)
     if (message) {
       sendMessage(message)
     }
@@ -335,6 +336,7 @@ const connect = async () => {
               break
             case 'middle':
               {
+                console.log('middle ======', data)
                 replyBuffer.value += data.content
                 const reply = chatData.value[chatData.value.length - 1]
                 if (reply) {
