@@ -192,7 +192,7 @@ export default defineComponent({
   setup() {
     const configStore = useConfigStore()
     const chatStore = useChatStore()
-    const sideChats = computed(() => chatStore.chatList)
+    const sideChats = computed(() => chatStore.chatList.slice(0, 5))
     const selectedKey = computed(() => configStore.sideMenuSelected)
     chatStore.getAllChatList(true)
     chatStore.getAllRoleList()
