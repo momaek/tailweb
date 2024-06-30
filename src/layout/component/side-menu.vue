@@ -42,16 +42,18 @@
           :to="'/chat/' + chat.chat_id"
           class="flex items-center justify-start font-bold text-base p-2 w-full"
         >
-          <div><gpt4Icon class="w-10" /></div>
+          <div><img class="w-10 rounded-md" :src="chat.icon" /></div>
           <div class="flex flex-col ml-2 w-full max-h-16 overflow-hidden">
             <div class="head flex justify-between items-center text-sm font-normal">
-              <span class="text-ellipsis break-words overflow-hidden">{{ chat.model }}</span>
+              <span class="text-ellipsis break-words overflow-hidden">{{
+                getRoleName(chat.role_id)
+              }}</span>
               <span class="flex justify-start items-center"
                 ><span>{{ formatTimestampToMD(chat.updated_at) }}</span>
                 <span><ChevronRightIcon class="w-3.5" /></span
               ></span>
             </div>
-            <div class="body mt-2 truncate">
+            <div class="body mt-1 truncate">
               {{ chat.title }}
             </div>
           </div>
@@ -171,7 +173,6 @@ import {
 import { ChevronRightIcon, PlusIcon } from '@heroicons/vue/24/solid'
 import mjicon from '@/components/icons/mj-icon.vue'
 import { computed, defineComponent } from 'vue'
-import gpt4Icon from '@/components/icons/gpt4-icon.vue'
 import { formatTimestampToMD } from '@/utils'
 import { useChatStore } from '@/stores/chat'
 export default defineComponent({
@@ -186,8 +187,7 @@ export default defineComponent({
     PhotoIcon,
     UserIcon,
     GiftIcon,
-    Cog8ToothIcon,
-    gpt4Icon
+    Cog8ToothIcon
   },
   setup() {
     const configStore = useConfigStore()
@@ -195,8 +195,13 @@ export default defineComponent({
     const sideChats = computed(() => chatStore.chatList)
     const selectedKey = computed(() => configStore.sideMenuSelected)
     chatStore.getAllChatList(true)
+    chatStore.getAllRoleList()
+    const getRoleName = (id: number) => {
+      const role = chatStore.allRoleList.find((role) => role.id === id)
+      return role?.name
+    }
 
-    return { sideChats, selectedKey, formatTimestampToMD }
+    return { sideChats, selectedKey, formatTimestampToMD, getRoleName }
   }
 })
 </script>

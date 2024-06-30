@@ -143,7 +143,7 @@
 
       <main>
         <div class="px-2 sm:px-1 lg:px-8">
-          <router-view />
+          <router-view :key="$route.path" />
         </div>
       </main>
     </div>

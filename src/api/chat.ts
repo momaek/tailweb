@@ -36,3 +36,12 @@ export async function getChatHistories(chatId: string): Promise<ChatHistory[]> {
     })
     .then((res) => res.data)
 }
+
+export async function stopChatSession(sessionID: string) {
+  return request
+    .post({
+      url: '/chat/stop',
+      data: { session_id: sessionID }
+    })
+    .then((res) => res.data)
+}

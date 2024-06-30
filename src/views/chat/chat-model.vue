@@ -76,7 +76,7 @@
                     >
                       <li
                         :class="[
-                          active ? 'bg-indigo-600 text-white' : 'text-secondary-foreground',
+                          active ? 'bg-primary text-white' : 'text-secondary-foreground',
                           'relative cursor-default select-none py-2 pl-8 pr-4'
                         ]"
                       >
@@ -88,7 +88,7 @@
                         <span
                           v-if="selected"
                           :class="[
-                            active ? 'text-white' : 'text-indigo-600',
+                            active ? 'text-white' : 'text-primary',
                             'absolute inset-y-0 left-0 flex items-center pl-1.5'
                           ]"
                         >
@@ -140,7 +140,7 @@ msgSend.on((message: string) => {
     // New chat
     const chat: Chat = {
       chat_id: UUID(),
-      role_id: selectedModel.value?.id as number,
+      role_id: roleInfo.value?.id as number,
       model_id: selectedModel.value?.id as number,
       created_at: new Date().getTime() / 1000,
       updated_at: new Date().getTime() / 1000,

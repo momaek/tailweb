@@ -63,4 +63,5 @@ export interface ChatHistory {
   use_context: true
   user_id: number
   isLoading?: boolean
+  scrollToView?: boolean
 }

@@ -29,7 +29,7 @@
         <div class="w-full flex flex-col">
           <textarea
             id="message-input"
-            class="block p-3 w-full border-none outline-none bg-transparent resize-none"
+            class="block py-3 w-full border-none outline-none bg-transparent resize-none"
             placeholder="开始新的聊天"
             :rows="1"
             v-model="input"
@@ -180,7 +180,6 @@ const totalHeightChange = (extraHeight?: number) => {
 const resetTextarea = () => {
   const textarea = document.getElementById('message-input') as HTMLTextAreaElement
   textarea.style.height = '50px'
-  totalHeightChange()
   textAreaHeight.value = 50
 }
 
@@ -198,6 +197,7 @@ const sendMessage = () => {
     input.value = ''
     uploadedImages.value = []
     resetTextarea()
+    totalHeightChange(40)
   }
 }
 
@@ -215,6 +215,7 @@ const updateImages = () => {
   return uploadedImages.value.join('\n')
 }
 const handleKeyDown = (e: KeyboardEvent) => {
+  if (e.isComposing) return
   if (e.key === 'Enter' && !e.shiftKey) {
     e.preventDefault()
     sendMessage()

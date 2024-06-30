@@ -1,7 +1,7 @@
 <template>
   <div class="w-full flex justify-center py-8">
     <div
-      class="max-w-4xl px-2 lg:px-8 w-full flex flex-col"
+      class="max-w-4xl px-2 lg:px-8 w-full flex flex-col overflow-y-auto"
       ref="el"
       :style="{ 'margin-bottom': marginBottom + 20 + 'px' }"
     >
@@ -123,7 +123,7 @@
 <script lang="ts" setup>
 import type { ChatHistory, Model, Role } from '@/models/chat'
 import { useChatStore } from '@/stores/chat'
-import { computed, ref } from 'vue'
+import { computed, nextTick, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { InformationCircleIcon, UserPlusIcon, ArrowUpOnSquareIcon } from '@heroicons/vue/24/outline'
 import FwTooltip from '@/components/tooltip/fw-tooltip.vue'
@@ -134,16 +134,16 @@ import { useUserStore } from '@/stores/user'
 import { randString } from '@/utils'
 import { notify } from 'notiwind'
 import MessageLine from './components/message-line.vue'
-import { getChatHistories } from '@/api/chat'
+import { getChatHistories, stopChatSession } from '@/api/chat'
 
 const route = useRoute()
 const chatID = route.params.id
 const chatStore = useChatStore()
 const userStore = useUserStore()
 const chatInfo = computed(() => chatStore.getChatByChatID(chatID as string))
-const roleInfo = ref<Role>(chatStore.cachedRole as Role)
+const roleInfo = ref<Role>(chatStore.getCachedRole() as Role)
 const models = ref<Model[]>([])
-const selectedModel = ref<Model>(chatStore.cachedModel as Model)
+const selectedModel = ref<Model>(chatStore.getCachedModel() as Model)
 const canSelect = ref(true)
 const msgSend = useEventBus<string>('message-send')
 const clearContextBus = useEventBus('clear-context')
@@ -152,16 +152,16 @@ const heightChange = useEventBus<number>('height-change')
 const showStopGenerate = useEventBus<boolean>('show-stop-generate')
 const stopGenerate = useEventBus<boolean>('stop-generate')
 const marginBottom = ref(50)
-const socket = ref()
 const router = useRouter()
 const chatData = ref<ChatHistory[]>([])
 const el = ref<HTMLElement | null>(null)
 const sessionID = randString(42)
+const replyBuffer = ref('')
 
 heightChange.on((height: number) => {
   marginBottom.value = height
   if (el.value) {
-    window.scrollTo(0, document.body.scrollHeight)
+    window.scrollTo(0, el.value.scrollHeight)
   }
 })
 
@@ -175,23 +175,57 @@ const disableInput = () => {
   sendMessageBtn.emit(false)
 }
 
-const showStopGenerateBtn = () => {
-  showStopGenerate.emit(true)
+const showStopGenerateBtn = (b: boolean = true) => {
+  showStopGenerate.emit(b)
 }
 
 disableInput()
 
 const sendMessage = (msg: string) => {
-  if (socket.value) {
-    socket.value.send(JSON.stringify({ type: 'chat', content: msg }))
+  console.log('21312321312321', msg)
+  if (chatStore.socket) {
+    chatStore.socket.send(JSON.stringify({ type: 'chat', content: msg }))
     showStopGenerateBtn()
     disableInput()
+    if (chatData.value.length > 0) {
+      chatData.value[chatData.value.length - 1].scrollToView = false
+    }
+    chatData.value.push(
+      {
+        chat_id: chatID as string,
+        role_id: roleInfo.value?.id as number,
+        created_at: new Date().getTime() / 1000,
+        updated_at: new Date().getTime() / 1000,
+        user_id: userStore.userInfo?.id as number,
+        icon: roleInfo.value?.icon as string,
+        model: selectedModel.value.name,
+        type: 'prompt',
+        content: msg
+      } as ChatHistory,
+      {
+        chat_id: chatID as string,
+        role_id: roleInfo.value?.id as number,
+        created_at: new Date().getTime() / 1000,
+        updated_at: new Date().getTime() / 1000,
+        user_id: userStore.userInfo?.id as number,
+        icon: roleInfo.value?.icon as string,
+        model: selectedModel.value.name,
+        type: 'reply',
+        isLoading: true
+      } as ChatHistory
+    )
+    nextTick(() => {
+      scrollToBottom()
+    })
   }
 }
 
 const getChatHistory = async () => {
   getChatHistories(chatID as string).then((res) => {
     chatData.value = res
+    if (chatData.value.length > 0) {
+      chatData.value[chatData.value.length - 1].scrollToView = true
+    }
   })
 }
 
@@ -203,13 +237,23 @@ clearContextBus.on(() => {
   console.log('123131 clear btn click')
 })
 
+const scrollToBottom = () => {
+  if (el.value) {
+    window.scrollTo(0, el.value.scrollHeight)
+  }
+}
+
 const initPageWithRolesAndChats = async () => {
   if (userStore.getToken() === undefined) router.push('/login')
   await chatStore.getAllRoleList()
   await chatStore.getAllModelList()
 
-  roleInfo.value = chatStore.getRoleByID(chatInfo.value?.role_id as number) as Role
-  selectedModel.value = chatStore.getModelByID(chatInfo.value?.model_id as number) as Model
+  if (!roleInfo.value) {
+    roleInfo.value = chatStore.getRoleByID(chatInfo.value?.role_id as number) as Role
+  }
+  if (!selectedModel.value) {
+    selectedModel.value = chatStore.getModelByID(chatInfo.value?.model_id as number) as Model
+  }
   if (el.value) {
     window.scrollTo(0, el.value.scrollHeight)
   }
@@ -226,8 +270,8 @@ const connect = async () => {
   const sendHeartbeat = () => {
     if (heartbeatTimeoutID.value) clearTimeout(heartbeatTimeoutID.value)
     new Promise((resolve) => {
-      if (socket.value !== null) {
-        socket.value.send(JSON.stringify({ type: 'heartbeat', content: 'ping' }))
+      if (chatStore.socket) {
+        chatStore.socket.send(JSON.stringify({ type: 'heartbeat', content: 'ping' }))
       }
       resolve('success')
     }).then(() => {
@@ -256,9 +300,55 @@ const connect = async () => {
     })
     sendHeartbeat()
     enableInput()
+
+    const message = chatStore.getCachedMessage()
+    if (message) {
+      sendMessage(message)
+    }
   })
   ws.addEventListener('message', (e) => {
-    console.log('=====================>', e.data)
+    try {
+      if (e.data instanceof Blob) {
+        const reader = new FileReader()
+        reader.readAsText(e.data, 'UTF-8')
+        reader.onload = () => {
+          const data = JSON.parse(String(reader.result))
+          switch (data.type) {
+            case 'error':
+              notify({
+                group: 'error',
+                title: '连接失败',
+                text: data.content
+              })
+              break
+            case 'start':
+              console.log('start', data)
+              chatStore.clearCachedItem()
+              break
+            case 'end':
+              enableInput()
+              showStopGenerateBtn(false)
+              replyBuffer.value = ''
+              nextTick(() => {
+                scrollToBottom()
+              })
+              break
+            case 'middle':
+              {
+                replyBuffer.value += data.content
+                const reply = chatData.value[chatData.value.length - 1]
+                if (reply) {
+                  reply.content = replyBuffer.value
+                }
+                scrollToBottom()
+              }
+              break
+          }
+        }
+      }
+    } catch (e: any) {
+      console.log('123 loading failed', e)
+    }
   })
 
   ws.addEventListener('close', (e) => {
@@ -273,7 +363,7 @@ const connect = async () => {
       text: '无法连接到服务器，请退出登录后重新登录再试。'
     })
   })
-  socket.value = ws
+  chatStore.setSocket(ws)
 }
 
 initPageWithRolesAndChats().then(() => {
@@ -284,8 +374,18 @@ initPageWithRolesAndChats().then(() => {
 
 stopGenerate.on((v: boolean) => {
   if (v) {
-    console.log('2131231')
-    enableInput()
+    stopChatSession(sessionID)
+      .then(() => {
+        enableInput()
+        showStopGenerateBtn(false)
+      })
+      .catch(() => {
+        notify({
+          group: 'error',
+          title: '停止失败',
+          text: '无法停止会话，请重试。'
+        })
+      })
   }
 })
 </script>
