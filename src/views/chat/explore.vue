@@ -35,18 +35,18 @@
         <li v-for="role in allRoles" :key="role.id" class="">
           <router-link
             :to="'/' + role.key"
-            class="relative flex justify-between gap-x-6 py-5 cursor-pointer hover:bg-light-subtitle dark:hover:bg-dark-subtitle"
+            class="relative flex justify-between gap-x-6 py-5 cursor-pointer hover:bg-secondary hover:text-secondary-foreground"
           >
             <div class="flex min-w-0 gap-x-4">
               <img class="w-16 h-16 flex-none rounded-2xl bg-gray-50" :src="role.icon" alt="" />
               <div class="min-w-0 flex flex-col items-start justify-center">
-                <p class="text-sm font-semibold leading-6 text-gray-900 dark:text-slate-300">
+                <p class="text-sm font-semibold leading-6">
                   <a :href="'/chat' + role.id">
                     <span />
                     {{ role.name }}
                   </a>
                 </p>
-                <p class="mt-1 flex text-xs leading-5 text-gray-500 dark:text-slate-400">
+                <p class="mt-1 flex text-xs leading-5 text-foreground/45">
                   {{ role.description }}
                 </p>
               </div>
@@ -57,7 +57,7 @@
                   <div class="flex-none rounded-full bg-emerald-500/20 p-1">
                     <div class="h-1.5 w-1.5 rounded-full bg-emerald-500" />
                   </div>
-                  <p class="text-xs leading-5 text-gray-500">Online</p>
+                  <p class="text-xs leading-5 text-foreground/45">Online</p>
                 </div>
               </div>
             </div>
@@ -70,18 +70,18 @@
         <li v-for="role in searchRoles" :key="role.id" class="">
           <router-link
             :to="'/' + role.key"
-            class="relative flex justify-between gap-x-6 py-5 cursor-pointer hover:bg-light-subtitle dark:hover:bg-dark-subtitle"
+            class="relative flex justify-between gap-x-6 py-5 cursor-pointer hover:bg-secondary hover:text-secondary-foreground"
           >
             <div class="flex min-w-0 gap-x-4">
               <img class="w-16 h-16 flex-none rounded-2xl bg-gray-50" :src="role.icon" alt="" />
               <div class="min-w-0 flex flex-col items-start justify-center">
-                <p class="text-sm font-semibold leading-6 text-gray-900 dark:text-slate-300">
+                <p class="text-sm font-semibold leading-6">
                   <a :href="'/chat' + role.id">
                     <span />
                     {{ role.name }}
                   </a>
                 </p>
-                <p class="mt-1 flex text-xs leading-5 text-gray-500 dark:text-slate-400">
+                <p class="mt-1 flex text-xs leading-5 text-foreground/45">
                   {{ role.description }}
                 </p>
               </div>
@@ -92,7 +92,7 @@
                   <div class="flex-none rounded-full bg-emerald-500/20 p-1">
                     <div class="h-1.5 w-1.5 rounded-full bg-emerald-500" />
                   </div>
-                  <p class="text-xs leading-5 text-gray-500">Online</p>
+                  <p class="text-xs leading-5 text-foreground/45">Online</p>
                 </div>
               </div>
             </div>

@@ -1,7 +1,7 @@
 <template>
   <div class="w-full flex flex-col gap-8 items-center justify-center py-10">
     <div class="max-w-4xl px-1 lg:px-8 w-full flex flex-col gap-5 mt-20">
-      <div class="logo flex items-center justify-center text-gray-900 dark:text-slate-300">
+      <div class="logo flex items-center justify-center">
         <LogoIcon class="w-20 h-20" />
         <span class="ml-2 text-6xl font-bold">Zen</span>
       </div>
@@ -11,20 +11,26 @@
         <span
           v-for="role in originalRoles"
           :key="role.id"
-          class="text-gray-900 dark:text-slate-300 border whitespace-nowrap border-light-muted dark:border-dark-muted py-0.5 px-3 mr-3 rounded-2xl flex items-center cursor-pointer"
+          class="border whitespace-nowrap px-3 py-1 mr-3 rounded-2xl flex items-center cursor-pointer"
           :class="{
-            'bg-laccent-base dark:bg-daccent-base hover:bg-laccent-base dark:hover:bg-daccent-base text-white':
-              selectedRole.id === role.id,
-            'hover:bg-light-subtitle dark:hover:bg-dark-subtitle': selectedRole.id !== role.id
+            'bg-primary text-white': selectedRole.id === role.id,
+            'hover:bg-secondary hover:text-secondary-foreground': selectedRole.id !== role.id
           }"
           @click="selectedRole = role"
         >
-          <span><Gpt4Icon class="w-7" /></span>
+          <span
+            ><img
+              :src="role.icon"
+              class="w-6 rounded"
+              :class="{
+                'border border-white': selectedRole.id === role.id
+              }"
+          /></span>
           <span class="ml-2 font-semibold text-sm">{{ role.name }}</span>
         </span>
         <router-link
           to="/explore"
-          class="text-gray-900 dark:text-slate-300 border whitespace-nowrap border-light-muted dark:border-dark-muted py-0.5 px-3 mr-3 rounded-2xl flex items-center cursor-pointer hover:bg-light-subtitle dark:hover:bg-dark-subtitle"
+          class="border whitespace-nowrap py-1 px-3 mr-3 rounded-2xl flex items-center cursor-pointer hover:bg-secondary hover:text-secondary-foreground"
         >
           <span><Squares2X2Icon class="w-7" /></span>
           <span class="ml-2 font-semibold text-sm"> 更多 </span>
@@ -36,9 +42,7 @@
     </div>
     <div class="all max-w-4xl w-full">
       <div class="recent-update flex max-w-4xl px-1 lg:px-8 w-full flex-col">
-        <div
-          class="head flex justify-between items-center w-full text-gray-900 dark:text-slate-300"
-        >
+        <div class="head flex justify-between items-center w-full">
           <span class="font-bold">最近更新</span>
           <span class="text-sm font-bold"
             ><router-link to="/explore" class="text-laccent-base dark:text-daccent-base"
@@ -54,21 +58,21 @@
               :to="'/' + role.key"
               v-for="role in roles"
               :key="role.id"
-              class="text-gray-900 mt-2 dark:text-slate-300 border w-60 h-20 border-light-muted dark:border-dark-muted py-0.5 px-3 rounded-2xl flex items-center cursor-pointer hover:bg-light-subtitle dark:hover:bg-dark-subtitle"
+              class="mt-2 border w-60 h-20 py-0.5 px-3 rounded-2xl flex items-center cursor-pointer hover:bg-secondary hover:text-secondary-foreground"
             >
-              <span><Gpt4Icon class="w-16" /></span>
+              <span><img class="w-14 rounded-md" :src="role.icon" /></span>
               <div class="right ml-2 flex flex-col w-36 h-16 justify-center">
                 <span class="font-semibold text-sm">{{ role.name }}</span>
-                <span class="text-xs break-all overflow-hidden">{{ role.description }}</span>
+                <span class="text-xs break-all overflow-hidden truncate">{{
+                  role.description
+                }}</span>
               </div>
             </router-link>
           </div>
         </div>
       </div>
       <div class="recent-update flex max-w-4xl mt-10 px-1 lg:px-8 w-full flex-col">
-        <div
-          class="head flex justify-between items-center w-full text-gray-900 dark:text-slate-300"
-        >
+        <div class="head flex justify-between items-center w-full">
           <span class="font-bold">这些机器人</span>
           <span class="text-sm font-bold"
             ><router-link to="/explore" class="text-laccent-base dark:text-daccent-base"
@@ -84,12 +88,14 @@
               :to="'/' + role.key"
               v-for="role in roles"
               :key="role.id"
-              class="text-gray-900 mt-2 dark:text-slate-300 border w-60 h-20 border-light-muted dark:border-dark-muted py-0.5 px-3 rounded-2xl flex items-center cursor-pointer hover:bg-light-subtitle dark:hover:bg-dark-subtitle"
+              class="mt-2 border w-60 h-20 py-0.5 px-3 rounded-2xl flex items-center cursor-pointer hover:bg-secondary hover:text-secondary-foreground"
             >
-              <span><Gpt4Icon class="w-16" /></span>
+              <span><img class="w-14 rounded-md" :src="role.icon" /></span>
               <div class="right ml-2 flex flex-col w-36 h-16 justify-center">
                 <span class="font-semibold text-sm">{{ role.name }}</span>
-                <span class="text-xs break-all overflow-hidden">{{ role.description }}</span>
+                <span class="text-xs break-all overflow-hidden truncate">{{
+                  role.description
+                }}</span>
               </div>
             </router-link>
           </div>
@@ -99,7 +105,6 @@
   </div>
 </template>
 <script lang="ts">
-import Gpt4Icon from '@/components/icons/gpt4-icon.vue'
 import LogoIcon from '@/components/icons/logo-icon.vue'
 import type { Role } from '@/models/chat'
 import { useChatStore } from '@/stores/chat'
@@ -110,7 +115,6 @@ export default defineComponent({
   name: 'BotIndex',
   components: {
     LogoIcon,
-    Gpt4Icon,
     Squares2X2Icon,
     MessageInput
   },

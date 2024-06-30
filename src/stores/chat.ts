@@ -11,25 +11,70 @@ export const useChatStore = defineStore('chat', {
     modelList: [] as Model[],
     cachedMessage: '',
     cachedModel: undefined as Model | undefined,
-    cachedRole: undefined as Role | undefined
+    cachedRole: undefined as Role | undefined,
+    socket: undefined as WebSocket | undefined
   }),
   actions: {
+    setSocket(socket: WebSocket) {
+      this.socket = socket
+    },
+    closeSocket() {
+      if (this.socket) {
+        this.socket.close()
+        this.socket = undefined
+      }
+    },
     setCachedMessage(message: string) {
+      console.log('==========>>>>>>>>, set')
       this.cachedMessage = message
+      localStorage.setItem('ZenbotCachedMessage', message)
     },
     setCachedModel(model: Model) {
       this.cachedModel = model
+      localStorage.setItem('ZenbotCachedModel', JSON.stringify(model))
     },
     setCachedRole(role: Role) {
       this.cachedRole = role
+      localStorage.setItem('ZenbotCachedRole', JSON.stringify(role))
+    },
+    getCachedMessage() {
+      const message = localStorage.getItem('ZenbotCachedMessage')
+      if (message) {
+        this.cachedMessage = message
+      }
+      return this.cachedMessage
+    },
+    getCachedModel() {
+      const model = localStorage.getItem('ZenbotCachedModel')
+      if (model) {
+        this.cachedModel = JSON.parse(model)
+      }
+      return this.cachedModel
+    },
+    getCachedRole() {
+      const role = localStorage.getItem('ZenbotCachedRole')
+      if (role) {
+        this.cachedRole = JSON.parse(role)
+      }
+      return this.cachedRole
     },
     newChat(chat: Chat) {
       this.chatList.unshift(chat)
     },
     clearCachedItem() {
-      this.cachedMessage = ''
-      this.cachedModel = undefined
-      this.cachedRole = undefined
+      console.log('==========>>>>>>>>, clear')
+      if (this.cachedMessage) {
+        this.cachedMessage = ''
+        localStorage.removeItem('ZenbotCachedMessage')
+      }
+      if (this.cachedModel) {
+        this.cachedModel = undefined
+        localStorage.removeItem('ZenbotCachedModel')
+      }
+      if (this.cachedRole) {
+        this.cachedRole = undefined
+        localStorage.removeItem('ZenbotCachedRole')
+      }
     },
     async getAllChatList(force?: boolean): Promise<Chat[]> {
       if (!force) {

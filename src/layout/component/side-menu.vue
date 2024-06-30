@@ -1,12 +1,8 @@
 <template>
-  <menu class="flex flex-col overflow-y-auto gap-1 bg-light-muted dark:bg-dark-muted">
-    <section
-      class="flex flex-col border-b bg-light-base dark:bg-dark-base border-light-muted dark:border-dark-muted"
-    >
-      <li class="border-b p-3 border-light-muted dark:border-dark-muted flex justify-between">
-        <div
-          class="text-gray-900 dark:text-slate-300 bg-light-faint dark:bg-dark-faint rounded-lg w-1/2 hover:bg-light-subtitle dark:hover:bg-dark-subtitle"
-        >
+  <menu class="flex flex-col overflow-y-auto gap-1 bg-border">
+    <section class="flex flex-col border-b bg-background">
+      <li class="border-b p-3 flex justify-between">
+        <div class="bg-secondary/70 hover:bg-secondary text-secondary-foreground rounded-lg w-1/2">
           <router-link to="/explore" class="p-2 flex flex-col">
             <div class="search-icon w-full">
               <MagnifyingGlassIcon class="w-7 h-7 font-bold" />
@@ -18,7 +14,7 @@
           </router-link>
         </div>
         <div
-          class="text-gray-900 dark:text-slate-300 bg-light-faint ml-1.5 dark:bg-dark-faint rounded-lg w-1/2 hover:bg-light-subtitle dark:hover:bg-dark-subtitle"
+          class="bg-secondary/70 hover:bg-secondary text-secondary-foreground ml-1.5 rounded-lg w-1/2"
         >
           <router-link to="/" class="p-2 flex flex-col">
             <div class="search-icon w-full">
@@ -34,41 +30,40 @@
         </div>
       </li>
       <li
-        class="border-b p-2 border-light-muted dark:border-dark-muted"
+        class="border-b p-2"
         v-for="chat in sideChats"
         :key="chat.id"
         :class="{
-          ' bg-laccent-faint dark:bg-daccent-faint hover:bg-laccent-faint dark:hover:bg-daccent-faint':
-            selectedKey === '/chat/' + chat.chat_id,
-          'hover:bg-light-subtitle dark:hover:bg-dark-subtitle':
-            selectedKey !== '/chat/' + chat.chat_id
+          'bg-secondary': selectedKey === '/chat/' + chat.chat_id,
+          'hover:bg-secondary': selectedKey !== '/chat/' + chat.chat_id
         }"
       >
         <router-link
           :to="'/chat/' + chat.chat_id"
           class="flex items-center justify-start font-bold text-base p-2 w-full"
         >
-          <div><gpt4Icon class="w-10" /></div>
+          <div><img class="w-10 rounded-md" :src="chat.icon" /></div>
           <div class="flex flex-col ml-2 w-full max-h-16 overflow-hidden">
             <div class="head flex justify-between items-center text-sm font-normal">
-              <span class="text-ellipsis break-words overflow-hidden">{{ chat.model }}</span>
+              <span class="text-ellipsis break-words overflow-hidden">{{
+                getRoleName(chat.role_id)
+              }}</span>
               <span class="flex justify-start items-center"
                 ><span>{{ formatTimestampToMD(chat.updated_at) }}</span>
                 <span><ChevronRightIcon class="w-3.5" /></span
               ></span>
             </div>
-            <div class="body text-gray-900 dark:text-slate-300 mt-2 truncate">
+            <div class="body mt-1 truncate">
               {{ chat.title }}
             </div>
           </div>
         </router-link>
       </li>
       <li
-        class="border-b p-2 border-light-muted dark:border-dark-muted text-gray-900 dark:text-slate-300"
+        class="border-b p-2"
         :class="{
-          ' bg-laccent-faint dark:bg-daccent-faint hover:bg-laccent-faint dark:hover:bg-daccent-faint':
-            selectedKey === '/chats',
-          'hover:bg-light-subtitle dark:hover:bg-dark-subtitle': selectedKey !== '/chats'
+          'bg-secondary': selectedKey === '/chats',
+          'hover:bg-secondary': selectedKey !== '/chats'
         }"
       >
         <router-link to="/chats" class="flex items-center justify-start font-bold text-base p-3">
@@ -77,15 +72,12 @@
         </router-link>
       </li>
     </section>
-    <section
-      class="flex flex-col border-b bg-light-base dark:bg-dark-base border-light-muted dark:border-dark-muted"
-    >
+    <section class="flex flex-col border-b bg-background">
       <li
-        class="border-b p-2 border-light-muted dark:border-dark-muted text-gray-900 dark:text-slate-300"
+        class="border-b p-2"
         :class="{
-          ' bg-laccent-faint dark:bg-daccent-faint hover:bg-laccent-faint dark:hover:bg-daccent-faint':
-            selectedKey === '/midjourney',
-          'hover:bg-light-subtitle dark:hover:bg-dark-subtitle': selectedKey !== '/midjourney'
+          'bg-secondary': selectedKey === '/midjourney',
+          'hover:bg-secondary': selectedKey !== '/midjourney'
         }"
       >
         <router-link
@@ -97,11 +89,10 @@
         </router-link>
       </li>
       <li
-        class="border-b p-2 border-light-muted dark:border-dark-muted text-gray-900 dark:text-slate-300"
+        class="border-b p-2"
         :class="{
-          ' bg-laccent-faint dark:bg-daccent-faint hover:bg-laccent-faint dark:hover:bg-daccent-faint':
-            selectedKey === '/stable-diffusion',
-          'hover:bg-light-subtitle dark:hover:bg-dark-subtitle': selectedKey !== '/stable-diffusion'
+          'bg-secondary': selectedKey === '/stable-diffusion',
+          'hover:bg-secondary': selectedKey !== '/stable-diffusion'
         }"
       >
         <router-link
@@ -113,11 +104,10 @@
         </router-link>
       </li>
       <li
-        class="border-b p-2 border-light-muted dark:border-dark-muted text-gray-900 dark:text-slate-300"
+        class="border-b p-2"
         :class="{
-          ' bg-laccent-faint dark:bg-daccent-faint hover:bg-laccent-faint dark:hover:bg-daccent-faint':
-            selectedKey === '/gallery',
-          'hover:bg-light-subtitle dark:hover:bg-dark-subtitle': selectedKey !== '/gallery'
+          'bg-secondary': selectedKey === '/gallery',
+          'hover:bg-secondary': selectedKey !== '/gallery'
         }"
       >
         <router-link to="/gallery" class="flex items-center justify-start font-bold text-base p-3">
@@ -126,15 +116,12 @@
         </router-link>
       </li>
     </section>
-    <section
-      class="flex flex-col border-b bg-light-base dark:bg-dark-base border-light-muted dark:border-dark-muted"
-    >
+    <section class="flex flex-col border-b bg-background">
       <li
-        class="border-b p-2 border-light-muted dark:border-dark-muted text-gray-900 dark:text-slate-300"
+        class="border-b p-2"
         :class="{
-          ' bg-laccent-faint dark:bg-daccent-faint hover:bg-laccent-faint dark:hover:bg-daccent-faint':
-            selectedKey === '/subscription',
-          'hover:bg-light-subtitle dark:hover:bg-dark-subtitle': selectedKey !== '/subscription'
+          'bg-secondary': selectedKey === '/subscription',
+          'hover:bg-secondary': selectedKey !== '/subscription'
         }"
       >
         <router-link
@@ -146,11 +133,10 @@
         </router-link>
       </li>
       <li
-        class="border-b p-2 border-light-muted dark:border-dark-muted text-gray-900 dark:text-slate-300"
+        class="border-b p-2"
         :class="{
-          ' bg-laccent-faint dark:bg-daccent-faint hover:bg-laccent-faint dark:hover:bg-daccent-faint':
-            selectedKey === '/user',
-          'hover:bg-light-subtitle dark:hover:bg-dark-subtitle': selectedKey !== '/user'
+          'bg-secondary': selectedKey === '/user',
+          'hover:bg-secondary': selectedKey !== '/user'
         }"
       >
         <router-link to="/user" class="flex items-center justify-start font-bold text-base p-3">
@@ -159,11 +145,10 @@
         </router-link>
       </li>
       <li
-        class="border-b p-2 border-light-muted dark:border-dark-muted text-gray-900 dark:text-slate-300"
+        class="border-b p-2"
         :class="{
-          ' bg-laccent-faint dark:bg-daccent-faint hover:bg-laccent-faint dark:hover:bg-daccent-faint':
-            selectedKey === '/settings',
-          'hover:bg-light-subtitle dark:hover:bg-dark-subtitle': selectedKey !== '/settings'
+          'bg-secondary': selectedKey === '/settings',
+          'hover:bg-secondary': selectedKey !== '/settings'
         }"
       >
         <router-link to="/settings" class="flex items-center justify-start font-bold text-base p-3">
@@ -188,7 +173,6 @@ import {
 import { ChevronRightIcon, PlusIcon } from '@heroicons/vue/24/solid'
 import mjicon from '@/components/icons/mj-icon.vue'
 import { computed, defineComponent } from 'vue'
-import gpt4Icon from '@/components/icons/gpt4-icon.vue'
 import { formatTimestampToMD } from '@/utils'
 import { useChatStore } from '@/stores/chat'
 export default defineComponent({
@@ -203,8 +187,7 @@ export default defineComponent({
     PhotoIcon,
     UserIcon,
     GiftIcon,
-    Cog8ToothIcon,
-    gpt4Icon
+    Cog8ToothIcon
   },
   setup() {
     const configStore = useConfigStore()
@@ -212,8 +195,13 @@ export default defineComponent({
     const sideChats = computed(() => chatStore.chatList)
     const selectedKey = computed(() => configStore.sideMenuSelected)
     chatStore.getAllChatList(true)
+    chatStore.getAllRoleList()
+    const getRoleName = (id: number) => {
+      const role = chatStore.allRoleList.find((role) => role.id === id)
+      return role?.name
+    }
 
-    return { sideChats, selectedKey, formatTimestampToMD }
+    return { sideChats, selectedKey, formatTimestampToMD, getRoleName }
   }
 })
 </script>

@@ -4,7 +4,7 @@ import { getUserInfo } from '@/api/user'
 
 export const useUserStore = defineStore('user', {
   state: () => ({
-    userInfo: {} as User,
+    userInfo: undefined as User | undefined,
     token: undefined as string | undefined
   }),
   actions: {

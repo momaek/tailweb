@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import BasicLayout from '@/layout/basic-layout.vue'
 import { useConfigStore } from '@/stores/config'
+import { useChatStore } from '@/stores/chat'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -119,6 +120,9 @@ router.beforeEach((to, from, next) => {
   // userStore.getCurrentUserInfo()
 
   configStore.setPageTitle(to.meta.title as string | undefined)
+
+  const chatStore = useChatStore()
+  chatStore.closeSocket()
 
   next()
 })

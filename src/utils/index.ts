@@ -1,3 +1,6 @@
+import { type ClassValue, clsx } from 'clsx'
+import { twMerge } from 'tailwind-merge'
+
 export function formatTimestampToMD(timestamp: number) {
   // 将时间戳转换为 Date 对象
   const date = new Date(timestamp * 1000)
@@ -28,4 +31,8 @@ export function randString(length: number) {
     buf.push(str.charAt(rand))
   }
   return buf.join('')
+}
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
 }

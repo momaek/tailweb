@@ -1,32 +1,30 @@
 <template>
   <div class="w-full flex justify-center py-8">
-    <div class="max-w-4xl px-2 lg:px-8 w-full flex flex-col">
+    <div
+      class="max-w-4xl px-2 lg:px-8 w-full flex flex-col overflow-y-auto"
+      ref="el"
+      :style="{ 'margin-bottom': marginBottom + 20 + 'px' }"
+    >
       <div
-        class="group bg-light-faint flex flex-col gap-4 dark:bg-dark-faint w-full rounded-lg px-4 py-4"
+        class="group bg-light-faint flex flex-col gap-4 bg-secondary w-full rounded-lg px-4 py-4"
         v-if="roleInfo"
       >
         <div class="head flex shrink-0 items-center">
           <span><img :src="roleInfo.icon" class="w-12 rounded-lg" alt="" /></span>
           <div class="ml-2 flex flex-col">
-            <span class="font-bold text-lg text-gray-900 dark:text-slate-300">{{
-              roleInfo.name
-            }}</span>
+            <span class="font-bold text-lg">{{ roleInfo.name }}</span>
             <span class="text-sm">运营方：zenbot</span>
           </div>
         </div>
-        <div class="more-op flex text-gray-900 dark:text-slate-300">
-          <span
-            class="cursor-pointer flex px-2 py-1 rounded-full bg-light-subtitle dark:bg-dark-subtitle hover:bg-light-muted dark:hover:bg-dark-muted"
-          >
+        <div class="more-op flex">
+          <span class="cursor-pointer flex px-2 py-1 rounded-full bg-border hover:bg-border/60">
             <InformationCircleIcon class="w-5 mr-1" />
             <span>角色信息</span>
           </span>
 
           <FwTooltip class="ml-3">
             <template #trigger>
-              <span
-                class="cursor-pointer flex px-2 py-1 rounded-full bg-light-subtitle dark:bg-dark-subtitle hover:bg-light-muted dark:hover:bg-dark-muted"
-              >
+              <span class="cursor-pointer flex px-2 py-1 rounded-full bg-border hover:bg-border/60">
                 <UserPlusIcon class="h-5 w-5" aria-hidden="true" />
               </span>
             </template>
@@ -37,9 +35,7 @@
 
           <FwTooltip class="ml-3">
             <template #trigger>
-              <span
-                class="cursor-pointer flex px-2 py-1 rounded-full bg-light-subtitle dark:bg-dark-subtitle hover:bg-light-muted dark:hover:bg-dark-muted"
-              >
+              <span class="cursor-pointer flex px-2 py-1 rounded-full bg-border hover:bg-border/60">
                 <ArrowUpOnSquareIcon class="h-5 w-5" aria-hidden="true" />
               </span>
             </template>
@@ -48,21 +44,21 @@
             </template>
           </FwTooltip>
         </div>
-        <div class="description flex flex-col gap-2 text-gray-900 dark:text-slate-300">
+        <div class="description flex flex-col gap-2">
           <p class="text-sm">{{ roleInfo.description }}</p>
           <div class="flex items-center justify-start w-full">
             <p class="flex shrink-0">Powered By</p>
             <Listbox as="div" class="ml-2 w-full" v-model="selectedModel">
               <div class="relative">
                 <ListboxButton
-                  class="relative w-full sm:w-1/2 h-9 cursor-default rounded-md py-1.5 pl-3 pr-10 text-left text-gray-900 dark:text-slate-300 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  class="relative w-full sm:w-1/2 h-9 cursor-default rounded-md py-1.5 pl-3 pr-10 text-left 0 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
                 >
                   <span v-if="selectedModel" class="block truncate">{{ selectedModel.name }}</span>
                   <span v-else>请选择模型</span>
                   <span
                     class="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2"
                   >
-                    <ChevronUpDownIcon class="h-5 w-5 text-gray-400" aria-hidden="true" />
+                    <ChevronUpDownIcon class="h-5 w-5" aria-hidden="true" />
                   </span>
                 </ListboxButton>
 
@@ -73,7 +69,7 @@
                 >
                   <ListboxOptions
                     v-if="canSelect"
-                    class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md py-1 dark:bg-dark-subtitle text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
+                    class="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md py-1 bg-secondary text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm"
                   >
                     <ListboxOption
                       as="template"
@@ -84,7 +80,7 @@
                     >
                       <li
                         :class="[
-                          active ? 'bg-indigo-600 text-white' : 'text-gray-900 dark:text-slate-300',
+                          active ? 'bg-indigo-600 text-white' : 'text-secondary-foreground',
                           'relative cursor-default select-none py-2 pl-8 pr-4'
                         ]"
                       >
@@ -112,175 +108,22 @@
         </div>
       </div>
       <div class="chat-messages mt-2">
-        <div
-          class="flex-1 space-y-6 text-sm leading-6 text-gray-900 dark:text-slate-300 sm:text-base sm:leading-7"
-        >
-          <div class="flex flex-row-reverse items-start">
-            <div
-              class="flex rounded-b-xl rounded-tl-xl bg-laccent-base text-white p-2 dark:bg-dark-faint sm:max-w-md md:max-w-2xl"
-            >
-              <p>Explain quantum computing in simple terms</p>
-            </div>
-          </div>
-          <div class="flex items-start flex-col">
-            <img
-              class="ml-2 h-8 w-8 rounded-full"
-              src="https://dummyimage.com/128x128/354ea1/ffffff&text=G"
-            />
-
-            <div
-              class="flex min-h-[85px] rounded-b-xl rounded-tr-xl bg-light-faint p-4 dark:bg-dark-faint sm:min-h-0 sm:max-w-md md:max-w-2xl"
-            >
-              <p>
-                Certainly! Quantum computing is a new type of computing that relies on the
-                principles of quantum physics. Traditional computers, like the one you might be
-                using right now, use bits to store and process information. These bits can represent
-                either a 0 or a 1. In contrast, quantum computers use quantum bits, or qubits.<br /><br />
-                Unlike bits, qubits can represent not only a 0 or a 1 but also a superposition of
-                both states simultaneously. This means that a qubit can be in multiple states at
-                once, which allows quantum computers to perform certain calculations much faster and
-                more efficiently
-              </p>
-            </div>
-            <div class="mr-2 mt-1 flex flex-row gap-2 text-slate-500">
-              <button class="hover:text-blue-600" type="button">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="h-5 w-5"
-                  viewBox="0 0 24 24"
-                  stroke-width="2"
-                  stroke="currentColor"
-                  fill="none"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                  <path
-                    d="M8 8m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z"
-                  ></path>
-                  <path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2"></path>
-                </svg>
-              </button>
-              <button class="hover:text-blue-600" type="button">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="h-5 w-5"
-                  viewBox="0 0 24 24"
-                  stroke-width="2"
-                  stroke="currentColor"
-                  fill="none"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                  <path
-                    d="M7 13v-8a1 1 0 0 0 -1 -1h-2a1 1 0 0 0 -1 1v7a1 1 0 0 0 1 1h3a4 4 0 0 1 4 4v1a2 2 0 0 0 4 0v-5h3a2 2 0 0 0 2 -2l-1 -5a2 3 0 0 0 -2 -2h-7a3 3 0 0 0 -3 3"
-                  ></path>
-                </svg>
-              </button>
-              <button class="hover:text-blue-600">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="h-5 w-5"
-                  viewBox="0 0 24 24"
-                  stroke-width="2"
-                  stroke="currentColor"
-                  fill="none"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                  <path
-                    d="M7 11v8a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1v-7a1 1 0 0 1 1 -1h3a4 4 0 0 0 4 -4v-1a2 2 0 0 1 4 0v5h3a2 2 0 0 1 2 2l-1 5a2 3 0 0 1 -2 2h-7a3 3 0 0 1 -3 -3"
-                  ></path>
-                </svg>
-              </button>
-            </div>
-          </div>
-          <div class="flex flex-row-reverse items-start">
-            <div
-              class="flex rounded-b-xl rounded-tl-xl bg-laccent-base text-white p-2 dark:bg-dark-faint sm:max-w-md md:max-w-2xl"
-            >
-              <p>What are three great applications of quantum computing?</p>
-            </div>
-          </div>
-          <div class="flex items-start flex-col">
-            <img
-              class="ml-2 h-8 w-8 rounded-full"
-              src="https://dummyimage.com/128x128/354ea1/ffffff&text=G"
-            />
-            <div
-              class="flex min-h-[85px] rounded-b-xl rounded-tr-xl bg-light-faint p-4 dark:bg-dark-faint sm:min-h-0 sm:max-w-md md:max-w-2xl"
-            >
-              <p>
-                Three great applications of quantum computing are: Optimization of complex problems,
-                Drug Discovery and Cryptography.
-              </p>
-            </div>
-            <div class="mr-2 mt-1 flex flex-row gap-2 text-slate-500">
-              <button class="hover:text-blue-600" type="button">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="h-5 w-5"
-                  viewBox="0 0 24 24"
-                  stroke-width="2"
-                  stroke="currentColor"
-                  fill="none"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                  <path
-                    d="M8 8m0 2a2 2 0 0 1 2 -2h8a2 2 0 0 1 2 2v8a2 2 0 0 1 -2 2h-8a2 2 0 0 1 -2 -2z"
-                  ></path>
-                  <path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2"></path>
-                </svg>
-              </button>
-              <button class="hover:text-blue-600" type="button">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="h-5 w-5"
-                  viewBox="0 0 24 24"
-                  stroke-width="2"
-                  stroke="currentColor"
-                  fill="none"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                  <path
-                    d="M7 13v-8a1 1 0 0 0 -1 -1h-2a1 1 0 0 0 -1 1v7a1 1 0 0 0 1 1h3a4 4 0 0 1 4 4v1a2 2 0 0 0 4 0v-5h3a2 2 0 0 0 2 -2l-1 -5a2 3 0 0 0 -2 -2h-7a3 3 0 0 0 -3 3"
-                  ></path>
-                </svg>
-              </button>
-              <button class="hover:text-blue-600">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  class="h-5 w-5"
-                  viewBox="0 0 24 24"
-                  stroke-width="2"
-                  stroke="currentColor"
-                  fill="none"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                  <path
-                    d="M7 11v8a1 1 0 0 1 -1 1h-2a1 1 0 0 1 -1 -1v-7a1 1 0 0 1 1 -1h3a4 4 0 0 0 4 -4v-1a2 2 0 0 1 4 0v5h3a2 2 0 0 1 2 2l-1 5a2 3 0 0 1 -2 2h-7a3 3 0 0 1 -3 -3"
-                  ></path>
-                </svg>
-              </button>
-            </div>
-          </div>
+        <div class="flex-1 space-y-6 text-sm leading-6 sm:text-base sm:leading-7">
+          <MessageLine
+            v-for="history in chatData"
+            :key="history.created_at"
+            :chat="history"
+            :role="roleInfo"
+          />
         </div>
       </div>
     </div>
   </div>
 </template>
 <script lang="ts" setup>
-import type { Model, Role } from '@/models/chat'
+import type { ChatHistory, Model, Role } from '@/models/chat'
 import { useChatStore } from '@/stores/chat'
-import { computed, onUnmounted, ref } from 'vue'
+import { computed, nextTick, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { InformationCircleIcon, UserPlusIcon, ArrowUpOnSquareIcon } from '@heroicons/vue/24/outline'
 import FwTooltip from '@/components/tooltip/fw-tooltip.vue'
@@ -290,23 +133,37 @@ import { useEventBus } from '@vueuse/core'
 import { useUserStore } from '@/stores/user'
 import { randString } from '@/utils'
 import { notify } from 'notiwind'
+import MessageLine from './components/message-line.vue'
+import { getChatHistories, stopChatSession } from '@/api/chat'
 
 const route = useRoute()
 const chatID = route.params.id
 const chatStore = useChatStore()
 const userStore = useUserStore()
 const chatInfo = computed(() => chatStore.getChatByChatID(chatID as string))
-const roleInfo = ref<Role>(chatStore.cachedRole as Role)
+const roleInfo = ref<Role>(chatStore.getCachedRole() as Role)
 const models = ref<Model[]>([])
-const selectedModel = ref<Model>(chatStore.cachedModel as Model)
+const selectedModel = ref<Model>(chatStore.getCachedModel() as Model)
 const canSelect = ref(true)
 const msgSend = useEventBus<string>('message-send')
 const clearContextBus = useEventBus('clear-context')
 const sendMessageBtn = useEventBus<boolean>('enable-input')
-const socket = ref()
+const heightChange = useEventBus<number>('height-change')
+const showStopGenerate = useEventBus<boolean>('show-stop-generate')
+const stopGenerate = useEventBus<boolean>('stop-generate')
+const marginBottom = ref(50)
 const router = useRouter()
+const chatData = ref<ChatHistory[]>([])
+const el = ref<HTMLElement | null>(null)
+const sessionID = randString(42)
+const replyBuffer = ref('')
 
-chatStore.clearCachedItem()
+heightChange.on((height: number) => {
+  marginBottom.value = height
+  if (el.value) {
+    window.scrollTo(0, el.value.scrollHeight)
+  }
+})
 
 const enableInput = () => {
   sendMessageBtn.emit(true)
@@ -316,13 +173,58 @@ const disableInput = () => {
   sendMessageBtn.emit(false)
 }
 
+const showStopGenerateBtn = (b: boolean = true) => {
+  showStopGenerate.emit(b)
+}
+
 disableInput()
 
 const sendMessage = (msg: string) => {
-  if (socket.value) {
-    socket.value.send(JSON.stringify({ type: 'chat', content: msg }))
+  console.log('21312321312321', msg)
+  if (chatStore.socket) {
+    chatStore.socket.send(JSON.stringify({ type: 'chat', content: msg }))
+    showStopGenerateBtn()
     disableInput()
+    if (chatData.value.length > 0) {
+      chatData.value[chatData.value.length - 1].scrollToView = false
+    }
+    chatData.value.push(
+      {
+        chat_id: chatID as string,
+        role_id: roleInfo.value?.id as number,
+        created_at: new Date().getTime() / 1000,
+        updated_at: new Date().getTime() / 1000,
+        user_id: userStore.userInfo?.id as number,
+        icon: roleInfo.value?.icon as string,
+        model: selectedModel.value.name,
+        type: 'prompt',
+        content: msg
+      } as ChatHistory,
+      {
+        chat_id: chatID as string,
+        role_id: roleInfo.value?.id as number,
+        created_at: new Date().getTime() / 1000,
+        updated_at: new Date().getTime() / 1000,
+        user_id: userStore.userInfo?.id as number,
+        icon: roleInfo.value?.icon as string,
+        model: selectedModel.value.name,
+        type: 'reply',
+        isLoading: true
+      } as ChatHistory
+    )
+    nextTick(() => {
+      scrollToBottom()
+    })
   }
+}
+
+const getChatHistory = async () => {
+  getChatHistories(chatID as string).then((res) => {
+    chatData.value = res
+    if (chatData.value.length > 0) {
+      chatData.value[chatData.value.length - 1].scrollToView = true
+    }
+  })
 }
 
 msgSend.on((message: string) => {
@@ -333,12 +235,26 @@ clearContextBus.on(() => {
   console.log('123131 clear btn click')
 })
 
+const scrollToBottom = () => {
+  if (el.value) {
+    window.scrollTo(0, el.value.scrollHeight)
+  }
+}
+
 const initPageWithRolesAndChats = async () => {
   if (userStore.getToken() === undefined) router.push('/login')
   await chatStore.getAllRoleList()
   await chatStore.getAllModelList()
-  roleInfo.value = chatStore.getRoleByID(chatInfo.value?.role_id as number) as Role
-  selectedModel.value = chatStore.getModelByID(chatInfo.value?.model_id as number) as Model
+
+  if (!roleInfo.value) {
+    roleInfo.value = chatStore.getRoleByID(chatInfo.value?.role_id as number) as Role
+  }
+  if (!selectedModel.value) {
+    selectedModel.value = chatStore.getModelByID(chatInfo.value?.model_id as number) as Model
+  }
+  if (el.value) {
+    window.scrollTo(0, el.value.scrollHeight)
+  }
 }
 
 const heartbeatTimeoutID = ref()
@@ -351,8 +267,8 @@ const connect = async () => {
   const sendHeartbeat = () => {
     if (heartbeatTimeoutID.value) clearTimeout(heartbeatTimeoutID.value)
     new Promise((resolve) => {
-      if (socket.value !== null) {
-        socket.value.send(JSON.stringify({ type: 'heartbeat', content: 'ping' }))
+      if (chatStore.socket) {
+        chatStore.socket.send(JSON.stringify({ type: 'heartbeat', content: 'ping' }))
       }
       resolve('success')
     }).then(() => {
@@ -366,7 +282,7 @@ const connect = async () => {
       '/api/chat/new?chat_id=' +
       chatID +
       '&session_id=' +
-      randString(42) +
+      sessionID +
       '&role_id=' +
       chatInfo.value?.role_id +
       '&model_id=' +
@@ -374,33 +290,99 @@ const connect = async () => {
       '&token=' +
       userStore.getToken()
   )
-  ws.addEventListener('open', () => {
+  ws.addEventListener('open', async () => {
     notify({
       group: 'success',
       title: '连接成功'
     })
     sendHeartbeat()
     enableInput()
+    await getChatHistory()
+    const message = chatStore.getCachedMessage()
+    if (message) {
+      sendMessage(message)
+    }
   })
   ws.addEventListener('message', (e) => {
-    console.log('=====================>', e.data)
+    try {
+      if (e.data instanceof Blob) {
+        const reader = new FileReader()
+        reader.readAsText(e.data, 'UTF-8')
+        reader.onload = () => {
+          const data = JSON.parse(String(reader.result))
+          switch (data.type) {
+            case 'error':
+              notify({
+                group: 'error',
+                title: '连接失败',
+                text: data.content
+              })
+              break
+            case 'start':
+              console.log('start', data)
+              chatStore.clearCachedItem()
+              break
+            case 'end':
+              enableInput()
+              showStopGenerateBtn(false)
+              replyBuffer.value = ''
+              nextTick(() => {
+                scrollToBottom()
+              })
+              break
+            case 'middle':
+              {
+                replyBuffer.value += data.content
+                const reply = chatData.value[chatData.value.length - 1]
+                if (reply) {
+                  reply.content = replyBuffer.value
+                }
+                scrollToBottom()
+              }
+              break
+          }
+        }
+      }
+    } catch (e: any) {
+      console.log('123 loading failed', e)
+    }
   })
 
   ws.addEventListener('close', (e) => {
     console.log('====>>', e)
   })
-  socket.value = ws
-}
 
-onUnmounted(() => {
-  if (socket.value) {
-    socket.value.close()
-  }
-})
+  ws.addEventListener('error', (e) => {
+    console.error('WebSocket 连接错误:', e)
+    notify({
+      group: 'error',
+      title: '连接失败',
+      text: '无法连接到服务器，请退出登录后重新登录再试。'
+    })
+  })
+  chatStore.setSocket(ws)
+}
 
 initPageWithRolesAndChats().then(() => {
   userStore.getCurrentUserInfo().then(() => {
     connect()
   })
+})
+
+stopGenerate.on((v: boolean) => {
+  if (v) {
+    stopChatSession(sessionID)
+      .then(() => {
+        enableInput()
+        showStopGenerateBtn(false)
+      })
+      .catch(() => {
+        notify({
+          group: 'error',
+          title: '停止失败',
+          text: '无法停止会话，请重试。'
+        })
+      })
+  }
 })
 </script>
