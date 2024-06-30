@@ -219,12 +219,11 @@ const sendMessage = (msg: string) => {
 }
 
 const getChatHistory = async () => {
-  getChatHistories(chatID as string).then((res) => {
-    chatData.value = res
-    if (chatData.value.length > 0) {
-      chatData.value[chatData.value.length - 1].scrollToView = true
-    }
-  })
+  const res = await getChatHistories(chatID as string)
+  chatData.value = res
+  if (chatData.value.length > 0) {
+    chatData.value[chatData.value.length - 1].scrollToView = true
+  }
 }
 
 msgSend.on((message: string) => {
@@ -297,11 +296,14 @@ const connect = async () => {
     })
     sendHeartbeat()
     enableInput()
+    // TODO
     await getChatHistory()
-    const message = chatStore.getCachedMessage()
-    if (message) {
-      sendMessage(message)
-    }
+    nextTick(() => {
+      const message = chatStore.getCachedMessage()
+      if (message) {
+        sendMessage(message)
+      }
+    })
   })
   ws.addEventListener('message', (e) => {
     try {
