@@ -25,6 +25,7 @@ export const useChatStore = defineStore('chat', {
       }
     },
     setCachedMessage(message: string) {
+      console.log('==========>>>>>>>>, set')
       this.cachedMessage = message
       localStorage.setItem('ZenbotCachedMessage', message)
     },
@@ -61,6 +62,7 @@ export const useChatStore = defineStore('chat', {
       this.chatList.unshift(chat)
     },
     clearCachedItem() {
+      console.log('==========>>>>>>>>, clear')
       if (this.cachedMessage) {
         this.cachedMessage = ''
         localStorage.removeItem('ZenbotCachedMessage')

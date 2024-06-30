@@ -165,8 +165,6 @@ heightChange.on((height: number) => {
   }
 })
 
-chatStore.clearCachedItem()
-
 const enableInput = () => {
   sendMessageBtn.emit(true)
 }
@@ -257,7 +255,6 @@ const initPageWithRolesAndChats = async () => {
   if (el.value) {
     window.scrollTo(0, el.value.scrollHeight)
   }
-  await getChatHistory()
 }
 
 const heartbeatTimeoutID = ref()
@@ -293,16 +290,15 @@ const connect = async () => {
       '&token=' +
       userStore.getToken()
   )
-  ws.addEventListener('open', () => {
+  ws.addEventListener('open', async () => {
     notify({
       group: 'success',
       title: '连接成功'
     })
     sendHeartbeat()
     enableInput()
-
+    await getChatHistory()
     const message = chatStore.getCachedMessage()
-    console.log('message', message)
     if (message) {
       sendMessage(message)
     }
@@ -336,7 +332,6 @@ const connect = async () => {
               break
             case 'middle':
               {
-                console.log('middle ======', data)
                 replyBuffer.value += data.content
                 const reply = chatData.value[chatData.value.length - 1]
                 if (reply) {
