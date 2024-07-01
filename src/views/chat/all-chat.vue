@@ -51,6 +51,15 @@
                 </p>
               </div>
             </div>
+            <div class="flex shrink-0 items-center gap-x-4">
+              <div class="hidden sm:flex sm:flex-col sm:items-end">
+                <div class="mt-1 flex items-center gap-x-1.5">
+                  <p class="text-xs leading-5 text-foreground/45">
+                    {{ formatTimestampToMD(chat.updated_at) }}
+                  </p>
+                </div>
+              </div>
+            </div>
           </router-link>
         </li>
       </ul>
@@ -76,6 +85,15 @@
                 </p>
               </div>
             </div>
+            <div class="flex shrink-0 items-center gap-x-4">
+              <div class="hidden sm:flex sm:flex-col sm:items-end">
+                <div class="mt-1 flex items-center gap-x-1.5">
+                  <p class="text-xs leading-5 text-foreground/45">
+                    {{ formatTimestampToMD(chat.updated_at) }}
+                  </p>
+                </div>
+              </div>
+            </div>
           </router-link>
         </li>
       </ul>
@@ -87,6 +105,7 @@ import { computed, defineComponent, ref } from 'vue'
 import { useChatStore } from '@/stores/chat'
 import { MagnifyingGlassIcon, XMarkIcon } from '@heroicons/vue/24/outline'
 import type { Chat } from '@/models/chat'
+import { formatTimestampToMD } from '@/utils'
 import { useTitle } from '@vueuse/core'
 useTitle('探索')
 export default defineComponent({
@@ -124,7 +143,15 @@ export default defineComponent({
       searchChats.value = []
     }
 
-    return { isInputFocus, searchValue, allChats, searchChats, onInput, onClear }
+    return {
+      isInputFocus,
+      searchValue,
+      allChats,
+      searchChats,
+      onInput,
+      onClear,
+      formatTimestampToMD
+    }
   }
 })
 </script>
