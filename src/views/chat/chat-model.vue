@@ -48,6 +48,7 @@
               <div class="relative">
                 <ListboxButton
                   class="relative w-full sm:w-1/2 h-9 cursor-default rounded-md py-1.5 pl-3 pr-10 text-left 0 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                  :class="{ '!ring-destructive': !selectedModel }"
                 >
                   <span v-if="selectedModel" class="block truncate">{{ selectedModel.name }}</span>
                   <span v-else>请选择模型</span>
@@ -133,6 +134,10 @@ const msgSend = useEventBus<string>('message-send')
 const clearContextBus = useEventBus('clear-context')
 
 msgSend.on((message: string) => {
+  if (!selectedModel.value) {
+    return
+  }
+
   if (selectedModel.value) {
     chatStore.setCachedMessage(message)
     chatStore.setCachedModel(selectedModel.value)

@@ -44,7 +44,7 @@ const router = createRouter({
         {
           path: '/chats',
           name: 'chats',
-          component: () => import('@/views/index.vue'),
+          component: () => import('@/views/chat/all-chat.vue'),
           meta: {
             title: '所有聊天'
           }

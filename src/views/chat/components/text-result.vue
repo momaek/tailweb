@@ -48,7 +48,7 @@ const text = computed(() => {
 })
 
 function highlightBlock(str: string, lang?: string) {
-  return `<pre class="code-block-wrapper rounded-lg bg-background"><div class="code-block-header bg-background/50 p-3 rounded-tl-lg rounded-tr-lg"><span class="code-block-header__lang">${lang}</span><span class="code-block-header__copy">${'复制代码'}</span></div><code class="hljs p-2 rounded-bl-lg rounded-br-lg code-block-body ${lang}">${str}</code></pre>`
+  return `<pre class="code-block-wrapper rounded-lg bg-background mt-2 mb-2"><div class="code-block-header bg-background/50 p-3 rounded-tl-lg rounded-tr-lg"><span class="code-block-header__lang">${lang}</span><span class="code-block-header__copy">${'复制代码'}</span></div><code class="hljs p-2 rounded-bl-lg rounded-br-lg code-block-body ${lang}">${str}</code></pre>`
 }
 
 function addCopyEvents() {

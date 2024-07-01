@@ -130,6 +130,7 @@
             class="flex cursor-pointer"
             :class="{ 'pointer-events-none opacity-50': !chatInfo }"
             v-if="isChatPage"
+            @click="newChat"
           >
             <span><PencilSquareIcon class="w-5 font-bold" /></span>
             <span class="hidden ml-1 font-bold text-sm md:flex">新建聊天</span>
@@ -176,6 +177,7 @@ import { useChatStore } from '@/stores/chat'
 import type { Chat, Role } from '@/models/chat'
 import { ShieldCheckIcon } from '@heroicons/vue/24/solid'
 import MessageInput from '@/components/message-input.vue'
+import router from '@/router'
 export default defineComponent({
   components: {
     LogoIcon,
@@ -229,7 +231,11 @@ export default defineComponent({
       { immediate: true }
     )
 
-    return { sidebarOpen, isChatPage, title, roleInfo, chatInfo }
+    const newChat = () => {
+      router.push({ name: 'ChatModel', params: { chatmodel: roleInfo.value?.key } })
+    }
+
+    return { sidebarOpen, isChatPage, title, roleInfo, chatInfo, newChat }
   }
 })
 </script>

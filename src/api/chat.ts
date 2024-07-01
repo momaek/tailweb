@@ -39,9 +39,9 @@ export async function getChatHistories(chatId: string): Promise<ChatHistory[]> {
 
 export async function stopChatSession(sessionID: string) {
   return request
-    .post({
+    .get({
       url: '/chat/stop',
-      data: { session_id: sessionID }
+      params: { session_id: sessionID }
     })
     .then((res) => res.data)
 }

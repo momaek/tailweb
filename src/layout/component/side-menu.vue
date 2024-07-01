@@ -44,7 +44,7 @@
         >
           <div><img class="w-10 rounded-md" :src="chat.icon" /></div>
           <div class="flex flex-col ml-2 w-full max-h-16 overflow-hidden">
-            <div class="head flex justify-between items-center text-sm font-normal">
+            <div class="head flex justify-between items-center text-xs font-normal">
               <span class="text-ellipsis break-words overflow-hidden">{{
                 getRoleName(chat.role_id)
               }}</span>
@@ -53,8 +53,9 @@
                 <span><ChevronRightIcon class="w-3.5" /></span
               ></span>
             </div>
-            <div class="body mt-1 truncate">
-              {{ chat.title }}
+            <div class="body mt-1 flex flex-col">
+              <div class="truncate">{{ chat.title }}</div>
+              <div class="text-foreground/50 font-normal text-sm">{{ chat.model }}</div>
             </div>
           </div>
         </router-link>

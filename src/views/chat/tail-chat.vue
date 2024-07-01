@@ -121,7 +121,7 @@
   </div>
 </template>
 <script lang="ts" setup>
-import type { ChatHistory, Model, Role } from '@/models/chat'
+import type { Chat, ChatHistory, Model, Role } from '@/models/chat'
 import { useChatStore } from '@/stores/chat'
 import { computed, nextTick, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -180,7 +180,6 @@ const showStopGenerateBtn = (b: boolean = true) => {
 disableInput()
 
 const sendMessage = (msg: string) => {
-  console.log('21312321312321', msg)
   if (chatStore.socket) {
     chatStore.socket.send(JSON.stringify({ type: 'chat', content: msg }))
     showStopGenerateBtn()
@@ -224,6 +223,12 @@ const getChatHistory = async () => {
   if (chatData.value.length > 0) {
     chatData.value[chatData.value.length - 1].scrollToView = true
   }
+  nextTick(() => {
+    const message = chatStore.getCachedMessage()
+    if (message) {
+      sendMessage(message)
+    }
+  })
 }
 
 msgSend.on((message: string) => {
@@ -298,12 +303,6 @@ const connect = async () => {
     enableInput()
     // TODO
     await getChatHistory()
-    nextTick(() => {
-      const message = chatStore.getCachedMessage()
-      if (message) {
-        sendMessage(message)
-      }
-    })
   })
   ws.addEventListener('message', (e) => {
     try {
@@ -323,6 +322,7 @@ const connect = async () => {
             case 'start':
               console.log('start', data)
               chatStore.clearCachedItem()
+              chatStore.swapChatToFirst(chatInfo.value as Chat)
               break
             case 'end':
               enableInput()
@@ -338,6 +338,18 @@ const connect = async () => {
                 const reply = chatData.value[chatData.value.length - 1]
                 if (reply) {
                   reply.content = replyBuffer.value
+                } else {
+                  chatData.value.push({
+                    chat_id: chatID as string,
+                    role_id: roleInfo.value?.id as number,
+                    created_at: new Date().getTime() / 1000,
+                    updated_at: new Date().getTime() / 1000,
+                    user_id: userStore.userInfo?.id as number,
+                    icon: roleInfo.value?.icon as string,
+                    model: selectedModel.value.name,
+                    type: 'reply',
+                    content: replyBuffer.value
+                  } as ChatHistory)
                 }
                 scrollToBottom()
               }

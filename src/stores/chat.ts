@@ -61,8 +61,21 @@ export const useChatStore = defineStore('chat', {
     newChat(chat: Chat) {
       this.chatList.unshift(chat)
     },
+    swapChatToFirst(chat: Chat) {
+      // 首先检查chat是否已经是列表的第一位
+      if (this.chatList[0] && this.chatList[0].id === chat.id) {
+        // chat已经是第一位，无需处理
+        return
+      }
+
+      const index = this.chatList.findIndex((item) => item.id === chat.id)
+      if (index > 0) {
+        // 确保找到的chat不是第一个元素，也确实在列表中
+        this.chatList.splice(index, 1) // 从当前位置删除
+        this.chatList.unshift(chat) // 添加到列表开头
+      }
+    },
     clearCachedItem() {
-      console.log('==========>>>>>>>>, clear')
       if (this.cachedMessage) {
         this.cachedMessage = ''
         localStorage.removeItem('ZenbotCachedMessage')
@@ -94,6 +107,9 @@ export const useChatStore = defineStore('chat', {
     },
     fuzzySearchRole(query: string): Role[] {
       return this.allRoleList.filter((role) => role.name.includes(query))
+    },
+    fuzzySearchChat(query: string): Chat[] {
+      return this.chatList.filter((c) => c.title.includes(query))
     },
     getRoleByKey(key: string): Role | undefined {
       return this.allRoleList.find((role) => role.key === key)
