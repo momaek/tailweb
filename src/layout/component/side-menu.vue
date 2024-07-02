@@ -158,6 +158,27 @@
         </router-link>
       </li>
     </section>
+    <section class="flex flex-col bg-background">
+      <a
+        class="py-2 px-5 mx-1 mt-2 border rounded-full hover:bg-secondary flex justify-center items-center"
+        href="https://github.com/momaek/tailweb"
+        target="_blank"
+        ><githubIcon class="w-5 h-5 mr-2" />momaek/tailweb</a
+      >
+      <a
+        class="py-2 px-5 mx-1 mt-2 border rounded-full hover:bg-secondary flex justify-center items-center"
+        href="https://github.com/momaek/geekai"
+        target="_blank"
+        ><githubIcon class="w-5 h-5 mr-2" />momaek/geekai</a
+      >
+
+      <a
+        class="py-2 px-5 mx-1 mt-2 border rounded-full hover:bg-secondary flex justify-center items-center"
+        href="https://github.com/yangjian102621/geekai"
+        target="_blank"
+        ><githubIcon class="w-5 h-5 mr-2" />fork yangjian102621/geekai</a
+      >
+    </section>
   </menu>
 </template>
 <script lang="ts">
@@ -176,6 +197,7 @@ import mjicon from '@/components/icons/mj-icon.vue'
 import { computed, defineComponent } from 'vue'
 import { formatTimestampToMD } from '@/utils'
 import { useChatStore } from '@/stores/chat'
+import githubIcon from '@/components/icons/github-icon.vue'
 export default defineComponent({
   name: 'SideMenu',
   components: {
@@ -188,7 +210,8 @@ export default defineComponent({
     PhotoIcon,
     UserIcon,
     GiftIcon,
-    Cog8ToothIcon
+    Cog8ToothIcon,
+    githubIcon
   },
   setup() {
     const configStore = useConfigStore()
