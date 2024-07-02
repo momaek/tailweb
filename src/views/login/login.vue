@@ -32,7 +32,6 @@ import { computed, defineComponent, ref } from 'vue'
 import ThemeToggle from '@/components/theme-toggle.vue'
 import LogoIcon from '@/components/icons/logo-icon.vue'
 import { useConfigStore } from '@/stores/config'
-import { notify } from 'notiwind'
 import LoginTab from './components/login-tab.vue'
 import RegisterTab from './components/register-tab.vue'
 import { useTitle } from '@vueuse/core'
@@ -53,21 +52,9 @@ export default defineComponent({
 
     const isLogin = ref(true)
 
-    const btnClick = () => {
-      notify(
-        {
-          group: 'error',
-          title: '操作成功',
-          text: '恭喜登录成功'
-        },
-        4000
-      )
-    }
-
     return {
       theme,
-      isLogin,
-      btnClick
+      isLogin
     }
   }
 })
