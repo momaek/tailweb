@@ -129,7 +129,7 @@ import { InformationCircleIcon, UserPlusIcon, ArrowUpOnSquareIcon } from '@heroi
 import FwTooltip from '@/components/tooltip/fw-tooltip.vue'
 import { Listbox, ListboxOptions, ListboxOption, ListboxButton } from '@headlessui/vue'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/vue/20/solid'
-import { useEventBus } from '@vueuse/core'
+import { useEventBus, useTitle } from '@vueuse/core'
 import { useUserStore } from '@/stores/user'
 import { randString } from '@/utils'
 import { notify } from 'notiwind'
@@ -157,6 +157,8 @@ const chatData = ref<ChatHistory[]>([])
 const el = ref<HTMLElement | null>(null)
 const sessionID = randString(42)
 const replyBuffer = ref('')
+
+useTitle(chatInfo.value?.title)
 
 heightChange.on((height: number) => {
   marginBottom.value = height

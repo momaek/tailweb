@@ -120,6 +120,7 @@ import { CheckIcon, ChevronUpDownIcon } from '@heroicons/vue/20/solid'
 import { useEventBus } from '@vueuse/core'
 import { useUserStore } from '@/stores/user'
 import { UUID } from '@/utils'
+import { useTitle } from '@vueuse/core'
 
 const route = useRoute()
 const router = useRouter()
@@ -172,6 +173,7 @@ const initPageWithRolesAndChats = async () => {
     selectedModel.value = models.value.find((model) => model.id === roleInfo.value?.model_id)
     canSelect.value = false
   }
+  useTitle(roleInfo.value?.name)
 }
 
 initPageWithRolesAndChats()

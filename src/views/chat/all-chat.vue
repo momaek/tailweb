@@ -107,7 +107,7 @@ import { MagnifyingGlassIcon, XMarkIcon } from '@heroicons/vue/24/outline'
 import type { Chat } from '@/models/chat'
 import { formatTimestampToMD } from '@/utils'
 import { useTitle } from '@vueuse/core'
-useTitle('探索')
+useTitle('所有聊天')
 export default defineComponent({
   name: 'ExploreRole',
   components: {
