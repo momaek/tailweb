@@ -25,7 +25,6 @@ export const useChatStore = defineStore('chat', {
       }
     },
     setCachedMessage(message: string) {
-      console.log('==========>>>>>>>>, set')
       this.cachedMessage = message
       localStorage.setItem('ZenbotCachedMessage', message)
     },
@@ -96,7 +95,7 @@ export const useChatStore = defineStore('chat', {
         }
       }
       const res = await getChatList()
-      this.chatList = res
+      if (res) this.chatList = res
       return this.chatList
     },
     getChatByID(id: number): Chat | undefined {
