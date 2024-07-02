@@ -1,7 +1,5 @@
 <template>
-  <div
-    class="fixed top-5 z-50 right-20 p-1 border cursor-pointer border-gray-900 dark:border-slate-300 rounded-full text-gray-900 dark:text-slate-300"
-  >
+  <div class="fixed top-5 z-50 right-2 sm:right-20 p-1 border cursor-pointer rounded-full">
     <SunIcon v-if="theme == 'dark'" class="w-6" @click="setTheme('light')" />
     <MoonIcon v-else class="w-6" @click="setTheme('dark')" />
   </div>

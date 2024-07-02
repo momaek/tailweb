@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { notify } from 'notiwind'
+import { toast } from '@/components/ui/toast'
 import type {
   AxiosResponse,
   AxiosRequestConfig,
@@ -55,10 +55,10 @@ class HttpRequest {
           if (data.code === 401) {
             window.location.href = '/login'
           } else {
-            notify({
-              group: 'error',
+            toast({
               title: '请求出错',
-              text: data.message
+              description: data.message,
+              variant: 'destructive'
             })
           }
         } else {
@@ -72,20 +72,20 @@ class HttpRequest {
         }
 
         if (error.response?.data) {
-          notify({
-            group: 'error',
+          toast({
             title: '请求出错',
-            text: error.response.data?.message
+            description: error.response.data?.message,
+            variant: 'destructive'
           })
         } else {
           if (error.response?.status === 401) {
             window.location.href = '/'
             return
           }
-          notify({
-            group: 'error',
+          toast({
             title: '请求出错',
-            text: error.response?.statusText
+            description: error.response?.statusText,
+            variant: 'destructive'
           })
         }
         return Promise.reject(error)

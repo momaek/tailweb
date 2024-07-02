@@ -29,7 +29,7 @@
         <div class="w-full flex flex-col">
           <textarea
             id="message-input"
-            class="block py-3 w-full border-none outline-none bg-transparent resize-none"
+            class="block py-3 w-full border-none outline-none bg-transparent resize-none font-normal"
             placeholder="开始新的聊天"
             :rows="1"
             v-model="input"

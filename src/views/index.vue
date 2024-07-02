@@ -1,6 +1,6 @@
 <template>
   <div class="w-full flex flex-col gap-8 items-center justify-center py-10">
-    <div class="max-w-4xl px-1 lg:px-8 w-full flex flex-col gap-5 mt-20">
+    <div class="max-w-4xl px-1 lg:px-8 w-full flex flex-col gap-5 mt-5 sm:mt-20">
       <div class="logo flex items-center justify-center">
         <LogoIcon class="w-20 h-20" />
         <span class="ml-2 text-6xl font-bold">Zen</span>
@@ -106,11 +106,15 @@
 </template>
 <script lang="ts">
 import LogoIcon from '@/components/icons/logo-icon.vue'
-import type { Role } from '@/models/chat'
+import type { Chat, Role } from '@/models/chat'
 import { useChatStore } from '@/stores/chat'
 import { Squares2X2Icon } from '@heroicons/vue/24/outline'
 import { defineComponent, ref } from 'vue'
 import MessageInput from '@/components/message-input.vue'
+import { useEventBus } from '@vueuse/core'
+import { useUserStore } from '@/stores/user'
+import { useRouter } from 'vue-router'
+import { UUID } from '@/utils'
 export default defineComponent({
   name: 'BotIndex',
   components: {
@@ -144,6 +148,33 @@ export default defineComponent({
       latestGroupRoles.value = groupRoles.value.slice(0, 5)
     })
 
+    const msgSend = useEventBus<string>('message-send')
+    const userStore = useUserStore()
+    const router = useRouter()
+
+    msgSend.on((message: string) => {
+      if (!selectedRole.value) {
+        return
+      }
+
+      if (selectedRole.value) {
+        chatStore.setCachedMessage(message)
+        chatStore.setCachedRole(selectedRole.value as Role)
+        // New chat
+        const chat: Chat = {
+          chat_id: UUID(),
+          role_id: selectedRole.value?.id as number,
+          model_id: selectedRole.value?.model_id as number,
+          created_at: new Date().getTime() / 1000,
+          updated_at: new Date().getTime() / 1000,
+          user_id: userStore.userInfo?.id,
+          icon: selectedRole.value?.icon as string,
+          title: message
+        } as Chat
+        chatStore.newChat(chat)
+        router.push({ name: 'chat', params: { id: chat.chat_id } })
+      }
+    })
     return {
       originalRoles,
       allRoles,

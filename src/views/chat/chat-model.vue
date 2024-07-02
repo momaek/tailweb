@@ -13,14 +13,14 @@
           </div>
         </div>
         <div class="more-op flex">
-          <span class="cursor-pointer flex px-2 py-1 rounded-full bg-border hover:bg-border/60">
+          <span class="cursor-pointer flex px-2 py-1 rounded-full bg-accent hover:bg-accent/60">
             <InformationCircleIcon class="w-5 mr-1" />
             <span>角色信息</span>
           </span>
 
           <FwTooltip class="ml-3">
             <template #trigger>
-              <span class="cursor-pointer flex px-2 py-1 rounded-full bg-border hover:bg-border/60">
+              <span class="cursor-pointer flex px-2 py-1 rounded-full bg-accent hover:bg-accent/60">
                 <UserPlusIcon class="h-5 w-5" aria-hidden="true" />
               </span>
             </template>
@@ -31,7 +31,7 @@
 
           <FwTooltip class="ml-3">
             <template #trigger>
-              <span class="cursor-pointer flex px-2 py-1 rounded-full bg-border hover:bg-border/60">
+              <span class="cursor-pointer flex px-2 py-1 rounded-full bg-accent hover:bg-accent/60">
                 <ArrowUpOnSquareIcon class="h-5 w-5" aria-hidden="true" />
               </span>
             </template>

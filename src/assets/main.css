@@ -2,6 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+html,
+body {
+  overscroll-behavior: none; /* 禁用滚动链 */
+  touch-action: pan-x pan-y;
+}
 @layer base {
   :root {
     --background: 239 10% 100%;
@@ -12,7 +17,7 @@
     --popover-foreground: 239 95% 10%;
     --primary: 239 73% 60%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 239 10% 90%;
+    --secondary: 239 10% 95%;
     --secondary-foreground: 0 0% 0%;
     --muted: 201 10% 95%;
     --muted-foreground: 239 5% 40%;

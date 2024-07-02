@@ -27,7 +27,6 @@
     "markdown-it": "^14.1.0",
     "markdown-it-link-attributes": "^4.0.1",
     "mermaid-it-markdown": "^1.0.8",
-    "notiwind": "^2.0.2",
     "pinia": "^2.1.7",
     "radix-vue": "^1.8.5",
     "tailwind-merge": "^2.3.0",

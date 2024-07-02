@@ -33,7 +33,7 @@
           leave-from="opacity-100"
           leave-to="opacity-0"
         >
-          <div class="fixed inset-0 bg-primary/50" />
+          <div class="fixed inset-0 bg-accent/20" />
         </TransitionChild>
 
         <div class="fixed inset-0 flex">
@@ -57,7 +57,11 @@
                 leave-to="opacity-0"
               >
                 <div class="absolute left-full top-0 flex w-16 justify-center pt-5">
-                  <button type="button" class="-m-2.5 p-2.5" @click="sidebarOpen = false">
+                  <button
+                    type="button"
+                    class="-m-2.5 p-2.5 bg-background rounded-sm"
+                    @click="sidebarOpen = false"
+                  >
                     <span class="sr-only">Close sidebar</span>
                     <XMarkIcon class="h-6 w-6 text-secondary-foreground" aria-hidden="true" />
                   </button>

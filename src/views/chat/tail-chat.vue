@@ -17,14 +17,14 @@
           </div>
         </div>
         <div class="more-op flex">
-          <span class="cursor-pointer flex px-2 py-1 rounded-full bg-border hover:bg-border/60">
+          <span class="cursor-pointer flex px-2 py-1 rounded-full bg-accent hover:bg-accent/60">
             <InformationCircleIcon class="w-5 mr-1" />
             <span>角色信息</span>
           </span>
 
           <FwTooltip class="ml-3">
             <template #trigger>
-              <span class="cursor-pointer flex px-2 py-1 rounded-full bg-border hover:bg-border/60">
+              <span class="cursor-pointer flex px-2 py-1 rounded-full bg-accent hover:bg-accent/60">
                 <UserPlusIcon class="h-5 w-5" aria-hidden="true" />
               </span>
             </template>
@@ -35,7 +35,7 @@
 
           <FwTooltip class="ml-3">
             <template #trigger>
-              <span class="cursor-pointer flex px-2 py-1 rounded-full bg-border hover:bg-border/60">
+              <span class="cursor-pointer flex px-2 py-1 rounded-full bg-accent hover:bg-accent/60">
                 <ArrowUpOnSquareIcon class="h-5 w-5" aria-hidden="true" />
               </span>
             </template>
@@ -107,7 +107,7 @@
           </div>
         </div>
       </div>
-      <div class="chat-messages mt-2">
+      <div class="chat-messages mt-4">
         <div class="flex-1 space-y-6 text-sm leading-6 sm:text-base sm:leading-7">
           <MessageLine
             v-for="history in chatData"
@@ -132,7 +132,7 @@ import { CheckIcon, ChevronUpDownIcon } from '@heroicons/vue/20/solid'
 import { useEventBus, useTitle } from '@vueuse/core'
 import { useUserStore } from '@/stores/user'
 import { randString } from '@/utils'
-import { notify } from 'notiwind'
+import { toast } from '@/components/ui/toast'
 import MessageLine from './components/message-line.vue'
 import { getChatHistories, stopChatSession } from '@/api/chat'
 
@@ -297,8 +297,7 @@ const connect = async () => {
       userStore.getToken()
   )
   ws.addEventListener('open', async () => {
-    notify({
-      group: 'success',
+    toast({
       title: '连接成功'
     })
     sendHeartbeat()
@@ -315,10 +314,10 @@ const connect = async () => {
           const data = JSON.parse(String(reader.result))
           switch (data.type) {
             case 'error':
-              notify({
-                group: 'error',
+              toast({
                 title: '连接失败',
-                text: data.content
+                variant: 'destructive',
+                description: data.content
               })
               break
             case 'start':
@@ -370,10 +369,10 @@ const connect = async () => {
 
   ws.addEventListener('error', (e) => {
     console.error('WebSocket 连接错误:', e)
-    notify({
-      group: 'error',
+    toast({
       title: '连接失败',
-      text: '无法连接到服务器，请退出登录后重新登录再试。'
+      variant: 'destructive',
+      description: '无法连接到服务器，请退出登录后重新登录再试。'
     })
   })
   chatStore.setSocket(ws)
@@ -393,10 +392,10 @@ stopGenerate.on((v: boolean) => {
         showStopGenerateBtn(false)
       })
       .catch(() => {
-        notify({
-          group: 'error',
+        toast({
           title: '停止失败',
-          text: '无法停止会话，请重试。'
+          variant: 'destructive',
+          description: '无法停止会话，请重试。'
         })
       })
   }

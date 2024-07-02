@@ -1,11 +1,11 @@
 <template>
   <div>
-    <NotiGroup />
+    <Toaster />
     <router-view />
   </div>
 </template>
 <script setup lang="ts">
-import NotiGroup from '@/components/noti-group.vue'
+import Toaster from '@/components/ui/toast/Toaster.vue'
 const theme = localStorage.getItem('ZenbotTheme')
 if (theme) {
   document.documentElement.classList.add(theme)

@@ -1,5 +1,5 @@
 <template>
-  <menu class="flex flex-col overflow-y-auto gap-1 bg-border">
+  <menu class="flex flex-col overflow-y-auto gap-1 bg-border max-h-[calc(100vh-60px)]">
     <section class="flex flex-col border-b bg-background">
       <li class="border-b p-3 flex justify-between">
         <div class="bg-secondary/70 hover:bg-secondary text-secondary-foreground rounded-lg w-1/2">
