@@ -45,9 +45,9 @@
       }"
     >
       <div
-        class="flex rounded-md bg-laccent-base p-2"
+        class="flex rounded-md bg-laccent-base p-2 max-w-full"
         :class="{
-          'bg-secondary max-w-full': !inversion,
+          'bg-secondary': !inversion,
           'bg-primary text-white': inversion
         }"
       >
