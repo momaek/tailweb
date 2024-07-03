@@ -38,22 +38,22 @@
     </div>
 
     <div
-      class="flex"
+      class="flex max-w-full"
       :class="{
         'mt-1.5 flex-col': !inversion,
-        'flex-row-reverse justify-between': inversion
+        'flex-row-reverse justify-start': inversion
       }"
     >
       <div
         class="flex rounded-md bg-laccent-base p-2"
         :class="{
-          'bg-secondary max-w-4xl': !inversion,
+          'bg-secondary max-w-full': !inversion,
           'bg-primary text-white': inversion
         }"
       >
         <LoadingIcon class="w-8 h-8 text-secondary-foreground" v-if="!text" />
-        <ContextMenu class="bg-background">
-          <ContextMenuTrigger><TextResult :text="text" /></ContextMenuTrigger>
+        <ContextMenu class="bg-background max-w-full">
+          <ContextMenuTrigger class="max-w-full"><TextResult :text="text" /></ContextMenuTrigger>
           <ContextMenuContent class="w-40 bg-background">
             <ContextMenuItem class="cursor-pointer"
               ><span class="w-10 flex justify-center mr-5"><ThumbsUp class="w-5" /></span

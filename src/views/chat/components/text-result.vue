@@ -48,7 +48,7 @@ const text = computed(() => {
 })
 
 function highlightBlock(str: string, lang?: string) {
-  return `<pre class="code-block-wrapper rounded-lg bg-background mt-2 mb-2"><div class="code-block-header bg-accent/50 p-3 rounded-tl-lg rounded-tr-lg"><span class="code-block-header__lang">${lang}</span><span class="code-block-header__copy">${'复制代码'}</span></div><code class="hljs p-2 rounded-bl-lg rounded-br-lg code-block-body ${lang}">${str}</code></pre>`
+  return `<pre class="code-block-wrapper max-w-full rounded-lg bg-background mt-2 mb-2 overflow-x-auto"><div class="code-block-header p-1 text-slate-100 bg-gray-600 rounded-tl-lg rounded-tr-lg"><span class="code-block-header__lang">${lang}</span><span class="code-block-header__copy">${'复制代码'}</span></div><code class="hljs p-2 rounded-bl-lg rounded-br-lg code-block-body ${lang}">${str}</code></pre>`
 }
 
 function addCopyEvents() {
@@ -118,19 +118,17 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <div>
-    <div ref="textRef" class="leading-relaxed break-words">
-      <div v-if="!inversion">
-        <div
-          v-if="!asRawText"
-          class="markdown-body"
-          :class="{ 'markdown-body-generate': loading }"
-          v-html="text"
-        />
-        <div v-else class="whitespace-pre-wrap" v-text="text" />
-      </div>
-      <div v-else class="whitespace-pre-wrap" v-text="text" />
+  <div ref="textRef" class="leading-relaxed break-words max-w-full">
+    <div v-if="!inversion" class="max-w-full">
+      <div
+        v-if="!asRawText"
+        class="markdown-body max-w-full"
+        :class="{ 'markdown-body-generate': loading }"
+        v-html="text"
+      />
+      <div v-else class="whitespace-pre-wrap max-w-full" v-text="text" />
     </div>
+    <div v-else class="whitespace-pre-wrap max-w-full" v-text="text" />
   </div>
 </template>
 
