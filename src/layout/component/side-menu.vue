@@ -30,7 +30,7 @@
         </div>
       </li>
       <li
-        class="border-b p-2"
+        class="border-b py-1 p-2"
         v-for="chat in sideChats"
         :key="chat.id"
         :class="{
@@ -61,7 +61,7 @@
         </router-link>
       </li>
       <li
-        class="border-b p-2"
+        class="border-b py-1 p-2"
         :class="{
           'bg-secondary': selectedKey === '/chats',
           'hover:bg-secondary': selectedKey !== '/chats'
@@ -75,7 +75,7 @@
     </section>
     <section class="flex flex-col border-b bg-background">
       <li
-        class="border-b p-2"
+        class="border-b py-1 p-2"
         :class="{
           'bg-secondary': selectedKey === '/midjourney',
           'hover:bg-secondary': selectedKey !== '/midjourney'
@@ -90,7 +90,7 @@
         </router-link>
       </li>
       <li
-        class="border-b p-2"
+        class="border-b py-1 p-2"
         :class="{
           'bg-secondary': selectedKey === '/stable-diffusion',
           'hover:bg-secondary': selectedKey !== '/stable-diffusion'
@@ -105,7 +105,7 @@
         </router-link>
       </li>
       <li
-        class="border-b p-2"
+        class="border-b py-1 p-2"
         :class="{
           'bg-secondary': selectedKey === '/gallery',
           'hover:bg-secondary': selectedKey !== '/gallery'
@@ -119,7 +119,7 @@
     </section>
     <section class="flex flex-col border-b bg-background">
       <li
-        class="border-b p-2"
+        class="border-b py-1 p-2"
         :class="{
           'bg-secondary': selectedKey === '/subscription',
           'hover:bg-secondary': selectedKey !== '/subscription'
@@ -134,7 +134,7 @@
         </router-link>
       </li>
       <li
-        class="border-b p-2"
+        class="border-b py-1 p-2"
         :class="{
           'bg-secondary': selectedKey === '/user',
           'hover:bg-secondary': selectedKey !== '/user'
@@ -146,7 +146,7 @@
         </router-link>
       </li>
       <li
-        class="border-b p-2"
+        class="border-b py-1 p-2"
         :class="{
           'bg-secondary': selectedKey === '/settings',
           'hover:bg-secondary': selectedKey !== '/settings'
