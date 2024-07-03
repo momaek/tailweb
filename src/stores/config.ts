@@ -5,7 +5,7 @@ import { defineStore } from 'pinia'
 export const useConfigStore = defineStore('config', {
   state: () => ({
     theme: 'light',
-    system_config: {} as Config,
+    system_config: undefined as Config | undefined,
     pageTitle: undefined as string | undefined,
     sideMenuSelected: ''
   }),
@@ -28,6 +28,7 @@ export const useConfigStore = defineStore('config', {
       return 'light'
     },
     async getSystemConfig() {
+      console.log('213131', this.system_config)
       if (this.system_config) {
         return
       }

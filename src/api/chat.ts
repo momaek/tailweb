@@ -45,3 +45,17 @@ export async function stopChatSession(sessionID: string) {
     })
     .then((res) => res.data)
 }
+
+export async function removeChat(chatId: string) {
+  return request.get({
+    url: '/chat/remove',
+    params: { chat_id: chatId }
+  })
+}
+
+export async function clearChat(chatId: string) {
+  return request.get({
+    url: '/chat/clear',
+    params: { chat_id: chatId }
+  })
+}

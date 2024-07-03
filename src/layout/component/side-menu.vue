@@ -5,11 +5,11 @@
         <div class="bg-secondary/70 hover:bg-secondary text-secondary-foreground rounded-lg w-1/2">
           <router-link to="/explore" class="p-2 flex flex-col">
             <div class="search-icon w-full">
-              <MagnifyingGlassIcon class="w-7 h-7 font-bold" />
+              <Search class="w-6 h-6 font-bold" />
             </div>
             <div class="w-full mt-1 flex justify-between items-center">
               <span class="font-bold text-base">探索</span>
-              <span><ChevronRightIcon class="w-6 h-6 font-bold" /> </span>
+              <span><ChevronRight class="w-6 h-6 font-bold" /> </span>
             </div>
           </router-link>
         </div>
@@ -18,12 +18,12 @@
         >
           <router-link to="/" class="p-2 flex flex-col">
             <div class="search-icon w-full">
-              <SquaresPlusIcon class="w-7 h-7 font-bold" />
+              <MessageSquarePlus class="w-6 h-6 font-bold" />
             </div>
             <div class="w-full mt-1 flex justify-between items-center">
               <span class="font-bold text-base">新建聊天</span>
               <span>
-                <PlusIcon class="w-6 h-6 font-bold" />
+                <Plus class="w-6 h-6 font-bold" />
               </span>
             </div>
           </router-link>
@@ -43,19 +43,39 @@
           class="flex items-center justify-start font-bold text-base p-2 w-full"
         >
           <div><img class="w-10 rounded-md" :src="chat.icon" /></div>
-          <div class="flex flex-col ml-2 w-full max-h-16 overflow-hidden">
+          <div class="flex flex-col ml-2 w-full max-h-16">
             <div class="head flex justify-between items-center text-xs font-normal">
-              <span class="text-ellipsis break-words overflow-hidden">{{
-                getRoleName(chat.role_id)
-              }}</span>
+              <span class="text-ellipsis break-words truncate">{{ chat.role_name }}</span>
               <span class="flex justify-start items-center"
                 ><span>{{ formatTimestampToMD(chat.updated_at) }}</span>
-                <span><ChevronRightIcon class="w-3.5" /></span
+                <span><ChevronRight class="w-3.5" /></span
               ></span>
             </div>
-            <div class="body mt-1 flex flex-col">
-              <div class="truncate">{{ chat.title }}</div>
-              <div class="text-foreground/50 font-normal text-sm">{{ chat.model }}</div>
+            <div class="body flex justify-between">
+              <div class="flex flex-col">
+                <div class="truncate">{{ chat.title }}</div>
+                <div class="text-foreground/50 font-normal text-sm truncate">{{ chat.model }}</div>
+              </div>
+              <div class="dropwon flex">
+                <DropdownMenu>
+                  <DropdownMenuTrigger @click.stop
+                    ><span class="text-secondary-foreground/50"><Ellipsis class="w-6" /></span
+                  ></DropdownMenuTrigger>
+                  <DropdownMenuContent class="w-40 bg-background">
+                    <DropdownMenuItem class="cursor-pointer"
+                      ><span class="w-10 flex justify-center mr-5"
+                        ><SquarePen class="w-5 h-5" /></span
+                      >编辑</DropdownMenuItem
+                    >
+                    <DropdownMenuItem class="cursor-pointer"
+                      ><span class="w-10 flex justify-center mr-5 text-destructive"
+                        ><Trash2 class="w-5 h-5"
+                      /></span>
+                      <span class="text-destructive">删除</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
             </div>
           </div>
         </router-link>
@@ -68,7 +88,7 @@
         }"
       >
         <router-link to="/chats" class="flex items-center justify-start font-bold text-base p-3">
-          <span><ChatBubbleLeftRightIcon class="w-7" /></span>
+          <span><MessagesSquare class="w-7" /></span>
           <span class="ml-2">所有聊天</span>
         </router-link>
       </li>
@@ -112,7 +132,7 @@
         }"
       >
         <router-link to="/gallery" class="flex items-center justify-start font-bold text-base p-3">
-          <span><PhotoIcon class="w-7" /></span>
+          <span><Images class="w-7" /></span>
           <span class="ml-2">画廊</span>
         </router-link>
       </li>
@@ -129,7 +149,7 @@
           to="/subscription"
           class="flex items-center justify-start font-bold text-base p-3"
         >
-          <span><GiftIcon class="w-7" /></span>
+          <span><Gem class="w-7" /></span>
           <span class="ml-2">订阅</span>
         </router-link>
       </li>
@@ -141,7 +161,7 @@
         }"
       >
         <router-link to="/user" class="flex items-center justify-start font-bold text-base p-3">
-          <span><UserIcon class="w-7" /></span>
+          <span><CircleUser class="w-7" /></span>
           <span class="ml-2">个人主页</span>
         </router-link>
       </li>
@@ -153,7 +173,7 @@
         }"
       >
         <router-link to="/settings" class="flex items-center justify-start font-bold text-base p-3">
-          <span><Cog8ToothIcon class="w-7" /></span>
+          <span><Settings class="w-7" /></span>
           <span class="ml-2">设置</span>
         </router-link>
       </li>
@@ -184,34 +204,51 @@
 <script lang="ts">
 import { useConfigStore } from '@/stores/config'
 import {
-  ChatBubbleLeftRightIcon,
-  Cog8ToothIcon,
-  GiftIcon,
-  MagnifyingGlassIcon,
-  PhotoIcon,
-  SquaresPlusIcon,
-  UserIcon
-} from '@heroicons/vue/24/outline'
-import { ChevronRightIcon, PlusIcon } from '@heroicons/vue/24/solid'
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger
+} from '@/components/ui/dropdown-menu'
 import mjicon from '@/components/icons/mj-icon.vue'
 import { computed, defineComponent } from 'vue'
 import { formatTimestampToMD } from '@/utils'
 import { useChatStore } from '@/stores/chat'
 import githubIcon from '@/components/icons/github-icon.vue'
+import {
+  Ellipsis,
+  ChevronRight,
+  Search,
+  MessageSquarePlus,
+  Plus,
+  MessagesSquare,
+  Images,
+  Gem,
+  CircleUser,
+  Settings,
+  Trash2,
+  SquarePen
+} from 'lucide-vue-next'
 export default defineComponent({
   name: 'SideMenu',
   components: {
-    ChatBubbleLeftRightIcon,
-    ChevronRightIcon,
-    MagnifyingGlassIcon,
-    PlusIcon,
-    SquaresPlusIcon,
+    MessagesSquare,
+    MessageSquarePlus,
+    ChevronRight,
+    Ellipsis,
+    Search,
+    SquarePen,
+    Plus,
     mjicon,
-    PhotoIcon,
-    UserIcon,
-    GiftIcon,
-    Cog8ToothIcon,
-    githubIcon
+    Images,
+    CircleUser,
+    Gem,
+    Settings,
+    Trash2,
+    githubIcon,
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger
   },
   setup() {
     const configStore = useConfigStore()
@@ -219,13 +256,8 @@ export default defineComponent({
     const sideChats = computed(() => chatStore.chatList.slice(0, 5))
     const selectedKey = computed(() => configStore.sideMenuSelected)
     chatStore.getAllChatList(true)
-    chatStore.getAllRoleList()
-    const getRoleName = (id: number) => {
-      const role = chatStore.allRoleList.find((role) => role.id === id)
-      return role?.name
-    }
 
-    return { sideChats, selectedKey, formatTimestampToMD, getRoleName }
+    return { sideChats, selectedKey, formatTimestampToMD }
   }
 })
 </script>

@@ -114,13 +114,13 @@
           <div v-if="roleInfo" class="flex justify-start w-full ml-5 lg:ml-2 items-center">
             <span><img class="w-8 rounded-lg bg-gray-50" :src="roleInfo.icon" alt="" /></span>
             <div class="ml-2 flex flex-col">
-              <span v-if="chatInfo" class="font-bold text-base text-ellipsis whitespace-nowrap">
+              <span v-if="chatInfo" class="font-bold text-base truncate">
                 {{ chatInfo.title }}
               </span>
               <span v-else class="font-bold text-base text-ellipsis whitespace-nowrap">
                 新建聊天
               </span>
-              <span class="text-sm font-bold flex text-slate-400"
+              <span class="text-sm font-bold flex text-slate-400 truncate"
                 ><ShieldCheckIcon class="w-4 mr-2" />{{ roleInfo.key }}</span
               >
             </div>

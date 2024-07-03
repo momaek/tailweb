@@ -1,7 +1,7 @@
 <template>
   <div class="w-full flex justify-center py-8">
     <div
-      class="max-w-4xl px-2 lg:px-8 w-full flex flex-col overflow-y-auto"
+      class="max-w-4xl px-2 lg:px-8 w-full flex flex-col"
       ref="el"
       :style="{ 'margin-bottom': marginBottom + 20 + 'px' }"
     >
@@ -142,7 +142,7 @@ const chatStore = useChatStore()
 const userStore = useUserStore()
 const chatInfo = computed(() => chatStore.getChatByChatID(chatID as string))
 const roleInfo = ref<Role>(chatStore.getCachedRole() as Role)
-const models = ref<Model[]>([])
+const models = computed(() => chatStore.modelList)
 const selectedModel = ref<Model>(chatStore.getCachedModel() as Model)
 const canSelect = ref(true)
 const msgSend = useEventBus<string>('message-send')
@@ -258,6 +258,11 @@ const initPageWithRolesAndChats = async () => {
   if (!selectedModel.value) {
     selectedModel.value = chatStore.getModelByID(chatInfo.value?.model_id as number) as Model
   }
+
+  if (roleInfo.value.model_id) {
+    canSelect.value = false
+  }
+
   if (el.value) {
     window.scrollTo(0, el.value.scrollHeight)
   }

@@ -5,10 +5,12 @@ export interface Chat {
   user_id: number
   icon: string
   role_id: number
+  role_name: string
   chat_id: string
   model_id: number
   model: string
   title: string
+  isDropdownOpen?: boolean
 }
 
 export interface UpdateChatParam {

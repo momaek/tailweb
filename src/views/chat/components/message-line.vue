@@ -77,10 +77,9 @@
         </ContextMenu>
       </div>
       <div class="mr-2 ml-2 mt-1.5 flex" v-if="inversion && isHovered">
-        <DropdownMenu @click.stop>
+        <DropdownMenu>
           <DropdownMenuTrigger
-            ><span class="text-secondary-foreground/50 w-5" @click="handleMouseOver"
-              ><Ellipsis class="w-5" /></span
+            ><span class="text-secondary-foreground/50 w-5"><Ellipsis class="w-5" /></span
           ></DropdownMenuTrigger>
           <DropdownMenuContent class="w-40 bg-background">
             <DropdownMenuItem class="cursor-pointer"
