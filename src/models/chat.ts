@@ -10,7 +10,6 @@ export interface Chat {
   model_id: number
   model: string
   title: string
-  isDropdownOpen?: boolean
 }
 
 export interface UpdateChatParam {

@@ -29,57 +29,7 @@
           </router-link>
         </div>
       </li>
-      <li
-        class="border-b py-1 p-2"
-        v-for="chat in sideChats"
-        :key="chat.id"
-        :class="{
-          'bg-secondary': selectedKey === '/chat/' + chat.chat_id,
-          'hover:bg-secondary': selectedKey !== '/chat/' + chat.chat_id
-        }"
-      >
-        <router-link
-          :to="'/chat/' + chat.chat_id"
-          class="flex items-center justify-start font-bold text-base p-2 w-full"
-        >
-          <div><img class="w-10 rounded-md" :src="chat.icon" /></div>
-          <div class="flex flex-col ml-2 w-full max-h-16">
-            <div class="head flex justify-between items-center text-xs font-normal">
-              <span class="text-ellipsis break-words truncate">{{ chat.role_name }}</span>
-              <span class="flex justify-start items-center"
-                ><span>{{ formatTimestampToMD(chat.updated_at) }}</span>
-                <span><ChevronRight class="w-3.5" /></span
-              ></span>
-            </div>
-            <div class="body flex justify-between">
-              <div class="flex flex-col">
-                <div class="truncate">{{ chat.title }}</div>
-                <div class="text-foreground/50 font-normal text-sm truncate">{{ chat.model }}</div>
-              </div>
-              <div class="dropwon flex">
-                <DropdownMenu>
-                  <DropdownMenuTrigger @click.stop
-                    ><span class="text-secondary-foreground/50"><Ellipsis class="w-6" /></span
-                  ></DropdownMenuTrigger>
-                  <DropdownMenuContent class="w-40 bg-background">
-                    <DropdownMenuItem class="cursor-pointer"
-                      ><span class="w-10 flex justify-center mr-5"
-                        ><SquarePen class="w-5 h-5" /></span
-                      >编辑</DropdownMenuItem
-                    >
-                    <DropdownMenuItem class="cursor-pointer"
-                      ><span class="w-10 flex justify-center mr-5 text-destructive"
-                        ><Trash2 class="w-5 h-5"
-                      /></span>
-                      <span class="text-destructive">删除</span>
-                    </DropdownMenuItem>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </div>
-            </div>
-          </div>
-        </router-link>
-      </li>
+      <ChatList :chats="sideChats" :isMenu="true" v-if="sideChats.length > 0" />
       <li
         class="border-b py-1 p-2"
         :class="{
@@ -203,19 +153,13 @@
 </template>
 <script lang="ts">
 import { useConfigStore } from '@/stores/config'
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu'
+
 import mjicon from '@/components/icons/mj-icon.vue'
 import { computed, defineComponent } from 'vue'
 import { formatTimestampToMD } from '@/utils'
 import { useChatStore } from '@/stores/chat'
 import githubIcon from '@/components/icons/github-icon.vue'
 import {
-  Ellipsis,
   ChevronRight,
   Search,
   MessageSquarePlus,
@@ -224,36 +168,30 @@ import {
   Images,
   Gem,
   CircleUser,
-  Settings,
-  Trash2,
-  SquarePen
+  Settings
 } from 'lucide-vue-next'
+import ChatList from '@/components/chat-list.vue'
+
 export default defineComponent({
   name: 'SideMenu',
   components: {
     MessagesSquare,
     MessageSquarePlus,
     ChevronRight,
-    Ellipsis,
     Search,
-    SquarePen,
     Plus,
     mjicon,
+    ChatList,
     Images,
     CircleUser,
     Gem,
     Settings,
-    Trash2,
-    githubIcon,
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger
+    githubIcon
   },
   setup() {
     const configStore = useConfigStore()
     const chatStore = useChatStore()
-    const sideChats = computed(() => chatStore.chatList.slice(0, 5))
+    const sideChats = computed(() => chatStore.menuChatList)
     const selectedKey = computed(() => configStore.sideMenuSelected)
     chatStore.getAllChatList(true)
 

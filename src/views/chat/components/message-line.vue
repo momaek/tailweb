@@ -3,16 +3,13 @@
     class="flex w-full items-start"
     :class="{ 'flex-row-reverse': inversion, 'flex-col': !inversion }"
     ref="el"
-    @mouseenter="handleMouseOver"
-    @mouseleave="handleMouseLeave"
   >
     <div v-if="!inversion" class="flex justify-start items-center">
       <img class="w-5 h-5 rounded-md mr-2" :src="role?.icon" />
       <span class="text-xs mr-5">{{ role.name }}</span>
-      <DropdownMenu @click.stop v-if="!inversion && isHovered">
+      <DropdownMenu @click.stop v-if="!inversion">
         <DropdownMenuTrigger
-          ><span class="text-secondary-foreground/50" @click="handleMouseOver"
-            ><Ellipsis class="w-5 h-5" /></span
+          ><span class="text-secondary-foreground/50"><Ellipsis class="w-5 h-5" /></span
         ></DropdownMenuTrigger>
         <DropdownMenuContent class="w-40 bg-background">
           <DropdownMenuItem class="cursor-pointer"
@@ -76,7 +73,7 @@
           </ContextMenuContent>
         </ContextMenu>
       </div>
-      <div class="mr-2 ml-2 mt-1.5 flex" v-if="inversion && isHovered">
+      <div class="mr-2 ml-2 mt-1.5 flex" v-if="inversion">
         <DropdownMenu>
           <DropdownMenuTrigger
             ><span class="text-secondary-foreground/50 w-5"><Ellipsis class="w-5" /></span
@@ -138,20 +135,6 @@ const role = computed(() => props.role)
 const inversion = computed(() => (props.chat.type === 'reply' ? false : true))
 const el = ref<HTMLElement | null>(null)
 const { copy } = useClipboard()
-const isHovered = ref(false)
-const handleMouseOver = () => {
-  isHovered.value = true
-}
-
-const mouseLeave = ref()
-const handleMouseLeave = () => {
-  if (mouseLeave.value) {
-    clearTimeout(mouseLeave.value)
-  }
-  mouseLeave.value = setTimeout(() => {
-    isHovered.value = false
-  }, 25000)
-}
 
 if (props.chat.scrollToView) {
   nextTick(() => {

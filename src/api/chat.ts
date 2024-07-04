@@ -59,3 +59,10 @@ export async function clearChat(chatId: string) {
     params: { chat_id: chatId }
   })
 }
+
+export async function updateChat(chatId: string, title: string) {
+  return request.post({
+    url: '/chat/update',
+    data: { chat_id: chatId, title: title }
+  })
+}

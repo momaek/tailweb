@@ -6,6 +6,7 @@ let currentRequest: Promise<Role[]> | null = null
 export const useChatStore = defineStore('chat', {
   state: () => ({
     chatList: [] as Chat[],
+    menuChatList: [] as Chat[],
     originalRoleList: [] as Role[],
     allRoleList: [] as Role[],
     modelList: [] as Model[],
@@ -95,7 +96,10 @@ export const useChatStore = defineStore('chat', {
         }
       }
       const res = await getChatList()
-      if (res) this.chatList = res
+      if (res) {
+        this.chatList = res
+        this.menuChatList = JSON.parse(JSON.stringify(res.slice(0, 5)))
+      }
       return this.chatList
     },
     getChatByID(id: number): Chat | undefined {
