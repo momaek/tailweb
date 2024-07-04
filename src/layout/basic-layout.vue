@@ -120,7 +120,7 @@
               <span v-else class="font-bold text-base text-ellipsis whitespace-nowrap">
                 新建聊天
               </span>
-              <span class="text-sm font-bold flex text-slate-400 truncate"
+              <span class="text-sm font-bold flex text-slate-400 max-w-48 sm:max-w-64 truncate"
                 ><ShieldCheckIcon class="w-4 mr-2" />{{ roleInfo.key }}</span
               >
             </div>
