@@ -27,7 +27,7 @@
           </div>
           <div class="body flex justify-between">
             <div class="flex flex-col">
-              <div class="truncate">{{ chat.title }}</div>
+              <div class="truncate" :class="{ 'max-w-48': props.isMenu }">{{ chat.title }}</div>
               <div class="text-foreground/50 font-normal text-sm truncate">{{ chat.model }}</div>
             </div>
             <div class="dropwon flex">
