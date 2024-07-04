@@ -114,7 +114,7 @@
           <div v-if="roleInfo" class="flex justify-start w-full ml-5 lg:ml-2 items-center">
             <span><img class="w-8 rounded-lg bg-gray-50" :src="roleInfo.icon" alt="" /></span>
             <div class="ml-2 flex flex-col">
-              <span v-if="chatInfo" class="font-bold text-base truncate">
+              <span v-if="chatInfo" class="font-bold text-base truncate max-w-48 sm:max-w-64">
                 {{ chatInfo.title }}
               </span>
               <span v-else class="font-bold text-base text-ellipsis whitespace-nowrap">
@@ -212,6 +212,7 @@ export default defineComponent({
     watch(
       () => route.meta,
       (newVal) => {
+        chatInfo.value = undefined
         if (newVal.chat_page) {
           isChatPage.value = true
           if (route.params.chatmodel)
