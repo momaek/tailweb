@@ -51,6 +51,7 @@ class HttpRequest {
     this.service.interceptors.response.use(
       (response: AxiosResponse<ResponseModel>): AxiosResponse['data'] => {
         const { data } = response
+        console.log('-1231312312', data)
         if (data.code != 0) {
           if (data.code === 401) {
             window.location.href = '/login'

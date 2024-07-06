@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import type { User } from '@/models/user'
-import { getUserInfo } from '@/api/user'
+import { getUserInfo, logout } from '@/api/user'
 
 export const useUserStore = defineStore('user', {
   state: () => ({
@@ -29,6 +29,15 @@ export const useUserStore = defineStore('user', {
       }
       this.token = localStorage.getItem('ZenbotToken') || undefined
       return this.token
+    },
+    clearToken() {
+      this.token = undefined
+      localStorage.removeItem('ZenbotToken')
+    },
+    async signout() {
+      await logout()
+      this.clearToken()
+      this.userInfo = undefined
     }
   }
 })

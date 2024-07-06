@@ -20,7 +20,7 @@ export function register(data: UserRegister): Promise<User> {
 }
 
 export function logout() {
-  return request.post({
+  return request.get({
     url: '/user/logout'
   })
 }
