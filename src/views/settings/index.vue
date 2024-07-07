@@ -55,7 +55,7 @@ const themes = [
 ]
 const configStore = useConfigStore()
 const theme = ref(configStore.getTheme())
-const isTauri = computed(() => configStore.isTauri())
+const isTauri = computed(() => configStore.isTAURI())
 
 watch(theme, (value) => {
   configStore.setTheme(value as string)
