@@ -1,5 +1,6 @@
 import { getConfig } from '@/api/config'
 import type { Config } from '@/models/config'
+import httpRequest from '@/utils/axios'
 import { defineStore } from 'pinia'
 
 export const useConfigStore = defineStore('config', {
@@ -7,9 +8,29 @@ export const useConfigStore = defineStore('config', {
     theme: 'light',
     system_config: undefined as Config | undefined,
     pageTitle: undefined as string | undefined,
-    sideMenuSelected: ''
+    sideMenuSelected: '',
+    tauriHost: undefined as string | undefined,
+    isTauri: false
   }),
   actions: {
+    setTauriHost(host: string) {
+      this.tauriHost = host
+      localStorage.setItem('ZenbotTauriHost', host)
+      httpRequest.updateBaseURL(host)
+    },
+    getTauriHost() {
+      if (this.tauriHost) {
+        return this.tauriHost
+      }
+      this.tauriHost = localStorage.getItem('ZenbotTauriHost') || undefined
+      return this.tauriHost
+    },
+    isTAURI(): boolean {
+      return this.isTauri || this.getTauriHost() != undefined
+    },
+    setTauri() {
+      this.isTauri = true
+    },
     setTheme(t: string) {
       if (this.theme) {
         document.documentElement.classList.remove(this.theme)
@@ -28,7 +49,6 @@ export const useConfigStore = defineStore('config', {
       return 'light'
     },
     async getSystemConfig() {
-      console.log('213131', this.system_config)
       if (this.system_config) {
         return
       }

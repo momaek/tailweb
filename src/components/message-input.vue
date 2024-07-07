@@ -100,7 +100,7 @@
 <script lang="ts" setup>
 import { ArrowRightIcon, PlusCircleIcon, StopCircleIcon } from '@heroicons/vue/24/outline'
 import FwTooltip from './tooltip/fw-tooltip.vue'
-import { defineProps, ref } from 'vue'
+import { ref } from 'vue'
 import { SparklesIcon, XCircleIcon } from '@heroicons/vue/24/solid'
 import LoadingIcon from './icons/loading-icon.vue'
 import { uploadFile as apiUploadFile } from '@/api/file'

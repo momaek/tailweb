@@ -24,12 +24,17 @@ export enum HttpCodeConfig {
 
 class HttpRequest {
   service: AxiosInstance
+  host: string | undefined
 
   constructor() {
     this.service = axios.create({
       baseURL: '/api',
       timeout: 20 * 1000
     })
+
+    if (this.host) {
+      this.service.defaults.baseURL = this.host + '/api'
+    }
 
     this.service.interceptors.request.use(
       (config: InternalAxiosRequestConfig) => {
@@ -51,7 +56,6 @@ class HttpRequest {
     this.service.interceptors.response.use(
       (response: AxiosResponse<ResponseModel>): AxiosResponse['data'] => {
         const { data } = response
-        console.log('-1231312312', data)
         if (data.code != 0) {
           if (data.code === 401) {
             window.location.href = '/login'
@@ -126,6 +130,11 @@ class HttpRequest {
   }
   delete<T = any>(config: AxiosRequestConfig): Promise<ResponseModel<T>> {
     return this.request({ method: 'DELETE', ...config })
+  }
+
+  updateBaseURL(host: string) {
+    this.host = host
+    this.service.defaults.baseURL = host + '/api'
   }
 }
 
