@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import BasicLayout from '@/layout/basic-layout.vue'
 import { useConfigStore } from '@/stores/config'
 import { useChatStore } from '@/stores/chat'
+import httpRequest from '@/utils/axios'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -114,7 +115,10 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   // const userStore = useUserStore()
   const configStore = useConfigStore()
-
+  if (configStore.isTAURI()) {
+    httpRequest.updateBaseURL(configStore.getTauriHost() as string)
+    console.log('12313123123123123123123', configStore.getTauriHost())
+  }
   configStore.getSystemConfig()
   configStore.setSelectedMenu(to.path)
   // userStore.getCurrentUserInfo()

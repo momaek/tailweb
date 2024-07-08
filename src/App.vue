@@ -16,9 +16,7 @@ if (theme) {
 }
 if (window.__TAURI__) {
   configStore.setTauri()
-  if (configStore.getTauriHost()) {
-    router.push('/')
-  } else {
+  if (!configStore.getTauriHost()) {
     router.push('/login')
   }
 }

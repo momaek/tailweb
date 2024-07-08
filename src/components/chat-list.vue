@@ -133,7 +133,7 @@ import {
 import { Input } from '@/components/ui/input'
 
 import type { Chat } from '@/models/chat'
-import { type PropType, defineProps, computed, ref } from 'vue'
+import { type PropType, computed, ref } from 'vue'
 import { useConfigStore } from '@/stores/config'
 import { formatTimestampToMD } from '@/utils'
 import { removeChat, updateChat } from '@/api/chat'

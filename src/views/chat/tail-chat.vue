@@ -135,6 +135,7 @@ import { randString } from '@/utils'
 import { toast } from '@/components/ui/toast'
 import MessageLine from './components/message-line.vue'
 import { getChatHistories, stopChatSession } from '@/api/chat'
+import { useConfigStore } from '@/stores/config'
 
 const route = useRoute()
 const chatID = route.params.id
@@ -268,13 +269,34 @@ const initPageWithRolesAndChats = async () => {
   }
 }
 
-const heartbeatTimeoutID = ref()
-const connect = async () => {
+const configStore = useConfigStore()
+const getWsHost = () => {
   let hostProtocol = 'ws://'
   if (window.location.protocol === 'https:') {
     hostProtocol = 'wss://'
   }
+  const host = hostProtocol + window.location.host
 
+  if (configStore.isTAURI()) {
+    const tauriHost = configStore.getTauriHost() as string
+    // 创建一个新的变量来存储处理后的 tauriHost
+    let wsTauriHost
+    if (tauriHost.startsWith('https://')) {
+      wsTauriHost = tauriHost.replace('https://', 'wss://')
+    } else if (tauriHost.startsWith('http://')) {
+      wsTauriHost = tauriHost.replace('http://', 'ws://')
+    } else {
+      // 如果 tauriHost 没有协议前缀，默认使用 ws 协议
+      wsTauriHost = 'ws://' + tauriHost
+    }
+    return wsTauriHost
+  } else {
+    return host
+  }
+}
+
+const heartbeatTimeoutID = ref()
+const connect = async () => {
   const sendHeartbeat = () => {
     if (heartbeatTimeoutID.value) clearTimeout(heartbeatTimeoutID.value)
     new Promise((resolve) => {
@@ -287,7 +309,7 @@ const connect = async () => {
     })
   }
 
-  const host = hostProtocol + window.location.host
+  const host = getWsHost()
   const ws = new WebSocket(
     host +
       '/api/chat/new?chat_id=' +
