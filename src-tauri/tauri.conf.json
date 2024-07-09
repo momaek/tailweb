@@ -51,7 +51,13 @@
       "csp": null
     },
     "updater": {
-      "active": false
+      "active": true,
+      "endpoints": ["https://github.com/momaek/tailweb/releases/latest/download/latest.json"],
+      "dialog": false,
+      "windows": {
+        "installMode": "passive"
+      },
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDkxQ0NFRTFBQ0YwN0Q2MjUKUldRbDFnZlBHdTdNa1JWRHVTbVhGVnJFN2UvS2RVTXZRREFyYUwxeURrWDhzQ0NDeFFuQ3QxL0UK"
     },
     "windows": [
       {

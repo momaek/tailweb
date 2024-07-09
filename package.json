@@ -12,7 +12,8 @@
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "format": "prettier --write src/",
     "tauri:dev": "tauri dev",
-    "tauri": "tauri build"
+    "tauri": "tauri build",
+    "tauri:sign": "tauri signer generate"
   },
   "dependencies": {
     "@headlessui/vue": "^1.7.22",
