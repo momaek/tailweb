@@ -52,7 +52,7 @@
         class="flex rounded-md bg-laccent-base p-2 max-w-full"
         :class="{
           'bg-secondary': !inversion,
-          'bg-primary text-white': inversion
+          'bg-primary text-white user-prompt': inversion
         }"
       >
         <LoadingIcon class="w-8 h-8 text-secondary-foreground" v-if="!text" />

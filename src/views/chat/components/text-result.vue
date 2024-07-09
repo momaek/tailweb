@@ -48,7 +48,7 @@ const text = computed(() => {
 })
 
 function highlightBlock(str: string, lang?: string) {
-  return `<pre class="code-block-wrapper max-w-full rounded-lg bg-background mt-2 mb-2 overflow-x-auto"><div class="code-block-header p-1 text-slate-100 bg-gray-600 rounded-tl-lg rounded-tr-lg"><span class="code-block-header__lang">${lang}</span><span class="code-block-header__copy">${'复制代码'}</span></div><code class="hljs p-2 rounded-bl-lg rounded-br-lg code-block-body ${lang}">${str}</code></pre>`
+  return `<pre class="code-block-wrapper max-w-full rounded-lg mt-2 mb-2"><div class="code-block-header p-2 flex justify-end text-slate-100 bg-gray-600 rounded-tl-lg rounded-tr-lg"><span class="code-block-header__lang mr-2">${lang}</span><span class="code-block-header__copy cursor-pointer">${'复制代码'}</span></div><code class="hljs p-2 overflow-x-auto rounded-bl-lg rounded-br-lg max-w-full code-block-body ${lang}">${str}</code></pre>`
 }
 
 function addCopyEvents() {
@@ -133,6 +133,6 @@ onUnmounted(() => {
 </template>
 
 <style lang="less">
-@import url(./style.less);
 @import url('highlight.js/styles/atom-one-dark.min.css');
+@import url(./style.less);
 </style>
