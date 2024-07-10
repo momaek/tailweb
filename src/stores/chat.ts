@@ -1,8 +1,8 @@
 import { getChatList, getModelList, getRoleList } from '@/api/chat'
 import type { Chat, Model, Role } from '@/models/chat'
 import { defineStore } from 'pinia'
+import { useConfigStore } from './config'
 let currentRequest: Promise<Role[]> | null = null
-
 export const useChatStore = defineStore('chat', {
   state: () => ({
     chatList: [] as Chat[],
@@ -13,14 +13,27 @@ export const useChatStore = defineStore('chat', {
     cachedMessage: '',
     cachedModel: undefined as Model | undefined,
     cachedRole: undefined as Role | undefined,
-    socket: undefined as WebSocket | undefined
+    socket: undefined as WebSocket | undefined,
+    reasonableClose: false
   }),
   actions: {
     setSocket(socket: WebSocket) {
       this.socket = socket
+      this.reasonableClose = false
+    },
+    isSocketConnected(): boolean {
+      if (this.socket) {
+        return (
+          this.socket.readyState === WebSocket.OPEN ||
+          this.socket.readyState === WebSocket.CONNECTING
+        )
+      }
+
+      return false
     },
     closeSocket() {
       if (this.socket) {
+        this.reasonableClose = true
         this.socket.close()
         this.socket = undefined
       }
@@ -60,6 +73,7 @@ export const useChatStore = defineStore('chat', {
     },
     newChat(chat: Chat) {
       this.chatList.unshift(chat)
+      this.menuChatList.unshift(chat)
     },
     swapChatToFirst(chat: Chat) {
       // 首先检查chat是否已经是列表的第一位
@@ -99,8 +113,35 @@ export const useChatStore = defineStore('chat', {
       if (res) {
         this.chatList = res
         this.menuChatList = JSON.parse(JSON.stringify(res.slice(0, 5)))
+        this.updateChatListIcon()
       }
       return this.chatList
+    },
+    updateChatListIcon() {
+      const configStore = useConfigStore()
+
+      if (configStore.isTAURI()) {
+        const tauriHost = configStore.getTauriHost() as string
+        this.chatList.forEach((chat) => {
+          chat.icon = tauriHost + chat.icon
+        })
+        this.menuChatList.forEach((chat) => {
+          chat.icon = tauriHost + chat.icon
+        })
+      }
+    },
+    updateRoleIcon() {
+      const configStore = useConfigStore()
+
+      if (configStore.isTAURI()) {
+        const tauriHost = configStore.getTauriHost() as string
+        this.allRoleList.forEach((role) => {
+          role.icon = tauriHost + role.icon
+        })
+        this.originalRoleList.forEach((role) => {
+          role.icon = tauriHost + role.icon
+        })
+      }
     },
     getChatByID(id: number): Chat | undefined {
       return this.chatList.find((chat) => chat.id === id)

@@ -19,6 +19,13 @@ export const useUserStore = defineStore('user', {
       this.userInfo = res
       return this.userInfo
     },
+    async checkSession() {
+      try {
+        await getUserInfo()
+      } catch (e: any) {
+        Promise.reject(e)
+      }
+    },
     setToken(token: string) {
       this.token = token
       localStorage.setItem('ZenbotToken', token)

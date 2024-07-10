@@ -48,7 +48,12 @@
           <p class="text-sm">{{ roleInfo.description }}</p>
           <div class="flex items-center justify-start w-full">
             <p class="flex shrink-0">Powered By</p>
-            <Listbox as="div" class="ml-2 w-full" v-model="selectedModel">
+            <Listbox
+              as="div"
+              class="ml-2 w-full"
+              v-model="selectedModel"
+              @update:model-value="modelUpdate"
+            >
               <div class="relative">
                 <ListboxButton
                   class="relative w-full sm:w-1/2 h-9 cursor-default rounded-md py-1.5 pl-3 pr-10 text-left 0 shadow-sm ring-1 ring-inset ring-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6"
@@ -158,6 +163,7 @@ const chatData = ref<ChatHistory[]>([])
 const el = ref<HTMLElement | null>(null)
 const sessionID = randString(42)
 const replyBuffer = ref('')
+const isReconnect = ref(false)
 
 useTitle(chatInfo.value?.title)
 
@@ -260,7 +266,7 @@ const initPageWithRolesAndChats = async () => {
     selectedModel.value = chatStore.getModelByID(chatInfo.value?.model_id as number) as Model
   }
 
-  if (roleInfo.value.model_id) {
+  if (roleInfo.value?.model_id) {
     canSelect.value = false
   }
 
@@ -324,13 +330,15 @@ const connect = async () => {
       userStore.getToken()
   )
   ws.addEventListener('open', async () => {
-    toast({
-      title: '连接成功'
-    })
     sendHeartbeat()
     enableInput()
     // TODO
-    await getChatHistory()
+    if (!isReconnect.value) {
+      toast({
+        title: '连接成功'
+      })
+      await getChatHistory()
+    }
   })
   ws.addEventListener('message', (e) => {
     try {
@@ -392,6 +400,10 @@ const connect = async () => {
 
   ws.addEventListener('close', (e) => {
     console.log('====>>', e)
+    if (chatStore.reasonableClose || chatStore.isSocketConnected()) {
+      return
+    }
+    reconnect()
   })
 
   ws.addEventListener('error', (e) => {
@@ -403,6 +415,22 @@ const connect = async () => {
     })
   })
   chatStore.setSocket(ws)
+}
+
+const reconnect = () => {
+  disableInput()
+  userStore.checkSession().then(() => {
+    isReconnect.value = true
+    connect()
+  })
+}
+
+const modelUpdate = () => {
+  chatStore.closeSocket()
+  if (chatInfo.value) {
+    chatInfo.value.model_id = selectedModel.value.id
+  }
+  reconnect()
 }
 
 initPageWithRolesAndChats().then(() => {
