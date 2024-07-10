@@ -186,6 +186,7 @@ export const useChatStore = defineStore('chat', {
               this.originalRoleList.push(role)
             }
           })
+          this.updateRoleIcon()
           return res
         })
         .catch((error) => {
